@@ -1,6 +1,7 @@
 // 点击弹出主页面
 chrome.browserAction.onClicked.addListener(() => {
-  chrome.tabs.create({ url: `${chrome.runtime.getURL('app/app.html')}`, active: true });
+  console.log(chrome.runtime.getURL('index.html'));
+  chrome.tabs.create({ url: chrome.runtime.getURL('index.html'), active: true });
 });
 
 // 消息接收
