@@ -1,6 +1,5 @@
 // 点击弹出主页面
 chrome.browserAction.onClicked.addListener(() => {
-  console.log(chrome.runtime.getURL('index.html'));
   chrome.tabs.create({ url: chrome.runtime.getURL('index.html'), active: true });
 });
 

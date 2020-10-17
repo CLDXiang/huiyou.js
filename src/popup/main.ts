@@ -1,7 +1,8 @@
+import logger from '@/utils/logger';
 import { addStyle, addClass } from './utils';
 import './popup.less';
 
-console.log('Link Start!');
+logger.log('Link Start!');
 
 // 注入页面元素
 const { body } = document;
