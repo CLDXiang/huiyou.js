@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/chrome": "^0.0.124",
+    "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "vue": "^3.0.0"
   },
