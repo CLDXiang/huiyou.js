@@ -15,5 +15,7 @@ module.exports = {
   rules: {
     'no-console': 1,
     'no-debugger': 1,
+    'implicit-arrow-linebreak': 0,
+    'import/prefer-default-export': 0,
   },
 };
