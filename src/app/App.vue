@@ -8,12 +8,20 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { testClient } from '@/apis';
+import logger from '@/utils/logger';
 import HelloWorld from './components/HelloWorld.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     HelloWorld,
+  },
+  mounted() {
+    // FIXME: 测试用，过后删去
+    testClient.test({ uid: 'bili_5249176387' }).then((data) => {
+      logger.log(data);
+    });
   },
 });
 </script>
