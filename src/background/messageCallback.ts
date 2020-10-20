@@ -1,17 +1,21 @@
 /**
  * 处理 Content 发来的信息
  */
-import { Message } from '@/types/message';
-import fetchVideo from './fetchVideo';
+import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
 
 export default function handleMessage(
-  message: Message,
+  message: {
+    type: MessageType;
+    payload: MessagePayloadMap[MessageType];
+  },
   sender: chrome.runtime.MessageSender,
-  sendResponse: (response?: unknown) => void,
+  sendResponse: (response?: MessageResponseMap[MessageType]) => void,
 ) {
   switch (message.type) {
-    case 'fetchVideo':
-      fetchVideo().then((r) => sendResponse(r));
+    case 'playVideo':
+      {
+        const payload = message.payload as MessagePayloadMap['playVideo'];
+      }
       break;
     default:
       break;
