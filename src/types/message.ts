@@ -1,8 +1,31 @@
 /** Content 与 Background 通信的接口类型 */
 
-/** Content 要求 Background 获取视频 */
-interface FetchVideo {
-  type: 'fetchVideo';
+import { VideoInfo } from './video';
+
+export type MessageType = 'playVideo' | 'pauseVideo';
+
+interface PlayVideoMessagePayload {
+  bvid: string;
+  duration: number;
 }
 
-export type Message = FetchVideo;
+interface PauseVideoMessagePayload {
+  bvid: string;
+}
+
+export interface MessagePayloadMap {
+  playVideo: PlayVideoMessagePayload;
+  pauseVideo: PauseVideoMessagePayload;
+}
+
+export interface Message<K extends MessageType> {
+  type: K;
+  payload: MessagePayloadMap[K];
+}
+
+type PauseVideoMessageResponse = VideoInfo | null;
+
+export interface MessageResponseMap {
+  playVideo: undefined;
+  pauseVideo: PauseVideoMessageResponse;
+}
