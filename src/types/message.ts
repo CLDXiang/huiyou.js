@@ -10,7 +10,7 @@ interface PlayVideoMessagePayload {
 }
 
 /** 视频停止播放时的消息 */
-interface PauseVideoMessagePayload {
+export interface PauseVideoMessagePayload {
   uid: string;
   bvid: string;
   /** 此视频播放的总时长/秒 */
