@@ -4,23 +4,22 @@
 import { VideoInfo } from '@/types/video';
 import { FetchVideoResponseBody } from '@/types/webRequest';
 import axios from 'axios';
+import { FETCH_VIDEO } from './config';
 
-const keyword = 'VLOG';
-/** 视频播放量上限 */
-const limitOfAmountOfPlay = 10;
-/** 视频长度下限/秒 */
-const durationLimit = 60;
-/** 拉取视频的起始页数 */
-const startPage = 400;
-/** 拉取视频的结束页数 */
-const endPage = 390;
+const {
+  AMOUNT_OF_PLAY_UPPER_LIMIT,
+  END_PAGE,
+  KEYWORD,
+  START_PAGE,
+  VIDEO_DURATION_LOWER_LIMIT,
+} = FETCH_VIDEO;
 
 /**
  * 从 VLOG 区爬取视频数据
  * @param page 页数
  */
 async function fetchVideo(page: number): Promise<VideoInfo[] | null> {
-  const url = `https://s.search.bilibili.com/cate/search?main_ver=v3&search_type=video&view_type=hot_rank&order=click&copy_right=-1&cate_id=21&page=${page}&pagesize=20&keyword=${keyword}`;
+  const url = `https://s.search.bilibili.com/cate/search?main_ver=v3&search_type=video&view_type=hot_rank&order=click&copy_right=-1&cate_id=21&page=${page}&pagesize=20&keyword=${KEYWORD}`;
   const response = await axios.get<FetchVideoResponseBody>(url);
   if (response.status !== 200) {
     return null;
@@ -50,12 +49,13 @@ function randomChoose(videos: VideoInfo[]): VideoInfo | null {
 function chooseAVideo(videos: VideoInfo[]): VideoInfo | null {
   const results = videos.filter(
     ({ play, duration }) =>
-      Number.parseInt(play, 10) <= limitOfAmountOfPlay && duration >= durationLimit,
+      Number.parseInt(play, 10) <= AMOUNT_OF_PLAY_UPPER_LIMIT
+      && duration >= VIDEO_DURATION_LOWER_LIMIT,
   );
   return randomChoose(results);
 }
 
-async function getVideoRecursively(page = startPage): Promise<VideoInfo | null> {
+async function getVideoRecursively(page = START_PAGE): Promise<VideoInfo | null> {
   const videos = await fetchVideo(page);
   const chosenVideo = chooseAVideo(videos ?? []);
   // 在当前页找到符合条件的视频
@@ -64,7 +64,7 @@ async function getVideoRecursively(page = startPage): Promise<VideoInfo | null> 
   }
 
   // 爬取的最后一页也没有符合条件的视频，随机选择一个
-  if (page === endPage) {
+  if (page === END_PAGE) {
     return randomChoose(videos ?? []);
   }
 
@@ -75,5 +75,5 @@ async function getVideoRecursively(page = startPage): Promise<VideoInfo | null> 
  * 获取一个视频的信息，成功则返回视频信息，失败返回 `null`
  */
 export default async function getVideo(): Promise<VideoInfo | null> {
-  return getVideoRecursively(startPage);
+  return getVideoRecursively(START_PAGE);
 }

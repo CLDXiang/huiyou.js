@@ -1,12 +1,14 @@
-/** 计时时长/ms */
-const duration = 7000;
+import { TIMEKEEPING } from './config';
+
+const { DURATION } = TIMEKEEPING;
+
 let expiration: number | null = null;
 
 export function startTimekeeping() {
-  expiration = +new Date() + duration;
+  expiration = +new Date() + DURATION;
   setTimeout(() => {
     expiration = null;
-  }, duration);
+  }, DURATION);
 }
 
 export function getRemainingTime(): number | null {
