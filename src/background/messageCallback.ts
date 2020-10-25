@@ -2,6 +2,7 @@
  * 处理 Content 发来的信息
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
+import { postRecord } from './backend';
 import { getRecommendedVideo, recordVideoLocally } from './recordVideo';
 import { getRemainingTime, startTimekeeping } from './timekeeping';
 
@@ -28,10 +29,12 @@ export default function handleMessage(
       break;
     case 'fetchVideo':
       {
+        const payload = message.payload as MessagePayloadMap['fetchVideo'];
         const recommendedVideo = getRecommendedVideo();
         sendResponse<'fetchVideo'>(recommendedVideo);
         if (recommendedVideo !== null) {
           startTimekeeping();
+          postRecord(payload.uid, recommendedVideo);
         }
       }
       break;
