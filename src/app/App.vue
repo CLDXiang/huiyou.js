@@ -1,21 +1,17 @@
 <template>
-  <img
-    alt="Vue logo"
-    src="../assets/logo.png"
-  >
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <PushRecords />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { testClient } from '@/apis';
 import logger from '@/utils/logger';
-import HelloWorld from './components/HelloWorld.vue';
+import PushRecords from './pages/PushRecords.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    HelloWorld,
+    PushRecords,
   },
   mounted() {
     // FIXME: 测试用，过后删去
@@ -31,7 +27,6 @@ export default defineComponent({
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }

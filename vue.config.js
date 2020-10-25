@@ -13,10 +13,19 @@ module.exports = {
   //   .add('./src/background/main.ts')
   //   .end();
   // },
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true,
+        },
+      },
+    },
+  },
   filenameHashing: false,
   pages: {
     app: {
-      entry: 'src/main.ts',
+      entry: 'src/main',
       template: 'public/index.html',
       filename: 'index.html',
       title: '洄游',
@@ -29,7 +38,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://106.54.69.78:8080/api', // API 服务器的地址
+        target: 'https://huiyou.fun/api', // API 服务器的地址
         changeOrigin: true,
         pathRewrite: {
           '^/api': '',
