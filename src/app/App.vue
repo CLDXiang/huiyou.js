@@ -4,8 +4,6 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { testClient } from '@/apis';
-import logger from '@/utils/logger';
 import PushRecords from './pages/PushRecords.vue';
 
 export default defineComponent({
@@ -15,9 +13,9 @@ export default defineComponent({
   },
   mounted() {
     // FIXME: 测试用，过后删去
-    testClient.test({ uid: 'bili_5249176387' }).then((data) => {
-      logger.log(data);
-    });
+    // testClient.test({ uid: 'bili_5249176387' }).then((data) => {
+    //   logger.log(data);
+    // });
   },
 });
 </script>
