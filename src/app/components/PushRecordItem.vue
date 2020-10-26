@@ -14,8 +14,8 @@
       <div style="flex: 1" />
       <div class="desc">
         <span>播放量:{{ play }}</span>
-        <span style="margin-left: 100px">{{ tag }}</span>
-        <span style="margin-left:100px">作者:{{ author }}</span>
+        <span class="item">{{ tag }}</span>
+        <span class="item">作者:{{ author }}</span>
       </div>
     </div>
   </div>
@@ -25,16 +25,14 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'PushRecordItem',
   props: {
-    img: String,
-    title: String,
-    author: String,
-    pubdate: String,
-    type: String,
-    play: String,
-    tag: String,
-    bv: String,
+    img: String, // 图片
+    title: String, // 标题
+    author: String, // 作者
+    pubdate: String, // 更新时间
+    play: String, // 播放量
+    tag: String, // 标签
+    bv: String, // bv号
   },
   methods: {
     link() {
@@ -46,32 +44,39 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-  .wrap{
+  .wrap {
     margin: 14px 0;
     display: flex;
     flex-direction: row;
     height: 100px;
     text-align: left;
-    .img{
+
+    .img {
       width: 160px;
-      background: red;
+      background: gray;
       border-radius: 4px;
       margin-right: 30px;
     }
-    .content{
+
+    .content {
       flex: 1;
       border-bottom: 1px #eee solid;
       padding: 0 0 16px;
       display: flex;
       flex-direction: column;
-      .title{
+
+      .title {
         font-size: 15px;
         font-weight: bold;
         color: black;
-          cursor: pointer;
+        cursor: pointer;
       }
-      .desc{
+
+      .desc {
         font-size: 13px;
+        .item{
+          margin-left: 100px;
+        }
       }
     }
   }

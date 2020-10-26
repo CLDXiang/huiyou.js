@@ -16,9 +16,7 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        lessOptions: {
-          javascriptEnabled: true,
-        },
+        javascriptEnabled: true, // 解决antd按需加载报错
       },
     },
   },

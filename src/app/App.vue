@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PushRecords from './pages/PushRecords.vue';
+import PushRecords from './views/PushRecords.vue';
 
 export default defineComponent({
   name: 'App',

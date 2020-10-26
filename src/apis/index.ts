@@ -1,15 +1,24 @@
 import axios from 'axios';
 
-export interface Record {
-    uid: string;
-    author: string;
-    pic: string;
-    pubdate: string;
-    title: string;
-    description: string;
+/** 推送视频后端返回 */
+export interface PushRecord {
+  uid: string;
+  /** BV 号 */
+  bv: string;
+  /** 作者 */
+  author: string;
+  /** 预览图片 */
+  pic: string;
+  /** 更新时间 */
+  pubdate: string;
+  /** 标题 */
+  title: string;
+  /** 描述 */
+  description: string;
 }
-const getRecords: () => Promise<Record[]> = () =>
-  new Promise<Record[]>((resolve, reject) => {
+
+const getRecords: () => Promise<PushRecord[]> = () =>
+  new Promise<PushRecord[]>((resolve, reject) => {
     axios
       .get('/api/records')
       .then((resp) => {
