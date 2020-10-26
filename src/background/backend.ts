@@ -1,10 +1,13 @@
 import { VideoInfo } from '@/types/video';
 import axios from 'axios';
+import { BACKEND } from './config';
+
+const { BASE_URL, POST_RECORD_URL } = BACKEND;
 
 const backend = axios.create({
-  baseURL: 'https://huiyou.fun/api/',
+  baseURL: BASE_URL,
 });
 
 export function postRecord(uid: string, video: VideoInfo) {
-  backend.post('records/', { uid, ...video });
+  backend.post(POST_RECORD_URL, { uid, ...video });
 }
