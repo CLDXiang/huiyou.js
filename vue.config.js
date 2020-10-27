@@ -16,7 +16,9 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        javascriptEnabled: true, // 解决antd按需加载报错
+        lessOptions: {
+          javascriptEnabled: true,
+        },
       },
     },
   },
@@ -31,18 +33,5 @@ module.exports = {
     },
     popup: 'src/popup/main.ts',
     background: 'src/background/main.ts',
-  },
-  // FIXME: 后端上跨域后删掉这个
-  devServer: {
-    proxy: {
-      '/api': {
-        // target: 'http://106.54.69.78:8080/api', // API 服务器的地址
-        target: 'https://huiyou.fun/api', // API 服务器的地址
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
-      },
-    },
   },
 };

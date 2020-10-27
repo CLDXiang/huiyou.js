@@ -1,5 +1,8 @@
 <template>
-  <div class="wrap">
+  <div
+    class="wrap"
+    @click="handleClickItem"
+  >
     <img
       class="img"
       :src="img"
@@ -7,7 +10,6 @@
     <div class="content">
       <div
         class="title"
-        @click="link"
       >
         {{ title }}
       </div>
@@ -26,16 +28,24 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   props: {
-    img: String, // 图片
-    title: String, // 标题
-    author: String, // 作者
-    pubdate: String, // 更新时间
-    play: String, // 播放量
-    tag: String, // 标签
-    bv: String, // bv号
+    /** 图片 */
+    img: { type: String, required: true },
+    /** 标题 */
+    title: { type: String, required: true },
+    /** 作者 */
+    author: { type: String, required: true },
+    /** 更新时间 */
+    pubdate: { type: String, required: true },
+    /** 播放量 */
+    play: { type: String, required: true },
+    /** 标签 */
+    tag: { type: String, required: true },
+    /** bv 号 */
+    bv: { type: String, required: true },
   },
   methods: {
-    link() {
+    /** 处理点击纪录项 */
+    handleClickItem() {
       window.open(`https://www.bilibili.com/video/${this.bv}`);
     },
   },
@@ -45,11 +55,15 @@ export default defineComponent({
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
   .wrap {
-    margin: 14px 0;
+    padding: 14px;
     display: flex;
-    flex-direction: row;
-    height: 100px;
+    height: 128px;
     text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    &:hover {
+      background: #eee;
+    }
 
     .img {
       width: 160px;
@@ -69,7 +83,6 @@ export default defineComponent({
         font-size: 15px;
         font-weight: bold;
         color: black;
-        cursor: pointer;
       }
 
       .desc {

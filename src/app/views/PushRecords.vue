@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import PushRecordItem from '@/app/components/PushRecordItem.vue';
-import httpClient from '@/apis/index';
+import { recordClient } from '@/apis';
 
 export default defineComponent({
   name: 'PushRecords',
@@ -37,8 +37,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    httpClient.getRecords().then((data) => {
-      console.log(data);
+    recordClient.getRecords().then((data) => {
       this.records = data;
     });
   },
