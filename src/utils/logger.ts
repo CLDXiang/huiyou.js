@@ -6,7 +6,7 @@ const logger = {
   /** 调试用 log */
   log(...args: any[]) {
     if (NODE_ENV !== 'production') {
-      console.log(...args);
+      logger.info(...args);
     }
   },
   /** 生产环境控制台会显示的信息 */
