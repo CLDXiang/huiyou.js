@@ -35,5 +35,5 @@ export const BACKEND = freeze({
   /** 后端接口基础 URL */
   BASE_URL: 'https://huiyou.fun/api/',
   /** 上传推荐记录的 URL */
-  POST_RECORD_URL: 'record',
+  POST_RECORD_URL: 'records',
 });
