@@ -13,10 +13,19 @@ module.exports = {
   //   .add('./src/background/main.ts')
   //   .end();
   // },
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          javascriptEnabled: true,
+        },
+      },
+    },
+  },
   filenameHashing: false,
   pages: {
     app: {
-      entry: 'src/main.ts',
+      entry: 'src/main',
       template: 'public/index.html',
       filename: 'index.html',
       title: '洄游',
