@@ -1,1 +1,1 @@
-export { default as testClient } from './test';
+export { default as recordClient } from './record';
