@@ -1,7 +1,7 @@
 import logger from '@/utils/logger';
-import { MessageResponseMap } from '@/types/message';
+import { MessageResponseMap, Message } from '@/types/message';
 // import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
-import { showVideo } from './showVideo';
+import { modifyRemainingTime, showVideo } from './showVideo';
 import './popup.less';
 
 logger.log('Link Start!');
@@ -10,10 +10,13 @@ logger.log('Link Start!');
 // chrome.runtime.onMessage.addListener(handleMessage);
 
 /** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
-const bvid = window.location.href.match(/BV(.{10})/);
-logger.info(bvid);
-const uid = document.cookie.match(/(?:bp_video_offset_|im_notify_type_|bp_t_offset_)(\d+)/);
-logger.info(uid);
+const bvidArr = window.location.href.match(/BV(.{10})/);
+const bvid = (bvidArr && bvidArr.length && bvidArr[1]) || null;
+logger.info(`bvid: ${bvid}`);
+
+const uidArr = document.cookie.match(/DedeUserID=([\d]+);/);
+const uid = (uidArr && uidArr.length && uidArr[1]) || null;
+logger.info(`uid: ${uid}`);
 
 // 视频播放
 const media = document.querySelector('video');
@@ -22,15 +25,15 @@ export const play = {
   times: 0,
 };
 
-if (media != null) {
+if (media !== null && uid !== null && bvid !== null) {
   // 认为可以推送视频的时候
-  const pushMessage = {
+  const pushMessage: Message<'fetchVideo'> = {
     type: 'fetchVideo',
     payload: {
       uid,
     },
   };
-  const pauseMessage = {
+  const pauseMessage: Message<'pauseVideo'> = {
     type: 'pauseVideo',
     payload: {
       bvid,
@@ -39,16 +42,12 @@ if (media != null) {
     },
   };
 
-  const focusMessage = {
+  const focusMessage: Message<'synchronizeTime'> = {
     type: 'synchronizeTime',
-    payload: {
-      bvid,
-      playedTime: media.currentTime, // 现在简单地认为duration就是播放时长
-      totalDuration: media.duration,
-    },
+    payload: undefined,
   };
   /** 监听play变量 */
-  const playMessage = {
+  const playMessage: Message<'playVideo'> = {
     type: 'playVideo',
     payload: { bvid },
   };
@@ -59,12 +58,13 @@ if (media != null) {
     //  chrome.tabs.sendMessage(<number>(tabs[0].id),pushMessage,function(response){
     chrome.runtime.sendMessage(pushMessage, (response) => {
       logger.info('push message sent');
-      logger.info(response);
+      // logger.info(response);
       if (response !== null) {
         const payload = response.payload as MessageResponseMap['fetchVideo'];
         if (payload !== null) {
           logger.info('show video');
-          showVideo(payload);
+          logger.info(payload);
+          showVideo(response);
         }
       }
     });
@@ -100,11 +100,11 @@ if (media != null) {
   //   },
   // });
 
-  const playVideo = () => {
-    if (play.flag !== 1) {
-      pushVideo();
-    }
-  };
+  // const playVideo = () => {
+  //   if (play.flag !== 1) {
+  //     pushVideo();
+  //   }
+  // };
 
   media.addEventListener('play', () => {
     logger.info('Video Start');
@@ -112,7 +112,7 @@ if (media != null) {
     play.times += 1; // 播放次数 + 1
     // const video = fetchVideo(url);
     logger.info('send play message');
-    chrome.runtime.sendMessage(playMessage, (reponse) => {
+    chrome.runtime.sendMessage(playMessage, (response) => {
       logger.info('play message sent');
     });
   });
@@ -121,6 +121,7 @@ if (media != null) {
     logger.info('Video Paused');
     play.flag = 0;
     // const video = fetchVideo(url);
+    pushVideo();
     chrome.runtime.sendMessage(pauseMessage, (response) => {
       logger.info('pause message sent');
     });
@@ -138,11 +139,10 @@ if (media != null) {
   window.addEventListener('focus', () => {
     logger.info('window focused');
     chrome.runtime.sendMessage(focusMessage, (response) => {
-      logger.info('focus message sent');
+      logger.info('focus message sent', response);
+      if (response !== null) {
+        modifyRemainingTime(response);
+      }
     });
-
-    if (play.flag !== 1) {
-      pushVideo();
-    }
   });
 }

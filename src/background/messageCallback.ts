@@ -37,6 +37,7 @@ export default function handleMessage(
         const recommendedVideo = getRecommendedVideo();
         sendResponse<'fetchVideo'>(recommendedVideo);
         if (recommendedVideo !== null) {
+          logger.info(`recommend video${recommendedVideo.title}${recommendedVideo.bvid}`);
           startTimekeeping();
           postRecord(payload.uid, recommendedVideo);
         }
