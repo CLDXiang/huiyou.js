@@ -41,12 +41,12 @@ export default defineComponent({
     /** 标签 */
     tag: { type: String, required: true },
     /** bv 号 */
-    bv: { type: String, required: true },
+    bvid: { type: String, required: true },
   },
   methods: {
     /** 处理点击纪录项 */
     handleClickItem() {
-      window.open(`https://www.bilibili.com/video/${this.bv}`);
+      window.open(`https://www.bilibili.com/video/${this.bvid}`);
     },
   },
 });

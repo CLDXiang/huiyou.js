@@ -10,7 +10,7 @@
       >
         {{ item.pubdate }}
         <push-record-item
-          :bv="item.bv"
+          :bvid="item.bvid"
           :tag="item.tag"
           :play="item.play"
           :type="item.type"
