@@ -1,13 +1,9 @@
 import logger from '@/utils/logger';
 import { MessageResponseMap, Message } from '@/types/message';
-// import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
-import { modifyRemainingTime, showVideo } from './showVideo';
+import { modifyRemainingTime, showVideo, initialVideo } from './showVideo';
 import './popup.less';
 
 logger.log('Link Start!');
-
-/** 处理消息 */
-// chrome.runtime.onMessage.addListener(handleMessage);
 
 /** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
 const bvidArr = window.location.href.match(/BV(.{10})/);
@@ -24,6 +20,9 @@ export const play = {
   flag: 0,
   times: 0,
 };
+
+// 初始化弹窗并隐藏
+initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
   // 认为可以推送视频的时候
@@ -69,42 +68,6 @@ if (media !== null && uid !== null && bvid !== null) {
       }
     });
   };
-
-  // 有点问题 之后再说
-  // Object.defineProperties(play,
-  //   {
-  //   'flag':{
-  //     get: function(){
-  //         return this._flag;
-  //       },
-  //     // configurable: true,
-  //     set: function(newValue){
-  //       if(this._flag == 1 && newValue == 0){
-  //         if(this._times > 0){ // to modify
-  //           this._times = 0;
-  //           pushVideo();
-  //         }
-  //       }
-  //       this._flag = newValue;
-  //       logger.info('set flag:' + newValue);
-  //     }
-  //   },
-  //   'times':{
-  //     get: function(){
-  //         return this._times;
-  //       },
-  //     // configurable: true,
-  //     set: function(newValue){
-  //       this._times = newValue;
-  //     }
-  //   },
-  // });
-
-  // const playVideo = () => {
-  //   if (play.flag !== 1) {
-  //     pushVideo();
-  //   }
-  // };
 
   media.addEventListener('play', () => {
     logger.info('Video Start');
