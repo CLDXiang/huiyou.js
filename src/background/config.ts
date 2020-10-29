@@ -11,9 +11,9 @@ export const RECORD_VIDEO = freeze({
   /** 视频时长上限/秒 */
   DURATION_UPPER_LIMIT: 60 * 15,
   /** 视频播放比例下限 */
-  PLAYED_TIME_PROPORTION_LOWER_LIMIT: 0, // origin: 1/3
+  PLAYED_TIME_PROPORTION_LOWER_LIMIT: 1 / 3, // origin: 1/3
   /** 视频记录个数下限 */
-  VIDEO_COUNT_LOWER_LIMIT: 1, // origin： 5
+  VIDEO_COUNT_LOWER_LIMIT: 5, // origin： 5
 });
 
 /** 拉取视频模块常量 */
