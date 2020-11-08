@@ -4,7 +4,7 @@
 import { OriginVideoInfo, VideoInfo } from '@/types/video';
 import { FetchVideoResponseBody } from '@/types/webRequest';
 import axios from 'axios';
-import { FETCH_VIDEO } from './config';
+import { FETCH_VIDEO } from '@/config';
 
 const {
   AMOUNT_OF_PLAY_UPPER_LIMIT,

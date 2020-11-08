@@ -1,4 +1,4 @@
-import { TIMEKEEPING } from './config';
+import { TIMEKEEPING } from '@/config';
 
 const { DURATION } = TIMEKEEPING;
 

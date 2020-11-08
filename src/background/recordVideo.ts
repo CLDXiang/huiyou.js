@@ -1,7 +1,7 @@
+import { RECORD_VIDEO } from '@/config';
 import { PauseVideoMessagePayload } from '@/types/message';
 import { VideoInfo } from '@/types/video';
 import getVideo from './fetchVideo';
-import { RECORD_VIDEO } from './config';
 
 const {
   DURATION_UPPER_LIMIT,
