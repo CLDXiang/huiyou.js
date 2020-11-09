@@ -1,6 +1,5 @@
 import { RECORD_VIDEO } from '@/config';
-import { PauseVideoMessagePayload } from '@/types/message';
-import { VideoInfo } from '@/types/video';
+import { FetchVideoMessageResponse, PauseVideoMessagePayload } from '@/types/message';
 import getVideo from './fetchVideo';
 
 const {
@@ -22,7 +21,7 @@ function shouldRecommendVideo(): boolean {
   return videoRecord.size >= VIDEO_COUNT_LOWER_LIMIT;
 }
 
-let recommendedVideo: VideoInfo | null = null;
+let recommendedVideo: FetchVideoMessageResponse | null = null;
 
 export function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
   if (shouldRecordVideo(videoInfo)) {
@@ -36,7 +35,7 @@ export function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
   }
 }
 
-export function getRecommendedVideo(): VideoInfo | null {
+export function getRecommendedVideo(): FetchVideoMessageResponse | null {
   if (!shouldRecommendVideo()) {
     return null;
   }

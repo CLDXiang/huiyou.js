@@ -5,6 +5,8 @@ import { FETCH_VIDEO } from '@/config';
 import { VideoInfo } from '@/types/video';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import axios from 'axios';
+import { FetchVideoMessageResponse } from '@/types/message';
+import { extractAvFromArcurl } from '@/utils/video';
 
 const {
   AMOUNT_OF_PLAY_UPPER_LIMIT,
@@ -75,6 +77,12 @@ async function getVideoRecursively(page = START_PAGE): Promise<VideoInfo | null>
 /**
  * 获取一个视频的信息，成功则返回视频信息，失败返回 `null`
  */
-export default async function getVideo(): Promise<VideoInfo | null> {
-  return getVideoRecursively(START_PAGE);
+export default async function getVideo(): Promise<FetchVideoMessageResponse | null> {
+  const video = await getVideoRecursively(START_PAGE);
+  if (video === null) {
+    return null;
+  }
+  const avid = extractAvFromArcurl(video.arcurl);
+  if (avid === null) return null;
+  return { bvid: video.bvid, avid };
 }
