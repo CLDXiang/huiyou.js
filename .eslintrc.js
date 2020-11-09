@@ -17,5 +17,6 @@ module.exports = {
     'no-debugger': 1,
     'implicit-arrow-linebreak': 0,
     'import/prefer-default-export': 0,
+    'import/named': 0, // https://github.com/benmosher/eslint-plugin-import/issues/1883
   },
 };
