@@ -14,11 +14,17 @@ export type MessageType =
 
 /** 视频开始播放时的消息 */
 export interface PlayVideoMessagePayload {
+  /** 用户 id */
+  uid: string;
+  /** 视频 BV 号 */
   bvid: string;
 }
 
 /** 视频停止播放时的消息 */
 export interface PauseVideoMessagePayload {
+  /** 用户 id */
+  uid: string;
+  /** 视频 BV 号 */
   bvid: string;
   /** 此视频播放的总时长/秒 */
   playedTime: number;
