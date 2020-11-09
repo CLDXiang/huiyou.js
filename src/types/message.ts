@@ -53,7 +53,7 @@ export interface Message<K extends MessageType> {
 
 export interface FetchVideoMessageResponse {
   bvid: string;
-  avid: string;
+  aid: string;
 }
 
 /** 后端脚本给前端脚本的响应的映射 */

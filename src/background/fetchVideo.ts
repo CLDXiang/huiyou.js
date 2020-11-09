@@ -82,7 +82,7 @@ export default async function getVideo(): Promise<FetchVideoMessageResponse | nu
   if (video === null) {
     return null;
   }
-  const avid = extractAvFromArcurl(video.arcurl);
-  if (avid === null) return null;
-  return { bvid: video.bvid, avid };
+  const aid = extractAvFromArcurl(video.arcurl);
+  if (aid === null) return null;
+  return { bvid: video.bvid, aid };
 }
