@@ -1,58 +1,49 @@
 <template>
   <div class="records">
-    <div class="header">
+    <div class="records__header">
       <h3>历史记录</h3>
     </div>
-    <a-timeline>
-      <a-timeline-item
-        v-for="item in records"
-        :key="item.uid"
-      >
-        {{ item.pubdate }}
-        <push-record-item
-          :bv="item.bv"
-          :tag="item.tag"
-          :play="item.play"
-          :type="item.type"
-          :author="item.author"
-          :title="item.title"
-          :img="item.pic"
-        />
-      </a-timeline-item>
-    </a-timeline>
+    <div class="records__list">
+      <push-record-item
+        v-for="record in records"
+        :key="record.bvid"
+        :bvid="record.bvid"
+        :created-at="record.createdAt"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import PushRecordItem from '@/app/components/PushRecordItem.vue';
-import { recordClient } from '@/apis';
+import { recordsClient } from '../apis';
+import { RecordItem } from '../types';
 
 export default defineComponent({
-  name: 'PushRecords',
   components: { PushRecordItem },
   data() {
     return {
-      records: {},
+      records: {} as RecordItem[],
     };
   },
   mounted() {
-    recordClient.getRecords().then((data) => {
+    // FIXME: 获取当前用户 uid 并传入该方法
+    recordsClient.getRecords({ uid: 'zwh' }).then((data) => {
       this.records = data;
     });
   },
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-    .header {
-        display: flex;
-        margin-bottom: 24px;
-    }
+.records {
+  width: 800px;
+  margin: 0 auto;
+}
 
-    .records {
-        width: 800px;
-        margin: 0 auto;
-    }
+.records__header {
+  display: flex;
+  margin-bottom: 24px;
+}
 </style>
