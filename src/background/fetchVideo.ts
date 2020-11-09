@@ -2,8 +2,8 @@
  * 从 B 站拉取视频
  */
 import { FETCH_VIDEO } from '@/config';
-import { OriginVideoInfo, VideoInfo } from '@/types/video';
-import { FetchVideoResponseBody } from '@/types/webRequest';
+import { VideoInfo } from '@/types/video';
+import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import axios from 'axios';
 
 const {
@@ -18,7 +18,7 @@ const {
  * 从 VLOG 区爬取视频数据
  * @param page 页数
  */
-async function fetchVideo(page: number): Promise<OriginVideoInfo[] | null> {
+async function fetchVideo(page: number): Promise<VideoInfo[] | null> {
   const url = `https://s.search.bilibili.com/cate/search?main_ver=v3&search_type=video&view_type=hot_rank&order=click&copy_right=-1&cate_id=21&page=${page}&pagesize=20&keyword=${KEYWORD}`;
   const response = await axios.get<FetchVideoResponseBody>(url);
   if (response.status !== 200) {
@@ -32,7 +32,7 @@ async function fetchVideo(page: number): Promise<OriginVideoInfo[] | null> {
  * 从视频列表里随机选择一个视频，如果列表为空则返回 `null`
  * @param videos 视频列表
  */
-function randomChoose(videos: OriginVideoInfo[]): VideoInfo | null {
+function randomChoose(videos: VideoInfo[]): VideoInfo | null {
   const { length } = videos;
   if (length === 0) {
     return null;
@@ -40,7 +40,6 @@ function randomChoose(videos: OriginVideoInfo[]): VideoInfo | null {
 
   const idx = Math.floor(Math.random() * length);
   const video = videos[idx];
-  delete video.id;
   return video;
 }
 
@@ -48,7 +47,7 @@ function randomChoose(videos: OriginVideoInfo[]): VideoInfo | null {
  * 从视频列表中根据条件筛选视频，如果没有符合条件的视频则返回 `null`
  * @param videos 视频列表
  */
-function chooseAVideo(videos: OriginVideoInfo[]): VideoInfo | null {
+function chooseAVideo(videos: VideoInfo[]): VideoInfo | null {
   const results = videos.filter(
     ({ play, duration }) =>
       Number.parseInt(play, 10) <= AMOUNT_OF_PLAY_UPPER_LIMIT
