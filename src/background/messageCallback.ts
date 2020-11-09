@@ -2,7 +2,7 @@
  * 处理 Content 发来的信息
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
-import { postRecord } from './backend';
+import { recordRequest } from '@/apis';
 import { getRecommendedVideo, recordVideoLocally } from './recordVideo';
 import { getRemainingTime, startTimekeeping } from './timekeeping';
 
@@ -34,7 +34,7 @@ export default function handleMessage(
         sendResponse<'fetchVideo'>(recommendedVideo);
         if (recommendedVideo !== null) {
           startTimekeeping();
-          postRecord(payload.uid, recommendedVideo);
+          recordRequest.postRecord({ uid: payload.uid, bvid: recommendedVideo.bvid });
         }
       }
       break;

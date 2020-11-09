@@ -1,4 +1,4 @@
-/** B 站视频请求返回类型 */
+/** 后端存储的视频数据类型 */
 export interface VideoInfo {
   arcrank: string;
   arcurl: string;
@@ -11,7 +11,6 @@ export interface VideoInfo {
   duration: number;
   /** 收藏数 */
   favorites: number;
-  id: number;
   is_pay: number;
   is_union_video: number;
   mid: number;
@@ -30,3 +29,6 @@ export interface VideoInfo {
   type: string;
   video_review: number;
 }
+
+/** B 站视频请求返回类型 */
+export type OriginVideoInfo = VideoInfo & { id?: number };
