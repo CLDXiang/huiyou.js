@@ -1,4 +1,4 @@
-import { OriginVideoInfo } from './video';
+import { VideoInfo } from './video';
 
 /** “点赞” 请求的请求体 */
 export interface LikeRequestBody {
@@ -37,5 +37,5 @@ export interface FetchVideoResponseBody {
   /** 每页视频数 */
   pagesize: number;
   /** 视频信息 */
-  result: OriginVideoInfo[] | null;
+  result: VideoInfo[] | null;
 }
