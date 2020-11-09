@@ -1,5 +1,4 @@
 /** Content 与 Background 通信的接口类型 */
-import { VideoInfo } from './video';
 
 /** 前端脚本向后端脚本通信的类型 */
 export type MessageType =
@@ -52,10 +51,15 @@ export interface Message<K extends MessageType> {
   payload: MessagePayloadMap[K];
 }
 
-/** 后端脚本给前端脚本的响应 */
+export interface FetchVideoMessageResponse {
+  bvid: string;
+  avid: string;
+}
+
+/** 后端脚本给前端脚本的响应的映射 */
 export interface MessageResponseMap {
   playVideo: undefined;
   pauseVideo: undefined;
-  fetchVideo: VideoInfo | null;
+  fetchVideo: FetchVideoMessageResponse | null;
   synchronizeTime: number | null;
 }
