@@ -1,2 +1,3 @@
 export { default as recordClient } from './record';
-export * from './backendRequest';
+export * as recordRequest from './records';
+export * as videoRequest from './videos';
