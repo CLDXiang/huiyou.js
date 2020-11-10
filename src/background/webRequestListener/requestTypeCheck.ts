@@ -1,33 +1,25 @@
 /* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-function isAvStrArray(aid: any): boolean {
-  return aid && aid.length === 1 && typeof aid[0] === 'string';
-}
+import { BILIBILI_LISTENED_URL } from '@/config';
 
 /**
  * 验证是否为 “点赞” 请求，请求体的类型参照 `@/types/webRequest:LikeRequestBody`
  */
 export function isLikeRequest(details: chrome.webRequest.WebRequestBodyDetails): boolean {
+  if (details.url !== BILIBILI_LISTENED_URL.like) return false;
   if (details.method !== 'POST') return false;
   const formData = details.requestBody?.formData;
   if (!formData) return false;
 
-  const { aid, like } = formData;
-  if (!isAvStrArray(aid)) return false;
-  if (like?.length !== 1 || like[0] !== '1') return false;
-  return true;
+  return formData.like[0] === '1';
 }
 
 /**
  * 验证是否为 “收藏” 请求，请求体的类型参照 `@/types/webRequest:FavoriteRequestBody`
  */
 export function isFavoriteRequest(details: chrome.webRequest.WebRequestBodyDetails): boolean {
+  if (details.url !== BILIBILI_LISTENED_URL.favorite) return false;
   if (details.method !== 'POST') return false;
   const formData = details.requestBody?.formData;
   if (!formData) return false;
-
-  const { rid, add_media_ids } = formData;
-  if (!isAvStrArray(rid)) return false;
-  return Array.isArray(add_media_ids) && typeof add_media_ids[0] === 'string';
+  return formData.add_media_ids.length > 0;
 }

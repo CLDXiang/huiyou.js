@@ -29,10 +29,3 @@ export const FETCH_VIDEO = freeze({
   /** 拉取视频的结束页数 */
   END_PAGE: 390,
 });
-
-/** B 站 API 接口 */
-export const BILI_API = {
-  BASE_URL: 'https://api.bilibili.com/',
-  /** 获取视频基本信息 */
-  VIDEO_INFO_URL: 'x/web-interface/view',
-};
