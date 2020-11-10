@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BILIBILI_LISTENED_URL } from '@/config';
 
 /**
