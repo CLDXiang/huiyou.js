@@ -6,7 +6,7 @@ import { VideoInfo } from '@/types/video';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import axios from 'axios';
 import { FetchVideoMessageResponse } from '@/types/message';
-import { extractAvFromArcurl } from '@/utils/video';
+import { extractAvFromArcurl } from '@/utils/url';
 
 const {
   AMOUNT_OF_PLAY_UPPER_LIMIT,

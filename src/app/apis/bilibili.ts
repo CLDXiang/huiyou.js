@@ -1,6 +1,6 @@
 import { biliRequest } from '@/apis';
 import dayjs, { Dayjs } from 'dayjs';
-import parseUrl from '@/utils/parseUrl';
+import { addProtocolBeforeUrl } from '@/utils/url';
 import { RecordDetailItem } from '../types';
 
 /** 获取视频详细信息  */
@@ -18,10 +18,10 @@ const getVideoInfo: (req: {
       createdAt,
       pubdate: dayjs.unix(rawData.pubdate),
       ctime: dayjs.unix(rawData.ctime),
-      pic: parseUrl(rawData.pic),
+      pic: addProtocolBeforeUrl(rawData.pic),
       owner: {
         ...rawData.owner,
-        face: parseUrl(rawData.owner.face),
+        face: addProtocolBeforeUrl(rawData.owner.face),
       },
       stat: {
         ...rawData.stat,
