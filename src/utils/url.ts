@@ -1,3 +1,8 @@
+/** 若 URL 为 '//' 开头，加上协议 */
+export function addProtocolBeforeUrl(url: string, protocol = 'https'): string {
+  return url?.startsWith('//') ? `${protocol}:${url}` : url;
+}
+
 /**
  * 从视频 url 中提取 av 号
  * @param arcurl 包含 av 号的完整 URL
