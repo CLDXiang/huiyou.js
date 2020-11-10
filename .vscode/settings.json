@@ -5,9 +5,22 @@
     "vue"
   ],
   "cSpell.words": [
+    "VLOG",
+    "arcrank",
+    "arcurl",
+    "badgepay",
     "bili",
     "bilibili",
     "bvid",
-    "danmaku"
+    "csrf",
+    "danmaku",
+    "huiyou",
+    "pubdate",
+    "scripthost",
+    "senddate",
+    "tname",
+    "vupload",
+    "weblink",
+    "xmlhttprequest"
   ],
 }
