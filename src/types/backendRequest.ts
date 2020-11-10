@@ -7,7 +7,7 @@ export interface CreateRecordRequestBody {
 }
 
 /** 从后端获取视频推送记录的请求参数 */
-export type SearchRecordsRequestParam = Partial<{
+export type SearchRecordsRequestParams = Partial<{
   /** 用户 id */
   uid: string;
   /** 视频 BV 号 */
