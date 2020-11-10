@@ -1,4 +1,4 @@
-import { BACKEND, BILI_API } from '@/config';
+import { BACKEND, BILIBILI_DATA_API } from '@/config';
 import axios, { AxiosResponse } from 'axios';
 
 /** 后端 */
@@ -8,7 +8,7 @@ export const backendAxios = axios.create({
 
 /** B 站 API 接口 */
 export const biliAxios = axios.create({
-  baseURL: BILI_API.BASE_URL,
+  baseURL: BILIBILI_DATA_API.BASE_URL,
 });
 
 export type AxiosResponsePromise<T> = Promise<AxiosResponse<T>>;
