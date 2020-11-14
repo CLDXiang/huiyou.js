@@ -6,6 +6,10 @@ export interface RecordItem {
   bvid: string;
   /** 记录创建时间 */
   createdAt: Dayjs;
+  /** 按天分隔首条数据 */
+  isFirst?: boolean;
+  /** 按天分隔最后一条数据 */
+  isLast?: boolean;
 }
 
 /** 包含视频信息的历史记录项 */
