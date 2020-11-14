@@ -28,7 +28,7 @@ export function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
     videoRecord.add(videoInfo.bvid);
     // 预拉取视频
     if (recommendedVideo === null && videoRecord.size >= VIDEO_COUNT_LOWER_LIMIT - 1) {
-      getVideo().then((video) => {
+      getVideo(videoInfo.uid).then((video) => {
         recommendedVideo = video;
       });
     }

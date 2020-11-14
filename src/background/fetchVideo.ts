@@ -6,6 +6,7 @@ import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
 import axios from 'axios';
+import { getNextVideoFromBackend } from './api';
 import { getRecommendedHistory } from './storeRecommendedVideos';
 
 const {
@@ -15,6 +16,10 @@ const {
   START_PAGE,
   VIDEO_DURATION_LOWER_LIMIT,
 } = FETCH_VIDEO;
+
+function shouldGetVideoFromBackend(): boolean {
+  return Math.random() < 0.5;
+}
 
 /**
  * 从 VLOG 区爬取视频数据
@@ -81,7 +86,12 @@ async function getVideoRecursively(
 /**
  * 获取一个视频的信息，成功则返回视频信息，失败返回 `null`
  */
-export default async function getVideo(): Promise<FetchVideoMessageResponse | null> {
+export default async function getVideo(uid: string): Promise<FetchVideoMessageResponse | null> {
+  if (shouldGetVideoFromBackend()) {
+    const video = await getNextVideoFromBackend(uid);
+    if (video !== null) return video;
+  }
+
   const history = await getRecommendedHistory();
   const video = await getVideoRecursively(history, START_PAGE);
   if (video === null) {
