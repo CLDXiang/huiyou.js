@@ -2,7 +2,7 @@
   "name": "huiyou",
   "version": "0.0.1",
   "description": "",
-  "permissions": ["*://*.bilibili.com/*", "tabs", "webRequest"],
+  "permissions": ["*://*.bilibili.com/*", "tabs", "webRequest", "storage"],
   "background": {
     "page": "background.html",
     "persistent": true
