@@ -5,7 +5,6 @@ import { FETCH_VIDEO } from '@/config';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
-import { extractAvFromArcurl } from '@/utils/url';
 import axios from 'axios';
 import { getRecommendedHistory } from './storeRecommendedVideos';
 
@@ -88,7 +87,5 @@ export default async function getVideo(): Promise<FetchVideoMessageResponse | nu
   if (video === null) {
     return null;
   }
-  const aid = extractAvFromArcurl(video.arcurl);
-  if (aid === null) return null;
-  return { bvid: video.bvid, aid };
+  return { bvid: video.bvid };
 }
