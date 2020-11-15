@@ -5,6 +5,7 @@ import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/mess
 import { recordRequest } from '@/apis';
 import { getRecommendedVideo, recordVideoLocally } from './recordVideo';
 import { getRemainingTime, startTimekeeping } from './timekeeping';
+import { addRecommendedHistory } from './storeRecommendedVideos';
 
 export default function handleMessage(
   message: {
@@ -35,6 +36,7 @@ export default function handleMessage(
         if (recommendedVideo !== null) {
           startTimekeeping();
           recordRequest.postRecord({ uid: payload.uid, bvid: recommendedVideo.bvid });
+          addRecommendedHistory(recommendedVideo.bvid);
         }
       }
       break;

@@ -15,7 +15,7 @@ export type MessageType =
 export interface PlayVideoMessagePayload {
   /** 用户 id */
   uid: string;
-  /** 视频 BV 号 */
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
 }
 
@@ -23,7 +23,7 @@ export interface PlayVideoMessagePayload {
 export interface PauseVideoMessagePayload {
   /** 用户 id */
   uid: string;
-  /** 视频 BV 号 */
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
   /** 此视频播放的总时长/秒 */
   playedTime: number;
@@ -52,8 +52,8 @@ export interface Message<K extends MessageType> {
 }
 
 export interface FetchVideoMessageResponse {
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
-  aid: string;
 }
 
 /** 后端脚本给前端脚本的响应的映射 */

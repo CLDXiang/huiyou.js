@@ -2,7 +2,7 @@
 export interface CreateRecordRequestBody {
   /** 用户 id */
   uid: string;
-  /** 视频 BV 号 */
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
 }
 
@@ -18,7 +18,7 @@ export type SearchRecordsRequestParams = Partial<{
 export type SearchRecordsResponseBody = Array<{
   /** 用户 id */
   uid: string;
-  /** 视频 BV 号 */
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
   /** 推送视频的时间 */
   time: number;
@@ -31,15 +31,18 @@ export interface NextRecommendedVideoRequestParam {
 
 /** 从后端获取推荐视频的响应体 */
 export type NextRecommendedVideoResponseBody = null | {
-  /** 视频 BV 号 */
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
 };
+
+/** 交互类型定义 */
+export type VideoEvent = 'longEnough' | 'like' | 'coin' | 'favorite' | 'share';
 
 /** 向后端报告用户与视频的交互行为的请求体 */
 export interface ReportEventsBody {
   /** 交互类型 */
-  event: 'longEnough' | 'like' | 'coin' | 'favorite' | 'share';
-  /** 视频 BV 号 */
+  event: VideoEvent;
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
   /** 视频播放量 */
   play: string;

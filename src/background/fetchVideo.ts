@@ -2,11 +2,12 @@
  * 从 B 站拉取视频
  */
 import { FETCH_VIDEO } from '@/config';
-import { VideoInfo } from '@/types/video';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
-import axios from 'axios';
 import { FetchVideoMessageResponse } from '@/types/message';
-import { extractAvFromArcurl } from '@/utils/url';
+import { VideoInfo } from '@/types/video';
+import axios from 'axios';
+import { getNextVideoFromBackend } from './api';
+import { getRecommendedHistory } from './storeRecommendedVideos';
 
 const {
   AMOUNT_OF_PLAY_UPPER_LIMIT,
@@ -15,6 +16,10 @@ const {
   START_PAGE,
   VIDEO_DURATION_LOWER_LIMIT,
 } = FETCH_VIDEO;
+
+function shouldGetVideoFromBackend(): boolean {
+  return Math.random() < 0.5;
+}
 
 /**
  * 从 VLOG 区爬取视频数据
@@ -49,18 +54,22 @@ function randomChoose(videos: VideoInfo[]): VideoInfo | null {
  * 从视频列表中根据条件筛选视频，如果没有符合条件的视频则返回 `null`
  * @param videos 视频列表
  */
-function chooseAVideo(videos: VideoInfo[]): VideoInfo | null {
+function chooseAVideo(history: Set<string>, videos: VideoInfo[]): VideoInfo | null {
   const results = videos.filter(
-    ({ play, duration }) =>
+    ({ bvid, play, duration }) =>
       Number.parseInt(play, 10) <= AMOUNT_OF_PLAY_UPPER_LIMIT
-      && duration >= VIDEO_DURATION_LOWER_LIMIT,
+      && duration >= VIDEO_DURATION_LOWER_LIMIT
+      && !history.has(bvid),
   );
   return randomChoose(results);
 }
 
-async function getVideoRecursively(page = START_PAGE): Promise<VideoInfo | null> {
+async function getVideoRecursively(
+  history: Set<string>,
+  page = START_PAGE,
+): Promise<VideoInfo | null> {
   const videos = await fetchVideo(page);
-  const chosenVideo = chooseAVideo(videos ?? []);
+  const chosenVideo = chooseAVideo(history, videos ?? []);
   // 在当前页找到符合条件的视频
   if (chosenVideo !== null) {
     return chosenVideo;
@@ -71,18 +80,22 @@ async function getVideoRecursively(page = START_PAGE): Promise<VideoInfo | null>
     return randomChoose(videos ?? []);
   }
 
-  return getVideoRecursively(page - 1);
+  return getVideoRecursively(history, page - 1);
 }
 
 /**
  * 获取一个视频的信息，成功则返回视频信息，失败返回 `null`
  */
-export default async function getVideo(): Promise<FetchVideoMessageResponse | null> {
-  const video = await getVideoRecursively(START_PAGE);
+export default async function getVideo(uid: string): Promise<FetchVideoMessageResponse | null> {
+  if (shouldGetVideoFromBackend()) {
+    const video = await getNextVideoFromBackend(uid);
+    if (video !== null) return video;
+  }
+
+  const history = await getRecommendedHistory();
+  const video = await getVideoRecursively(history, START_PAGE);
   if (video === null) {
     return null;
   }
-  const aid = extractAvFromArcurl(video.arcurl);
-  if (aid === null) return null;
-  return { bvid: video.bvid, aid };
+  return { bvid: video.bvid };
 }
