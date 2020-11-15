@@ -56,8 +56,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .records {
-  width: 80vw;
-  max-width: 1000px;
+  width: 1000px;
   margin: 0 auto;
 }
 
