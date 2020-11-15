@@ -29,11 +29,3 @@ export const FETCH_VIDEO = freeze({
   /** 拉取视频的结束页数 */
   END_PAGE: 390,
 });
-
-/** 后端相关配置 */
-export const BACKEND = freeze({
-  /** 后端接口基础 URL */
-  BASE_URL: 'https://huiyou.fun/api/',
-  /** 上传推荐记录的 URL */
-  POST_RECORD_URL: 'records',
-});

@@ -4,4 +4,23 @@
     "typescript",
     "vue"
   ],
+  "cSpell.words": [
+    "VLOG",
+    "arcrank",
+    "arcurl",
+    "badgepay",
+    "bili",
+    "bilibili",
+    "bvid",
+    "csrf",
+    "danmaku",
+    "huiyou",
+    "pubdate",
+    "scripthost",
+    "senddate",
+    "tname",
+    "vupload",
+    "weblink",
+    "xmlhttprequest"
+  ],
 }
