@@ -35,6 +35,7 @@ export default defineComponent({
     recordsClient.getRecords({ uid: 'zwh' }).then((data) => {
       const records = data.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
       if (records.length > 0) {
+        // 按天分隔，设置当前视频是否为第一条或最后一条
         records[0].isFirst = true;
         records[records.length - 1].isLast = true;
         let currentDay = records[0].createdAt.format('YYYYMMDD');

@@ -16,7 +16,7 @@
       class="img"
       :src="videoInfo.pic"
     >
-    <div :class="'content'+ (isLast?' last':'')">
+    <div class="content" :class="{ last: isLast }">
       <div
         class="title"
       >
