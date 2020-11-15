@@ -32,7 +32,7 @@
         <span>收藏数:{{ videoInfo.stat.favorite }}</span>
         <span>点赞数:{{ videoInfo.stat.like }}</span>
         <span>投币数:{{ videoInfo.stat.coin }}</span>
-        <span>作者:{{ videoInfo.owner.name }}</span>
+        <span>UP主:{{ videoInfo.owner.name }}</span>
       </div>
     </div>
   </div>
