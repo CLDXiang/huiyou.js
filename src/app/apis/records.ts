@@ -10,7 +10,7 @@ const getRecords: (req: {
   const resp = await recordRequest.searchRecords({ uid });
   const parsedData = resp.data.map((item) => ({
     bvid: item.bvid,
-    createdAt: dayjs.unix(item.time),
+    createdAt: dayjs(item.time),
   }));
   return parsedData;
 };
