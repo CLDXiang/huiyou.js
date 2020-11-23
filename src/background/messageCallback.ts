@@ -3,7 +3,7 @@
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
 import { recordRequest } from '@/apis';
-import { getRecommendedVideo, recordVideoLocally } from './recordVideo';
+import { getLastRecommendedVideo, getRecommendedVideo, recordVideoLocally } from './recordVideo';
 import { getRemainingTime, startTimekeeping } from './timekeeping';
 import { addRecommendedHistory } from './storeRecommendedVideos';
 
@@ -40,10 +40,15 @@ export default function handleMessage(
         }
       }
       break;
-    case 'synchronizeTime':
+    case 'synchronize':
       {
-        const remaining = getRemainingTime();
-        sendResponse<'synchronizeTime'>(remaining);
+        const remainingTime = getRemainingTime();
+        const lastRecommendedVideo = getLastRecommendedVideo();
+        if (remainingTime === null || lastRecommendedVideo === null) {
+          sendResponse(null);
+        } else {
+          sendResponse<'synchronize'>({ remainingTime, ...lastRecommendedVideo });
+        }
       }
       break;
     default:
