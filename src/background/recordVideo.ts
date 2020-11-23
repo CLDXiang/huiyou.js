@@ -22,6 +22,7 @@ function shouldRecommendVideo(): boolean {
 }
 
 let recommendedVideo: FetchVideoMessageResponse | null = null;
+let lastRecommendedVideo: FetchVideoMessageResponse | null = null;
 
 export function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
   if (shouldRecordVideo(videoInfo)) {
@@ -39,8 +40,12 @@ export function getRecommendedVideo(): FetchVideoMessageResponse | null {
   if (!shouldRecommendVideo()) {
     return null;
   }
-  const video = recommendedVideo;
+  lastRecommendedVideo = recommendedVideo;
   recommendedVideo = null;
   videoRecord.clear();
-  return video;
+  return lastRecommendedVideo;
+}
+
+export function getLastRecommendedVideo(): FetchVideoMessageResponse | null {
+  return lastRecommendedVideo;
 }
