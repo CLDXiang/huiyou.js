@@ -1,4 +1,4 @@
-import { VideoInfo } from './video';
+import { VideoInfo, VideoShot } from './video';
 
 /** “点赞” 请求的请求体 */
 export interface LikeRequestBody {
@@ -223,4 +223,8 @@ export interface GetVideoInfoResponseBody {
       follower: number;
     }[];
   };
+}
+
+export interface GetVideoShotRequestBody{
+  data: VideoShot
 }

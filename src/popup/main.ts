@@ -1,6 +1,8 @@
 import logger from '@/utils/logger';
 import { MessageResponseMap, Message } from '@/types/message';
+import { VideoShot } from '@/types/video';
 import { modifyRemainingTime, showVideo, initialVideo } from './showVideo';
+import { changeVideoShot } from './videoShot';
 import './popup.less';
 
 logger.log('Link Start!');
@@ -16,13 +18,17 @@ logger.info(`uid: ${uid}`);
 
 // 视频播放
 const media = document.querySelector('video');
+let aid: number | null = null;
+let bvidGet: number | null = null;
+let docUrl = '';
+let imgUrl: VideoShot | null = null;
 export const play = {
   flag: 0,
   times: 0,
 };
 
 // 初始化弹窗并隐藏
-initialVideo();
+const doc = initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
   // 认为可以推送视频的时候
@@ -35,6 +41,7 @@ if (media !== null && uid !== null && bvid !== null) {
   const pauseMessage: Message<'pauseVideo'> = {
     type: 'pauseVideo',
     payload: {
+      uid,
       bvid,
       playedTime: media.currentTime, // 现在简单地认为duration就是播放时长
       totalDuration: media.duration,
@@ -48,14 +55,17 @@ if (media !== null && uid !== null && bvid !== null) {
   /** 监听play变量 */
   const playMessage: Message<'playVideo'> = {
     type: 'playVideo',
-    payload: { bvid },
+    payload: {
+      bvid,
+      uid,
+    },
   };
 
   const pushVideo = () => {
     // 如果打开多tabs的话以当前tab为准
     // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //  chrome.tabs.sendMessage(<number>(tabs[0].id),pushMessage,function(response){
-    chrome.runtime.sendMessage(pushMessage, (response) => {
+    chrome.runtime.sendMessage(pushMessage, async (response) => {
       logger.info('push message sent');
       // logger.info(response);
       if (response !== null) {
@@ -63,7 +73,12 @@ if (media !== null && uid !== null && bvid !== null) {
         if (payload !== null) {
           logger.info('show video');
           logger.info(payload);
-          showVideo(response);
+          bvidGet = response.bvid;
+          if (bvidGet !== null) {
+            aid = await showVideo(bvidGet);
+            docUrl = doc.style.backgroundImage;
+            imgUrl = null;
+          }
         }
       }
     });
@@ -107,5 +122,23 @@ if (media !== null && uid !== null && bvid !== null) {
         modifyRemainingTime(response);
       }
     });
+  });
+  doc.addEventListener('mouseover', (e) => {
+    if (aid !== null) {
+      changeVideoShot(aid, doc, e.screenX, imgUrl);
+    }
+  });
+
+  doc.addEventListener('mousemove', (e) => {
+    if (aid !== null) {
+      changeVideoShot(aid, doc, e.screenX, imgUrl);
+    }
+  });
+
+  doc.addEventListener('mouseleave', () => {
+    doc.style.backgroundImage = `url(${docUrl})`;
+    logger.info(`mouse leave${doc.style.backgroundImage}`);
+    doc.style.backgroundPositionX = '0px';
+    doc.style.backgroundPositionX = '10px';
   });
 }
