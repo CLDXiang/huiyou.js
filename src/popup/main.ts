@@ -1,8 +1,9 @@
 import logger from '@/utils/logger';
 import { MessageResponseMap, Message } from '@/types/message';
-import { VideoShot } from '@/types/video';
-import { modifyRemainingTime, showVideo, initialVideo } from './showVideo';
+import { PlayVideoInfo, VideoShot } from '@/types/video';
+import { showVideo, initialVideo, initialBox } from './showVideo';
 import { changeVideoShot } from './videoShot';
+import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
 import './popup.less';
 
 logger.log('Link Start!');
@@ -19,16 +20,14 @@ logger.info(`uid: ${uid}`);
 // 视频播放
 const media = document.querySelector('video');
 let aid: number | null = null;
-let bvidGet: number | null = null;
+let vid: PlayVideoInfo | null = null;
+let bvidGet: string | null = null;
 let docUrl = '';
 let imgUrl: VideoShot | null = null;
-export const play = {
-  flag: 0,
-  times: 0,
-};
 
 // 初始化弹窗并隐藏
-const doc = initialVideo();
+const box = initialBox();
+const imgBox = initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
   // 认为可以推送视频的时候
@@ -69,16 +68,17 @@ if (media !== null && uid !== null && bvid !== null) {
       logger.info('push message sent');
       // logger.info(response);
       if (response !== null) {
-        const payload = response.payload as MessageResponseMap['fetchVideo'];
-        if (payload !== null) {
-          logger.info('show video');
-          logger.info(payload);
-          bvidGet = response.bvid;
-          if (bvidGet !== null) {
-            aid = await showVideo(bvidGet);
-            docUrl = doc.style.backgroundImage;
-            imgUrl = null;
+        logger.info('show video');
+        bvidGet = response.bvid;
+        if (bvidGet !== null) {
+          vid = await showVideo(bvidGet);
+          if (vid !== null) {
+            docUrl = vid.pic;
+            aid = vid.aid;
           }
+          logger.info(`aid:${aid}`);
+          logger.info(`dddd: ${docUrl}`);
+          imgUrl = null;
         }
       }
     });
@@ -86,8 +86,6 @@ if (media !== null && uid !== null && bvid !== null) {
 
   media.addEventListener('play', () => {
     logger.info('Video Start');
-    play.flag = 1;
-    play.times += 1; // 播放次数 + 1
     // const video = fetchVideo(url);
     logger.info('send play message');
     chrome.runtime.sendMessage(playMessage, (response) => {
@@ -97,7 +95,6 @@ if (media !== null && uid !== null && bvid !== null) {
   // 视频停止
   media.addEventListener('pause', () => {
     logger.info('Video Paused');
-    play.flag = 0;
     // const video = fetchVideo(url);
     pushVideo();
     chrome.runtime.sendMessage(pauseMessage, (response) => {
@@ -111,34 +108,52 @@ if (media !== null && uid !== null && bvid !== null) {
     chrome.runtime.sendMessage(pauseMessage, (response) => {
       logger.info('unload message sent');
       logger.info(response);
+      shutTimeKeeping(box);
     });
   });
-  // 窗口聚焦
+
+  // 失去焦点，需要关闭计时器
+  window.addEventListener('blur', () => {
+    logger.info('window closed');
+    chrome.runtime.sendMessage(pauseMessage, (response) => {
+      logger.info('blur');
+      logger.info(response);
+      shutTimeKeeping(box);
+    });
+  });
+
+  // 窗口聚焦 需要重启计时器
   window.addEventListener('focus', () => {
     logger.info('window focused');
     chrome.runtime.sendMessage(focusMessage, (response) => {
       logger.info('focus message sent', response);
       if (response !== null) {
-        modifyRemainingTime(response);
+        modifyRemainingTime(response, box);
       }
     });
   });
-  doc.addEventListener('mouseover', (e) => {
+
+  imgBox.addEventListener('mouseleave', () => {
+    logger.info(docUrl);
+    imgBox.style.backgroundImage = `url(${docUrl})`;
+    logger.info(`mouse leave${imgBox.style.backgroundImage}`);
+    imgBox.style.backgroundPositionX = '0px';
+    imgBox.style.backgroundPositionY = '10px';
+    imgBox.style.backgroundRepeat = 'no-repeat';
+    imgBox.style.backgroundSize = '100% 100%';
+  });
+
+  imgBox.addEventListener('mouseover', (e) => {
     if (aid !== null) {
-      changeVideoShot(aid, doc, e.screenX, imgUrl);
+      logger.info(`over${e.screenX}`);
+      changeVideoShot(aid, imgBox, e.screenX, imgUrl);
     }
   });
 
-  doc.addEventListener('mousemove', (e) => {
+  imgBox.addEventListener('mousemove', (e) => {
     if (aid !== null) {
-      changeVideoShot(aid, doc, e.screenX, imgUrl);
+      logger.info(`move${e.screenX}`);
+      changeVideoShot(aid, imgBox, e.screenX, imgUrl);
     }
-  });
-
-  doc.addEventListener('mouseleave', () => {
-    doc.style.backgroundImage = `url(${docUrl})`;
-    logger.info(`mouse leave${doc.style.backgroundImage}`);
-    doc.style.backgroundPositionX = '0px';
-    doc.style.backgroundPositionX = '10px';
   });
 }
