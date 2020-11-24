@@ -3,7 +3,7 @@ import logger from '@/utils/logger';
 import { TIMEKEEPING } from './config';
 
 const { DURATION } = TIMEKEEPING;
-let expiration: number | null = null;
+let timerId = 0;
 
 function offVideo(popupBox: HTMLDivElement) {
   if (popupBox !== null) {
@@ -18,28 +18,26 @@ function onVideo(popupBox: HTMLDivElement) {
 }
 
 export function shutTimeKeeping(popupBox: HTMLDivElement) {
-  expiration = null;
+  if (timerId > 0) {
+    clearTimeout(timerId);
+  }
   offVideo(popupBox);
 }
 
 export function startTimekeeping(popupBox: HTMLDivElement) {
-  expiration = +new Date() + DURATION;
-  setTimeout(() => {
+  timerId = setTimeout(() => {
     // TODO
     shutTimeKeeping(popupBox);
   }, DURATION);
 }
 
 function start2Timekeeping(popupBox: HTMLDivElement, time: number) {
-  expiration = +new Date() + DURATION;
-  setTimeout(() => {
+  timerId = setTimeout(() => {
     shutTimeKeeping(popupBox);
   }, time);
 }
 export function modifyRemainingTime(time: number, popupBox: HTMLDivElement) {
-  logger.info(`before${expiration}`);
   if (time !== null) {
-    expiration = time;
     onVideo(popupBox);
     start2Timekeeping(popupBox, time); // 重新记时
   } else {

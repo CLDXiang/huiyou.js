@@ -48,6 +48,11 @@ export type GetVideoInfoParams = Partial<{
   bvid: string;
 }>;
 
+/** 获取 B 站视频预览的请求参数 */
+export type GetVideoShotParams = Partial<{
+  aid: number;
+}>;
+
 /** 获取 B 站视频信息的返回体 */
 export interface GetVideoInfoResponseBody {
   /** 数据体 */
@@ -225,6 +230,7 @@ export interface GetVideoInfoResponseBody {
   };
 }
 
+/** 获取 B 站视频信息的返回体 */
 export interface GetVideoShotRequestBody{
   data: VideoShot
 }

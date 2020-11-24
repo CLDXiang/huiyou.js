@@ -1,28 +1,43 @@
+/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable no-param-reassign */
-import axios from 'axios';
+// import axios from 'axios';
 import { VideoShot } from '@/types/video';
 import logger from '@/utils/logger';
-import { GetVideoShotRequestBody } from '@/types/bilibiliApiRequest';
-import { BILIBILI_DATA_API } from '@/config/bilibiliApi';
+import { biliRequest } from '@/apis';
 
-async function fetchShot(aid: number):Promise<VideoShot | null> {
-  const url = BILIBILI_DATA_API.BASE_URL + BILIBILI_DATA_API.VIDEO_SHOT_URL;
-  const response = await axios.get<GetVideoShotRequestBody>(`${url}?index=1&aid=${aid}`);
-  if (response.status !== 200) {
-    return null;
+/** 获取视频详细信息  */
+const GetVideoShot: (req: {
+  aid: number;
+}) => Promise<VideoShot | null> = async ({ aid }) => {
+  const resp = await biliRequest.getVideoShot({ aid });
+  const rawData = resp.data.data;
+  if (rawData) {
+    const parsedData: VideoShot = {
+      ...rawData,
+      pvdata: rawData.pvdata,
+      img_x_len: rawData.img_x_len,
+      img_y_len: rawData.img_y_len,
+      img_x_size: rawData.img_x_size,
+      img_y_size: rawData.img_y_size,
+      image: rawData.image,
+      index: rawData.index,
+    };
+    return parsedData;
   }
-  const { data } = response;
-  logger.info(data);
-  if (data.data === null) {
-    return data.data;
-  } return data.data;
-}
+  throw new Error('No Resp Data');
+};
+
+const biliClient = {
+  GetVideoShot,
+};
+
 // eslint-disable-next-line max-len
 export async function changeVideoShot(aid: number, videoPic: HTMLDivElement, x: number, videoInfo: VideoShot | null) {
   const picX = videoPic.getBoundingClientRect().left;
   const picWidth = videoPic.clientWidth;
   if (videoInfo === null) {
-    videoInfo = await fetchShot(aid);
+    // videoInfo = await fetchShot(aid);
+    videoInfo = await biliClient.GetVideoShot({ aid });
   }
   if (videoInfo !== null && videoInfo.image.length !== 0) {
     const idx = Math.round(((x - picX) / picWidth) * videoInfo.index.length);

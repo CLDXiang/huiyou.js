@@ -1,5 +1,5 @@
 import logger from '@/utils/logger';
-import { MessageResponseMap, Message } from '@/types/message';
+import { Message } from '@/types/message';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import { showVideo, initialVideo, initialBox } from './showVideo';
 import { changeVideoShot } from './videoShot';

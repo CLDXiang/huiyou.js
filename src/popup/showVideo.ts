@@ -2,7 +2,6 @@ import axios from 'axios';
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { getVideoInfo } from '@/apis/bilibili';
-import { GetVideoInfoResponseBody } from '@/types/bilibiliApiRequest';
 import { addClass } from './utils';
 import { startTimekeeping } from './timeKeeper';
 
