@@ -1,7 +1,6 @@
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { getVideoInfo } from '@/apis/bilibili';
-import { CSSProperties } from 'vue';
 import { addClass, addStyle } from './utils';
 import { startTimekeeping } from './timeKeeper';
 
@@ -23,7 +22,9 @@ export function initialVideo() {
   titleIcon.src = 'img/guanbi-1.svg';
   titleBox.appendChild(title);
   videoImg = document.createElement('div');
-  addStyle(videoImg, 'backgroundImage: ' as CSSProperties);
+  addStyle(videoImg, {
+    backgroundImage: '',
+  });
   // videoImg.style.backgroundImage = '';
   addClass(titleBox, 'huiyou-title-box');
   addClass(title, 'huiyou-title');
@@ -41,7 +42,9 @@ export function initialBox() {
   const { body } = document;
   logger.info('init popup-box');
   popupBox = document.createElement('div');
-  addStyle(popupBox, 'visibility: hidden' as CSSProperties);
+  addStyle(popupBox, {
+    visibility: 'hidden',
+  });
   body.appendChild(popupBox);
   addClass(popupBox, 'huiyou-popup-box');
   return popupBox;
@@ -52,16 +55,18 @@ export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
   if (video !== null) {
     if (popupBox !== null && videoImg !== null && title !== null) {
       startTimekeeping(popupBox);
-      addStyle(popupBox, 'visibility: visible' as CSSProperties);
+      addStyle(popupBox, { visibility: 'visible' });
       if (title.firstChild !== null) {
         title.removeChild(title.firstChild); // 删除原来的节点
       }
       titleStr = document.createTextNode(video.title);
       title.appendChild(titleStr);
       title.setAttribute('href', `https://www.bilibili.com/video/${video.bvid}`);
-      addStyle(videoImg, `backgroundImage: url(${video.pic}` as CSSProperties);
-      addStyle(videoImg, 'backgroundRepeat: no-repeat' as CSSProperties);
-      addStyle(videoImg, 'backgroundSize: 100% 100%' as CSSProperties);
+      addStyle(videoImg, {
+        backgroundImage: ` url(${video.pic}`,
+        backgroundSize: '100% 100%',
+        backgroundRepeat: 'no-repeat',
+      });
     }
   }
   if (video !== null) {

@@ -1,6 +1,4 @@
 /* eslint-disable no-param-reassign */
-// import axios from 'axios';
-import { CSSProperties } from 'vue';
 import { VideoShot } from '@/types/video';
 import { biliClient } from './bilibiliApi';
 import { addStyle } from './utils';
@@ -16,8 +14,10 @@ export async function changeVideoShot(aid: number, videoPic: HTMLDivElement, x: 
   if (videoInfo !== null && videoInfo.image.length !== 0) {
     const idx = Math.round(((x - picX) / picWidth) * videoInfo.index.length);
     const picIdx = Math.round(idx / videoInfo.img_x_len / videoInfo.img_y_len);
-    addStyle(videoPic, `backgroundImage: url(${videoInfo.image[picIdx]}@85q.jpg` as CSSProperties);
-    addStyle(videoPic, `backgroundPositionX: ${0 - 168 * (idx - (idx % videoInfo.img_x_len) * videoInfo.img_x_len)}px` as CSSProperties);
-    addStyle(videoPic, `backgroundPositionY: ${10 - 84.5 * (idx % videoInfo.img_x_len)}$px` as CSSProperties);
+    addStyle(videoPic, {
+      backgroundImage: `url(${videoInfo.image[picIdx]}@85q.jpg`,
+      backgroundPositionX: `${0 - 168 * (idx - (idx % videoInfo.img_x_len) * videoInfo.img_x_len)}px`,
+      backgroundPositionY: `${10 - 84.5 * (idx % videoInfo.img_x_len)}$px`,
+    });
   }
 }
