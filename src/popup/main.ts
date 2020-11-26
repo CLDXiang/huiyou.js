@@ -88,7 +88,7 @@ if (media !== null && uid !== null && bvid !== null) {
     logger.info('Video Start');
     // const video = fetchVideo(url);
     logger.info('send play message');
-    chrome.runtime.sendMessage(playMessage, (response) => {
+    chrome.runtime.sendMessage(playMessage, () => {
       logger.info('play message sent');
     });
   });
@@ -97,7 +97,7 @@ if (media !== null && uid !== null && bvid !== null) {
     logger.info('Video Paused');
     // const video = fetchVideo(url);
     pushVideo();
-    chrome.runtime.sendMessage(pauseMessage, (response) => {
+    chrome.runtime.sendMessage(pauseMessage, () => {
       logger.info('pause message sent');
     });
   });

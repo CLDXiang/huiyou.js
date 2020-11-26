@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
-import logger from '@/utils/logger';
+import { CSSProperties } from 'vue';
+import { addStyle } from './utils';
 import { TIMEKEEPING } from './config';
 
 const { DURATION } = TIMEKEEPING;
@@ -7,13 +8,13 @@ let timerId = 0;
 
 function offVideo(popupBox: HTMLDivElement) {
   if (popupBox !== null) {
-    popupBox.style.visibility = 'hidden';
+    addStyle(popupBox, 'visibility: hidden' as CSSProperties);
   }
 }
 
 function onVideo(popupBox: HTMLDivElement) {
   if (popupBox !== null) {
-    popupBox.style.visibility = 'visible';
+    addStyle(popupBox, 'visibility: visible' as CSSProperties);
   }
 }
 
