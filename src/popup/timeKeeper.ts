@@ -8,13 +8,13 @@ let timerId = 0;
 
 function offVideo(popupBox: HTMLDivElement) {
   if (popupBox !== null) {
-    addStyle(popupBox, 'visibility: hidden' as CSSProperties);
+    addStyle(popupBox, { visibility: 'hidden' });
   }
 }
 
 function onVideo(popupBox: HTMLDivElement) {
   if (popupBox !== null) {
-    addStyle(popupBox, 'visibility: visible' as CSSProperties);
+    addStyle(popupBox, { visibility: 'visible' });
   }
 }
 
