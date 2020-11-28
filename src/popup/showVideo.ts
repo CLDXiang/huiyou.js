@@ -19,7 +19,7 @@ export function initialVideo() {
   titleStr = document.createTextNode('');
   title.appendChild(titleStr);
   const titleIcon = document.createElement('img');
-  titleIcon.src = 'img/guanbi-1.svg';
+  titleIcon.src = chrome.extension.getURL('/img/guanbi-1.svg');
   titleBox.appendChild(title);
   videoImg = document.createElement('div');
   addStyle(videoImg, {
@@ -52,6 +52,7 @@ export function initialBox() {
 export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
   let video: PlayVideoInfo | null = null;
   video = await getVideoInfo({ bvid }).then((data) => data.data.data);
+  logger.info(`video: ${video?.bvid}`);
   if (video !== null) {
     if (popupBox !== null && videoImg !== null && title !== null) {
       startTimekeeping(popupBox);
