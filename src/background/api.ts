@@ -1,15 +1,16 @@
-import { getVideoInfo } from '@/apis/bilibili';
-import { getNextRecommendedVideo } from '@/apis/videos';
+import { biliRequest, recordRequest, videoRequest } from '@/apis';
 import { FetchVideoMessageResponse } from '@/types/message';
+import logger from '@/utils/logger';
 
 interface BvidAndPlay {
   bvid: string;
   play: string;
 }
 
+/** 根据 av 号获取 bv 号和播放量 */
 export async function getBvidAndPlay(aid: string): Promise<BvidAndPlay | null> {
   try {
-    const response = await getVideoInfo({ aid });
+    const response = await biliRequest.getVideoInfo({ aid });
     if (response.status === 200) {
       const { data } = response.data;
       return {
@@ -19,15 +20,17 @@ export async function getBvidAndPlay(aid: string): Promise<BvidAndPlay | null> {
     }
     return null;
   } catch (error) {
+    // TODO: 错误日志
     return null;
   }
 }
 
+/** 从后端获取推荐的视频 */
 export async function getNextVideoFromBackend(
   uid: string,
 ): Promise<FetchVideoMessageResponse | null> {
   try {
-    const response = await getNextRecommendedVideo({ uid });
+    const response = await videoRequest.getNextRecommendedVideo({ uid });
     if (response.status === 200) {
       const bvid = response.data?.bvid;
       if (bvid !== undefined) {
@@ -37,6 +40,16 @@ export async function getNextVideoFromBackend(
 
     return null;
   } catch (error) {
+    logger.error(`Error: Can't get video from backend - ${error}`);
     return null;
+  }
+}
+
+/** 向后端报告推送的视频 */
+export async function postRecord(uid: string, bvid: string) {
+  try {
+    recordRequest.postRecord({ uid, bvid });
+  } catch (error) {
+    logger.error(`Error: Can't post records to backend - ${error}`);
   }
 }
