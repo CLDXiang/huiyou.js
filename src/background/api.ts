@@ -1,4 +1,5 @@
 import { biliRequest, recordRequest, videoRequest } from '@/apis';
+import { ReportEventsBody } from '@/types/backendRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
 import logger from '@/utils/logger';
 
@@ -51,5 +52,13 @@ export async function postRecord(uid: string, bvid: string) {
     await recordRequest.postRecord({ uid, bvid });
   } catch (error) {
     logger.error(`Error: Can't post records to backend - ${error}`);
+  }
+}
+
+export async function reportEvents(body: ReportEventsBody) {
+  try {
+    await videoRequest.reportEvents(body);
+  } catch (error) {
+    logger.error(`Error: Can't report events to backend - ${error}`);
   }
 }
