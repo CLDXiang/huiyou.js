@@ -3,6 +3,9 @@ const DEBUG_MODE = process.env.VUE_APP_DEBUG;
 module.exports = {
   chainWebpack: (config) => {
     config.optimization.splitChunks(false);
+    const svgRule = config.module.rule('svg');
+    svgRule.uses.clear();
+    svgRule.use('url-loader').loader('url-loader');
   },
   configureWebpack: {
     devtool: DEBUG_MODE ? 'inline-source-map' : 'source-map',
