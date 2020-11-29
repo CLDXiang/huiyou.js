@@ -48,6 +48,21 @@ export type GetVideoInfoParams = Partial<{
   bvid: string;
 }>;
 
+/** 获取 B 站视频预览的请求参数 */
+export type GetVideoShotParams = Partial<{
+  /** av 号 */
+  aid?: number;
+  /** bv 号 */
+  bvid?: string;
+  /** 分 P CID，默认 1 */
+  cid?: number;
+  /** json 数组截取时间表
+   * 1: 需要
+   * 2: 不需要（默认）
+   */
+  index?: number;
+}>;
+
 /** 获取 B 站视频信息的返回体 */
 export interface GetVideoInfoResponseBody {
   /** 数据体 */
@@ -222,5 +237,27 @@ export interface GetVideoInfoResponseBody {
       /** 成员粉丝数 */
       follower: number;
     }[];
+  };
+}
+
+/** 获取 B 站视频信息的返回体 */
+export interface GetVideoShotResponseBody{
+  /** 返回值
+   * 0: 成功
+   * 40001: 请求错误
+   * 40003: 无此视频
+   */
+  code: number;
+  /** 错误信息 */
+  message: string;
+  ttl: number;
+  data: {
+    pvdata?: string;
+    img_x_len?: number;
+    img_y_len?: number;
+    img_x_size?: number;
+    img_y_size?: number;
+    image?: string[];
+    index: number[];
   };
 }

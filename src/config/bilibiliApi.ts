@@ -6,6 +6,8 @@ export const BILIBILI_DATA_API = {
   BASE_URL: 'https://api.bilibili.com/',
   /** 获取视频基本信息 */
   VIDEO_INFO_URL: 'x/web-interface/view',
+  /** 获取视频预览信息 */
+  VIDEO_SHOT_URL: 'x/player/videoshot',
 };
 
 /** 监听用户行为的 B 站 URL */
