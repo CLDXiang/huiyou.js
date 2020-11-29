@@ -48,7 +48,7 @@ export async function getNextVideoFromBackend(
 /** 向后端报告推送的视频 */
 export async function postRecord(uid: string, bvid: string) {
   try {
-    recordRequest.postRecord({ uid, bvid });
+    await recordRequest.postRecord({ uid, bvid });
   } catch (error) {
     logger.error(`Error: Can't post records to backend - ${error}`);
   }

@@ -9,8 +9,8 @@ import { backendAxios, AxiosResponsePromise } from './utils';
 const { VIDEO_URL } = BACKEND;
 
 /** 向后端报告点赞投币等事件 */
-export function reportEvents(body: ReportEventsBody) {
-  backendAxios.patch(VIDEO_URL, body);
+export async function reportEvents(body: ReportEventsBody) {
+  await backendAxios.patch(VIDEO_URL, body);
 }
 
 /** 从推荐链获取下一个推荐的视频 */
