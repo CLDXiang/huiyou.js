@@ -3,6 +3,7 @@ import { PlayVideoInfo, VideoShot } from '@/types/video';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import './popup.less';
+import { throttle } from 'lodash';
 import { initialBox, initialVideo, showVideo } from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
 import { changeVideoShot } from './videoShot';
@@ -132,17 +133,17 @@ if (media !== null && uid !== null && bvid !== null) {
     imgBox.style.backgroundSize = '100% 100%';
   });
 
-  imgBox.addEventListener('mouseover', (e) => {
+  imgBox.addEventListener('mouseover', throttle((e) => {
     if (aid !== null) {
       logger.log(`over${e.screenX}`);
       changeVideoShot(aid, imgBox, e.screenX, imgUrl);
     }
-  });
+  }, 500));
 
-  imgBox.addEventListener('mousemove', (e) => {
+  imgBox.addEventListener('mousemove', throttle((e) => {
     if (aid !== null) {
       logger.log(`move${e.screenX}`);
       changeVideoShot(aid, imgBox, e.screenX, imgUrl);
     }
-  });
+  }, 500));
 }
