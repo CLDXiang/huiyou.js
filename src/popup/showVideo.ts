@@ -1,6 +1,6 @@
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
-import { getVideoInfo } from '@/apis/bilibili';
+import { biliClient } from './apis';
 import { addClass, addStyle } from './utils';
 import { startTimekeeping } from './timeKeeper';
 
@@ -50,8 +50,7 @@ export function initialBox() {
   return popupBox;
 }
 export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
-  let video: PlayVideoInfo | null = null;
-  video = await getVideoInfo({ bvid }).then((data) => data.data.data);
+  const video = await biliClient.getVideoInfo(bvid);
   logger.info(`video: ${video?.bvid}`);
   if (video !== null) {
     if (popupBox !== null && videoImg !== null && title !== null) {

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { VideoShot } from '@/types/video';
+import { PlayVideoInfo, VideoShot } from '@/types/video';
 import { biliRequest } from '@/apis';
 
-const GetVideoShot: (req: {
+export const GetVideoShot: (req: {
   aid: number;
 }) => Promise<VideoShot | null> = async ({ aid }) => {
   const resp = await biliRequest.getVideoShot({ aid });
@@ -22,6 +22,11 @@ const GetVideoShot: (req: {
   throw new Error('No Resp Data');
 };
 
-export const biliClient = {
-  GetVideoShot,
-};
+export async function getVideoInfo(bvid: string): Promise<PlayVideoInfo | null> {
+  try {
+    const response = await biliRequest.getVideoInfo({ bvid });
+    return response.data.data;
+  } catch (error) {
+    return null;
+  }
+}

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { VideoShot } from '@/types/video';
-import { biliClient } from './apis/bilibili';
+import { biliClient } from './apis';
 import { addStyle } from './utils';
 
 export async function changeVideoShot(
