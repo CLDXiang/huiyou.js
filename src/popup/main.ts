@@ -6,6 +6,7 @@ import './popup.less';
 import { initialBox, initialVideo, showVideo } from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
 import { changeVideoShot } from './videoShot';
+import { VideoProgress } from './videoProgress';
 
 logger.log('DEBUG_MODE enabled!');
 
@@ -26,12 +27,15 @@ let bvidGet: string | null = null;
 let docUrl = '';
 let imgUrl: VideoShot | null = null;
 
+/** 视频进度监测器 */
+const videoProgress = new VideoProgress();
+
 // 初始化弹窗并隐藏
 const box = initialBox();
 const imgBox = initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
-  const payloads: MessagePayloadMap = {
+  const getPayloads = (): MessagePayloadMap => ({
     playVideo: {
       bvid,
       uid,
@@ -39,20 +43,20 @@ if (media !== null && uid !== null && bvid !== null) {
     pauseVideo: {
       uid,
       bvid,
-      playedTime: media.currentTime, // 现在简单地认为duration就是播放时长
-      totalDuration: media.duration,
+      playedTime: videoProgress.playedTime,
+      totalDuration: videoProgress.duration,
     },
     fetchVideo: {
       uid,
     },
     synchronize: undefined,
-  };
+  });
 
   const pushVideo = () => {
     // 如果打开多tabs的话以当前tab为准
     // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //  chrome.tabs.sendMessage(<number>(tabs[0].id),pushMessage,function(response){
-    sendMessage('fetchVideo', payloads.fetchVideo, async (response) => {
+    sendMessage('fetchVideo', getPayloads().fetchVideo, async (response) => {
       logger.log('push message sent');
       // logger.log(response);
       if (response !== null) {
@@ -75,7 +79,7 @@ if (media !== null && uid !== null && bvid !== null) {
   media.addEventListener('play', () => {
     logger.log('Video Start');
     logger.log('send play message');
-    sendMessage('playVideo', payloads.playVideo, () => {
+    sendMessage('playVideo', getPayloads().playVideo, () => {
       logger.log('play message sent');
     });
   });
@@ -84,7 +88,7 @@ if (media !== null && uid !== null && bvid !== null) {
     logger.log('Video Paused');
     // const video = fetchVideo(url);
     pushVideo();
-    sendMessage('pauseVideo', payloads.pauseVideo, () => {
+    sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
       logger.log('pause message sent');
     });
   });
@@ -92,7 +96,7 @@ if (media !== null && uid !== null && bvid !== null) {
   // 关闭窗口（视频停止）
   window.addEventListener('beforeunload', () => {
     logger.log('window closed');
-    sendMessage('pauseVideo', payloads.pauseVideo, () => {
+    sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
       logger.log('unload message sent');
       shutTimeKeeping(box);
     });
@@ -101,7 +105,7 @@ if (media !== null && uid !== null && bvid !== null) {
   // 失去焦点，需要关闭计时器
   window.addEventListener('blur', () => {
     logger.log('window closed');
-    sendMessage('pauseVideo', payloads.pauseVideo, () => {
+    sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
       logger.log('blur');
       shutTimeKeeping(box);
     });
@@ -110,7 +114,7 @@ if (media !== null && uid !== null && bvid !== null) {
   // 窗口聚焦 需要重启计时器
   window.addEventListener('focus', () => {
     logger.log('window focused');
-    sendMessage('synchronize', payloads.synchronize, (response) => {
+    sendMessage('synchronize', getPayloads().synchronize, (response) => {
       logger.log('focus message sent', response);
       if (response !== null) {
         modifyRemainingTime(response.remainingTime, box);
