@@ -1,5 +1,5 @@
+import { TIMEKEEPING } from '@/config';
 import { addStyle } from './utils';
-import { TIMEKEEPING } from './config';
 
 const { DURATION } = TIMEKEEPING;
 let timerId = 0;
