@@ -2,10 +2,10 @@
  * 处理 Content 发来的信息
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
-import { recordRequest } from '@/apis';
+import { postRecord } from './api';
 import { getLastRecommendedVideo, getRecommendedVideo, recordVideoLocally } from './recordVideo';
-import { getRemainingTime, startTimekeeping } from './timekeeping';
 import { addRecommendedHistory } from './storeRecommendedVideos';
+import { getRemainingTime, startTimekeeping } from './timekeeping';
 
 export default function handleMessage(
   message: {
@@ -35,7 +35,7 @@ export default function handleMessage(
         sendResponse<'fetchVideo'>(recommendedVideo);
         if (recommendedVideo !== null) {
           startTimekeeping();
-          recordRequest.postRecord({ uid: payload.uid, bvid: recommendedVideo.bvid });
+          postRecord(payload.uid, recommendedVideo.bvid);
           addRecommendedHistory(recommendedVideo.bvid);
         }
       }
