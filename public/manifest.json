@@ -17,7 +17,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.bilibili.com/*"],
-      "js": ["js/chunk-vendors.js", "js/popup.js"],
+      "js": ["js/popup.js"],
       "css": ["css/popup.css"]
     }
   ],

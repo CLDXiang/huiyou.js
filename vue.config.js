@@ -1,18 +1,12 @@
-module.exports = {
-  // chainWebpack: (config) => {
-  // config.optimization.minimize(false);
-  // config.entryPoints.delete('app');
+const DEBUG_MODE = process.env.VUE_APP_DEBUG;
 
-  // config.entry('app')
-  //   .add('./src/app/main.ts')
-  //   .end();
-  //   .entry('popup')
-  //   .add('./src/popup/main.ts')
-  //   .end()
-  //   .entry('background')
-  //   .add('./src/background/main.ts')
-  //   .end();
-  // },
+module.exports = {
+  chainWebpack: (config) => {
+    config.optimization.splitChunks(false);
+  },
+  configureWebpack: {
+    devtool: DEBUG_MODE ? 'inline-source-map' : 'source-map',
+  },
   css: {
     loaderOptions: {
       less: {
@@ -29,9 +23,15 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html',
       title: '洄游',
-      chunks: ['chunk-vendors', 'chunk-common', 'app'],
+      chunks: ['app'],
     },
-    popup: 'src/popup/main.ts',
-    background: 'src/background/main.ts',
+    popup: {
+      entry: 'src/popup/main.ts',
+      chunks: ['popup'],
+    },
+    background: {
+      entry: 'src/background/main.ts',
+      chunks: ['background'],
+    },
   },
 };
