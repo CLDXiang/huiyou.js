@@ -2,7 +2,8 @@
   "eslint.nodePath": "../node_modules",
   "eslint.validate": [
     "typescript",
-    "vue"
+    "vue",
+    "javascript",
   ],
   "cSpell.words": [
     "VLOG",
@@ -23,4 +24,8 @@
     "weblink",
     "xmlhttprequest"
   ],
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
 }

@@ -38,7 +38,7 @@ export function initialVideo() {
 
 export function initialBox() {
   const { body } = document;
-  logger.info('init popup-box');
+  logger.log('init popup-box');
   popupBox = document.createElement('div');
   addStyle(popupBox, {
     visibility: 'hidden',
@@ -50,7 +50,7 @@ export function initialBox() {
 
 export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
   const video = await biliClient.getVideoInfo(bvid);
-  logger.info(`video: ${video?.bvid}`);
+  logger.log(`video: ${video?.bvid}`);
   if (video !== null) {
     if (popupBox !== null && videoImg !== null && title !== null) {
       startTimekeeping(popupBox);
