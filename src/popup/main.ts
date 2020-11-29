@@ -1,7 +1,8 @@
-import { Message } from '@/types/message';
+import { MessagePayloadMap } from '@/types/message';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import { DEBUG_MODE } from '@/utils/config';
 import logger from '@/utils/logger';
+import { sendMessage } from '@/utils/message';
 import './popup.less';
 import { initialBox, initialVideo, showVideo } from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
@@ -13,11 +14,11 @@ if (DEBUG_MODE) {
 
 /** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
 const bvidArr = window.location.href.match(/BV(.{10})/);
-const bvid = (bvidArr && bvidArr.length && bvidArr[1]) || null;
+const bvid = bvidArr?.[1] ?? null;
 logger.info(`bvid: ${bvid}`);
 
 const uidArr = document.cookie.match(/DedeUserID=([\d]+);/);
-const uid = (uidArr && uidArr.length && uidArr[1]) || null;
+const uid = uidArr?.[1] ?? null;
 logger.info(`uid: ${uid}`);
 
 // 视频播放
@@ -33,41 +34,28 @@ const box = initialBox();
 const imgBox = initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
-  // 认为可以推送视频的时候
-  const pushMessage: Message<'fetchVideo'> = {
-    type: 'fetchVideo',
-    payload: {
+  const payloads: MessagePayloadMap = {
+    playVideo: {
+      bvid,
       uid,
     },
-  };
-  const pauseMessage: Message<'pauseVideo'> = {
-    type: 'pauseVideo',
-    payload: {
+    pauseVideo: {
       uid,
       bvid,
       playedTime: media.currentTime, // 现在简单地认为duration就是播放时长
       totalDuration: media.duration,
     },
-  };
-
-  const focusMessage: Message<'synchronizeTime'> = {
-    type: 'synchronizeTime',
-    payload: undefined,
-  };
-  /** 监听play变量 */
-  const playMessage: Message<'playVideo'> = {
-    type: 'playVideo',
-    payload: {
-      bvid,
+    fetchVideo: {
       uid,
     },
+    synchronize: undefined,
   };
 
   const pushVideo = () => {
     // 如果打开多tabs的话以当前tab为准
     // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //  chrome.tabs.sendMessage(<number>(tabs[0].id),pushMessage,function(response){
-    chrome.runtime.sendMessage(pushMessage, async (response) => {
+    sendMessage('fetchVideo', payloads.fetchVideo, async (response) => {
       logger.info('push message sent');
       // logger.info(response);
       if (response !== null) {
@@ -89,9 +77,8 @@ if (media !== null && uid !== null && bvid !== null) {
 
   media.addEventListener('play', () => {
     logger.info('Video Start');
-    // const video = fetchVideo(url);
     logger.info('send play message');
-    chrome.runtime.sendMessage(playMessage, () => {
+    sendMessage('playVideo', payloads.playVideo, () => {
       logger.info('play message sent');
     });
   });
@@ -100,7 +87,7 @@ if (media !== null && uid !== null && bvid !== null) {
     logger.info('Video Paused');
     // const video = fetchVideo(url);
     pushVideo();
-    chrome.runtime.sendMessage(pauseMessage, () => {
+    sendMessage('pauseVideo', payloads.pauseVideo, () => {
       logger.info('pause message sent');
     });
   });
@@ -108,9 +95,8 @@ if (media !== null && uid !== null && bvid !== null) {
   // 关闭窗口（视频停止）
   window.addEventListener('beforeunload', () => {
     logger.info('window closed');
-    chrome.runtime.sendMessage(pauseMessage, (response) => {
+    sendMessage('pauseVideo', payloads.pauseVideo, () => {
       logger.info('unload message sent');
-      logger.info(response);
       shutTimeKeeping(box);
     });
   });
@@ -118,9 +104,8 @@ if (media !== null && uid !== null && bvid !== null) {
   // 失去焦点，需要关闭计时器
   window.addEventListener('blur', () => {
     logger.info('window closed');
-    chrome.runtime.sendMessage(pauseMessage, (response) => {
+    sendMessage('pauseVideo', payloads.pauseVideo, () => {
       logger.info('blur');
-      logger.info(response);
       shutTimeKeeping(box);
     });
   });
@@ -128,10 +113,10 @@ if (media !== null && uid !== null && bvid !== null) {
   // 窗口聚焦 需要重启计时器
   window.addEventListener('focus', () => {
     logger.info('window focused');
-    chrome.runtime.sendMessage(focusMessage, (response) => {
+    sendMessage('synchronize', payloads.synchronize, (response) => {
       logger.info('focus message sent', response);
       if (response !== null) {
-        modifyRemainingTime(response, box);
+        modifyRemainingTime(response.remainingTime, box);
       }
     });
   });
