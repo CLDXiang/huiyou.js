@@ -48,7 +48,7 @@ if (media !== null && uid !== null && bvid !== null) {
     fetchVideo: {
       uid,
     },
-    synchronizeTime: undefined,
+    synchronize: undefined,
   };
 
   const pushVideo = () => {
@@ -113,10 +113,10 @@ if (media !== null && uid !== null && bvid !== null) {
   // 窗口聚焦 需要重启计时器
   window.addEventListener('focus', () => {
     logger.info('window focused');
-    sendMessage('synchronizeTime', payloads.synchronizeTime, (response) => {
+    sendMessage('synchronize', payloads.synchronize, (response) => {
       logger.info('focus message sent', response);
       if (response !== null) {
-        modifyRemainingTime(response, box);
+        modifyRemainingTime(response.remainingTime, box);
       }
     });
   });
