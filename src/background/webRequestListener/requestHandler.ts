@@ -1,7 +1,6 @@
-import { reportEvents } from '@/apis/videos';
 import { VideoEvent } from '@/types/backendRequest';
 import { FavoriteRequestBody, LikeRequestBody } from '@/types/bilibiliApiRequest';
-import { getBvidAndPlay } from '../api';
+import { getBvidAndPlay, reportEvents } from '../api';
 import { isFavoriteRequest, isLikeRequest } from './requestTypeCheck';
 
 export const requestFilter: chrome.webRequest.RequestFilter = {
