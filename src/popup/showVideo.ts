@@ -3,6 +3,7 @@ import logger from '@/utils/logger';
 import { biliClient } from './apis';
 import { startTimekeeping } from './timeKeeper';
 import { addClass, addStyle } from './utils';
+import closeIcon from './guanbi-1.svg';
 
 let popupBox: HTMLDivElement | null = null;
 let titleBox: HTMLDivElement | null = null;
@@ -17,7 +18,8 @@ export function initialVideo() {
   titleStr = document.createTextNode('');
   title.appendChild(titleStr);
   const titleIcon = document.createElement('img');
-  titleIcon.src = chrome.extension.getURL('/img/guanbi-1.svg');
+  titleIcon.src = closeIcon;
+  titleIcon.width = 20;
   titleBox.appendChild(title);
   videoImg = document.createElement('div');
   addStyle(videoImg, {
