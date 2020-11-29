@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-import { CSSProperties } from 'vue';
 import { addStyle } from './utils';
 import { TIMEKEEPING } from './config';
 
@@ -27,7 +25,6 @@ export function shutTimeKeeping(popupBox: HTMLDivElement) {
 
 export function startTimekeeping(popupBox: HTMLDivElement) {
   timerId = setTimeout(() => {
-    // TODO
     shutTimeKeeping(popupBox);
   }, DURATION);
 }

@@ -9,12 +9,11 @@ const GetVideoShot: (req: {
   const rawData = resp.data.data;
   if (rawData) {
     const parsedData: VideoShot = {
-      ...rawData,
       pvdata: rawData.pvdata,
-      img_x_len: rawData.img_x_len,
-      img_y_len: rawData.img_y_len,
-      img_x_size: rawData.img_x_size,
-      img_y_size: rawData.img_y_size,
+      imgXLen: rawData.img_x_len,
+      imgYLen: rawData.img_y_len,
+      imgXSize: rawData.img_x_size,
+      imgYSize: rawData.img_y_size,
       image: rawData.image,
       index: rawData.index,
     };

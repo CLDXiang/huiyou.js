@@ -1,3 +1,5 @@
+import { DEBUG_MODE } from '@/utils/config';
+
 const { freeze } = Object;
 
 /** 计时模块常量 */
@@ -6,14 +8,15 @@ export const TIMEKEEPING = freeze({
   DURATION: 7000,
 });
 
+// TODO: 测试用数据
 /** 视频记录模块常量 */
 export const RECORD_VIDEO = freeze({
   /** 视频时长上限/秒 */
   DURATION_UPPER_LIMIT: 60 * 15,
   /** 视频播放比例下限 */
-  PLAYED_TIME_PROPORTION_LOWER_LIMIT: 0,
+  PLAYED_TIME_PROPORTION_LOWER_LIMIT: DEBUG_MODE ? 0 : 1 / 3,
   /** 视频记录个数下限 */
-  VIDEO_COUNT_LOWER_LIMIT: 1,
+  VIDEO_COUNT_LOWER_LIMIT: DEBUG_MODE ? 1 : 5,
 });
 
 /** 拉取视频模块常量 */

@@ -1,12 +1,15 @@
 import logger from '@/utils/logger';
 import { Message } from '@/types/message';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
+import { DEBUG_MODE } from '@/utils/config';
 import { showVideo, initialVideo, initialBox } from './showVideo';
 import { changeVideoShot } from './videoShot';
 import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
 import './popup.less';
 
-logger.log('Link Start!');
+if (DEBUG_MODE) {
+  logger.info('DEBUG_MODE enabled!');
+}
 
 /** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
 const bvidArr = window.location.href.match(/BV(.{10})/);

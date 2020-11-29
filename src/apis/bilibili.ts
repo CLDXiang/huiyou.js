@@ -3,7 +3,7 @@ import {
   GetVideoInfoParams,
   GetVideoInfoResponseBody,
   GetVideoShotParams,
-  GetVideoShotRequestBody,
+  GetVideoShotResponseBody,
 } from '@/types/bilibiliApiRequest';
 import { biliAxios, AxiosResponsePromise } from './utils';
 
@@ -18,6 +18,6 @@ export function getVideoInfo(
 
 export function getVideoShot(
   params: GetVideoShotParams,
-): AxiosResponsePromise<GetVideoShotRequestBody> {
-  return biliAxios.get<GetVideoShotRequestBody>(VIDEO_INFO_URL, { params });
+): AxiosResponsePromise<GetVideoShotResponseBody> {
+  return biliAxios.get<GetVideoShotResponseBody>(VIDEO_INFO_URL, { params });
 }

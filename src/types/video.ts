@@ -204,12 +204,12 @@ export interface PlayVideoInfo {
   }[];
 }
 
-export interface VideoShot{
-  pvdata: string;
-  img_x_len: number;
-  img_y_len: number;
-  img_x_size: number;
-  img_y_size: number;
-  image: string[];
+export interface VideoShot {
+  pvdata?: string;
+  imgXLen?: number;
+  imgYLen?: number;
+  imgXSize?: number;
+  imgYSize?: number;
+  image?: string[];
   index: number[];
 }
