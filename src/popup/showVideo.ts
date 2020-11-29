@@ -1,16 +1,14 @@
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { biliClient } from './apis';
-import { addClass, addStyle } from './utils';
 import { startTimekeeping } from './timeKeeper';
+import { addClass, addStyle } from './utils';
 
 let popupBox: HTMLDivElement | null = null;
 let titleBox: HTMLDivElement | null = null;
 let videoImg: HTMLDivElement | null = null;
 let title: HTMLAnchorElement | null = null;
 let titleStr: Text | null = null;
-
-// let showVideo: VideoInfo | null = null;
 
 export function initialVideo() {
   titleBox = document.createElement('div');
@@ -49,6 +47,7 @@ export function initialBox() {
   addClass(popupBox, 'huiyou-popup-box');
   return popupBox;
 }
+
 export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
   const video = await biliClient.getVideoInfo(bvid);
   logger.info(`video: ${video?.bvid}`);
@@ -69,7 +68,6 @@ export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
       });
     }
   }
-  if (video !== null) {
-    return video;
-  } return null;
+
+  return video;
 }

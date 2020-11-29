@@ -1,11 +1,11 @@
-import logger from '@/utils/logger';
 import { Message } from '@/types/message';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import { DEBUG_MODE } from '@/utils/config';
-import { showVideo, initialVideo, initialBox } from './showVideo';
-import { changeVideoShot } from './videoShot';
-import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
+import logger from '@/utils/logger';
 import './popup.less';
+import { initialBox, initialVideo, showVideo } from './showVideo';
+import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
+import { changeVideoShot } from './videoShot';
 
 if (DEBUG_MODE) {
   logger.info('DEBUG_MODE enabled!');

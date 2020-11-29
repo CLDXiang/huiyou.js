@@ -2,9 +2,7 @@
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import { biliRequest } from '@/apis';
 
-export const GetVideoShot: (req: {
-  aid: number;
-}) => Promise<VideoShot | null> = async ({ aid }) => {
+export async function GetVideoShot(aid: number): Promise<VideoShot | null> {
   const resp = await biliRequest.getVideoShot({ aid });
   const rawData = resp.data.data;
   if (rawData) {
@@ -20,7 +18,7 @@ export const GetVideoShot: (req: {
     return parsedData;
   }
   throw new Error('No Resp Data');
-};
+}
 
 export async function getVideoInfo(bvid: string): Promise<PlayVideoInfo | null> {
   try {

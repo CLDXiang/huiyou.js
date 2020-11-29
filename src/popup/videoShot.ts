@@ -10,7 +10,7 @@ export async function changeVideoShot(
   const picWidth = videoPic.clientWidth;
   if (videoInfo === null) {
     // videoInfo = await fetchShot(aid);
-    videoInfo = await biliClient.GetVideoShot({ aid });
+    videoInfo = await biliClient.GetVideoShot(aid);
   }
   if (videoInfo !== null) {
     const { imgXLen, imgYLen, image } = videoInfo;
