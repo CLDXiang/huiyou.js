@@ -8,7 +8,6 @@ export const TIMEKEEPING = freeze({
   DURATION: 7000,
 });
 
-// TODO: 测试用数据
 /** 视频记录模块常量 */
 export const RECORD_VIDEO = freeze({
   /** 视频时长上限/秒 */

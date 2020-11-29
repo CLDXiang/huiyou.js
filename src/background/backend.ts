@@ -10,7 +10,7 @@ const backend = axios.create({
 });
 
 export function postRecord(uid: string, video: VideoInfo) {
-  logger.info('post backend video');
-  logger.info(video);
+  logger.log('post backend video');
+  logger.log(video);
   backend.post(RECORD_URL, { uid, ...video });
 }

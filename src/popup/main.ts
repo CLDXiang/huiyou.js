@@ -1,25 +1,23 @@
 import { MessagePayloadMap } from '@/types/message';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
-import { DEBUG_MODE } from '@/utils/config';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import './popup.less';
 import { initialBox, initialVideo, showVideo } from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
 import { changeVideoShot } from './videoShot';
+import { VideoProgress } from './videoProgress';
 
-if (DEBUG_MODE) {
-  logger.info('DEBUG_MODE enabled!');
-}
+logger.log('DEBUG_MODE enabled!');
 
 /** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
 const bvidArr = window.location.href.match(/BV(.{10})/);
 const bvid = bvidArr?.[1] ?? null;
-logger.info(`bvid: ${bvid}`);
+logger.log(`bvid: ${bvid}`);
 
 const uidArr = document.cookie.match(/DedeUserID=([\d]+);/);
 const uid = uidArr?.[1] ?? null;
-logger.info(`uid: ${uid}`);
+logger.log(`uid: ${uid}`);
 
 // 视频播放
 const media = document.querySelector('video');
@@ -29,12 +27,15 @@ let bvidGet: string | null = null;
 let docUrl = '';
 let imgUrl: VideoShot | null = null;
 
+/** 视频进度监测器 */
+const videoProgress = new VideoProgress();
+
 // 初始化弹窗并隐藏
 const box = initialBox();
 const imgBox = initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
-  const payloads: MessagePayloadMap = {
+  const getPayloads = (): MessagePayloadMap => ({
     playVideo: {
       bvid,
       uid,
@@ -42,24 +43,24 @@ if (media !== null && uid !== null && bvid !== null) {
     pauseVideo: {
       uid,
       bvid,
-      playedTime: media.currentTime, // 现在简单地认为duration就是播放时长
-      totalDuration: media.duration,
+      playedTime: videoProgress.playedTime,
+      totalDuration: videoProgress.duration,
     },
     fetchVideo: {
       uid,
     },
     synchronize: undefined,
-  };
+  });
 
   const pushVideo = () => {
     // 如果打开多tabs的话以当前tab为准
     // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     //  chrome.tabs.sendMessage(<number>(tabs[0].id),pushMessage,function(response){
-    sendMessage('fetchVideo', payloads.fetchVideo, async (response) => {
-      logger.info('push message sent');
-      // logger.info(response);
+    sendMessage('fetchVideo', getPayloads().fetchVideo, async (response) => {
+      logger.log('push message sent');
+      // logger.log(response);
       if (response !== null) {
-        logger.info('show video');
+        logger.log('show video');
         bvidGet = response.bvid;
         if (bvidGet !== null) {
           vid = await showVideo(bvidGet);
@@ -67,8 +68,8 @@ if (media !== null && uid !== null && bvid !== null) {
             docUrl = vid.pic;
             aid = vid.aid;
           }
-          logger.info(`aid:${aid}`);
-          logger.info(`dddd: ${docUrl}`);
+          logger.log(`aid:${aid}`);
+          logger.log(`dddd: ${docUrl}`);
           imgUrl = null;
         }
       }
@@ -76,45 +77,45 @@ if (media !== null && uid !== null && bvid !== null) {
   };
 
   media.addEventListener('play', () => {
-    logger.info('Video Start');
-    logger.info('send play message');
-    sendMessage('playVideo', payloads.playVideo, () => {
-      logger.info('play message sent');
+    logger.log('Video Start');
+    logger.log('send play message');
+    sendMessage('playVideo', getPayloads().playVideo, () => {
+      logger.log('play message sent');
     });
   });
   // 视频停止
   media.addEventListener('pause', () => {
-    logger.info('Video Paused');
+    logger.log('Video Paused');
     // const video = fetchVideo(url);
     pushVideo();
-    sendMessage('pauseVideo', payloads.pauseVideo, () => {
-      logger.info('pause message sent');
+    sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
+      logger.log('pause message sent');
     });
   });
 
   // 关闭窗口（视频停止）
   window.addEventListener('beforeunload', () => {
-    logger.info('window closed');
-    sendMessage('pauseVideo', payloads.pauseVideo, () => {
-      logger.info('unload message sent');
+    logger.log('window closed');
+    sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
+      logger.log('unload message sent');
       shutTimeKeeping(box);
     });
   });
 
   // 失去焦点，需要关闭计时器
   window.addEventListener('blur', () => {
-    logger.info('window closed');
-    sendMessage('pauseVideo', payloads.pauseVideo, () => {
-      logger.info('blur');
+    logger.log('window closed');
+    sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
+      logger.log('blur');
       shutTimeKeeping(box);
     });
   });
 
   // 窗口聚焦 需要重启计时器
   window.addEventListener('focus', () => {
-    logger.info('window focused');
-    sendMessage('synchronize', payloads.synchronize, (response) => {
-      logger.info('focus message sent', response);
+    logger.log('window focused');
+    sendMessage('synchronize', getPayloads().synchronize, (response) => {
+      logger.log('focus message sent', response);
       if (response !== null) {
         modifyRemainingTime(response.remainingTime, box);
       }
@@ -122,9 +123,9 @@ if (media !== null && uid !== null && bvid !== null) {
   });
 
   imgBox.addEventListener('mouseleave', () => {
-    logger.info(docUrl);
+    logger.log(docUrl);
     imgBox.style.backgroundImage = `url(${docUrl})`;
-    logger.info(`mouse leave${imgBox.style.backgroundImage}`);
+    logger.log(`mouse leave${imgBox.style.backgroundImage}`);
     imgBox.style.backgroundPositionX = '0px';
     imgBox.style.backgroundPositionY = '10px';
     imgBox.style.backgroundRepeat = 'no-repeat';
@@ -133,14 +134,14 @@ if (media !== null && uid !== null && bvid !== null) {
 
   imgBox.addEventListener('mouseover', (e) => {
     if (aid !== null) {
-      logger.info(`over${e.screenX}`);
+      logger.log(`over${e.screenX}`);
       changeVideoShot(aid, imgBox, e.screenX, imgUrl);
     }
   });
 
   imgBox.addEventListener('mousemove', (e) => {
     if (aid !== null) {
-      logger.info(`move${e.screenX}`);
+      logger.log(`move${e.screenX}`);
       changeVideoShot(aid, imgBox, e.screenX, imgUrl);
     }
   });
