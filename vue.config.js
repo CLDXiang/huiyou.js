@@ -21,10 +21,17 @@ module.exports = {
   },
   filenameHashing: false,
   pages: {
-    app: {
+    options: {
       entry: 'src/main',
       template: 'public/index.html',
-      filename: 'index.html',
+      filename: 'options.html',
+      title: '洄游：自定义配置',
+      chunks: ['options'],
+    },
+    app: {
+      entry: 'src/app/main',
+      template: 'public/index.html',
+      filename: 'app.html',
       title: '洄游',
       chunks: ['app'],
     },

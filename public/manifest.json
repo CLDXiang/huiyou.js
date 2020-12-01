@@ -21,5 +21,6 @@
       "css": ["css/popup.css"]
     }
   ],
+  "options_page": "options.html",
   "manifest_version": 2
 }
