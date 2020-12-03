@@ -16,12 +16,6 @@ export default function handleMessage(
   sendResponse: <K extends MessageType>(response: MessageResponseMap[K]) => void,
 ) {
   switch (message.type) {
-    case 'playVideo':
-      {
-        const payload = message.payload as MessagePayloadMap['playVideo'];
-        // TODO: 处理 playVideo 事件
-      }
-      break;
     case 'pauseVideo':
       {
         const payload = message.payload as MessagePayloadMap['pauseVideo'];

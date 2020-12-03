@@ -38,10 +38,6 @@ const imgBox = initialVideo();
 
 if (media !== null && uid !== null && bvid !== null) {
   const getPayloads = (): MessagePayloadMap => ({
-    playVideo: {
-      bvid,
-      uid,
-    },
     pauseVideo: {
       bvid,
       playedTime: videoProgress.playedTime,
@@ -75,13 +71,6 @@ if (media !== null && uid !== null && bvid !== null) {
     });
   };
 
-  media.addEventListener('play', () => {
-    logger.log('Video Start');
-    logger.log('send play message');
-    sendMessage('playVideo', getPayloads().playVideo, () => {
-      logger.log('play message sent');
-    });
-  });
   // 视频停止
   media.addEventListener('pause', () => {
     logger.log('Video Paused');
