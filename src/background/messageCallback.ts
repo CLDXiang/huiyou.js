@@ -2,7 +2,7 @@
  * 处理 Content 发来的信息
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
-import { postRecord } from './utils';
+import { postRecord } from './api';
 import { getLastRecommendedVideo, getRecommendedVideo, recordVideoLocally } from './recordVideo';
 import { addRecommendedHistory } from './storeRecommendedVideos';
 import { getRemainingTime, startTimekeeping } from './timekeeping';
