@@ -43,14 +43,11 @@ if (media !== null && uid !== null && bvid !== null) {
       uid,
     },
     pauseVideo: {
-      uid,
       bvid,
       playedTime: videoProgress.playedTime,
       totalDuration: videoProgress.duration,
     },
-    fetchVideo: {
-      uid,
-    },
+    fetchVideo: undefined,
     synchronize: undefined,
   });
 

@@ -21,8 +21,6 @@ export interface PlayVideoMessagePayload {
 
 /** 视频停止播放时的消息 */
 export interface PauseVideoMessagePayload {
-  /** 用户 id */
-  uid: string;
   /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
   /** 此视频播放的总时长/秒 */
@@ -31,17 +29,11 @@ export interface PauseVideoMessagePayload {
   totalDuration: number;
 }
 
-/** 要求推送视频时的消息 */
-export interface FetchVideoMessagePayload {
-  /** 用户 id */
-  uid: string;
-}
-
 /** 前端脚本向后端脚本通信的类型与内容的映射 */
 export interface MessagePayloadMap {
   playVideo: PlayVideoMessagePayload;
   pauseVideo: PauseVideoMessagePayload;
-  fetchVideo: FetchVideoMessagePayload;
+  fetchVideo: undefined;
   synchronize: undefined;
 }
 
