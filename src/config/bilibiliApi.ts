@@ -17,3 +17,9 @@ export const BILIBILI_LISTENED_URL = freeze({
   /** 收藏请求的 URL */
   favorite: 'https://api.bilibili.com/x/v3/fav/resource/deal',
 });
+
+/** cookie 相关配置 */
+export const BILIBILI_COOKIES = freeze({
+  URL: 'https://www.bilibili.com',
+  UID_NAME: 'DedeUserID',
+});
