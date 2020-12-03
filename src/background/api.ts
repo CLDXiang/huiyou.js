@@ -1,6 +1,7 @@
 import { biliRequest, recordRequest, videoRequest } from '@/apis';
 import { ReportEventsBody } from '@/types/backendRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
+import { getUid } from '@/utils/cookies';
 import logger from '@/utils/logger';
 
 interface BvidAndPlay {
@@ -47,11 +48,14 @@ export async function getNextVideoFromBackend(
 }
 
 /** 向后端报告推送的视频 */
-export async function postRecord(uid: string, bvid: string) {
-  try {
-    await recordRequest.postRecord({ uid, bvid });
-  } catch (error) {
-    logger.error(`Error: Can't post records to backend - ${error}`);
+export async function postRecord(bvid: string) {
+  const uid = await getUid();
+  if (uid !== null) {
+    try {
+      await recordRequest.postRecord({ uid, bvid });
+    } catch (error) {
+      logger.error(`Error: Can't post records to backend - ${error}`);
+    }
   }
 }
 
