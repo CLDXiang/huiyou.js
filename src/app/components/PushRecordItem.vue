@@ -10,29 +10,37 @@
       {{ createdAt.format('MM月DD日') }}
     </div>
     <div class="time">
-      <div class="arrow" />{{ createdAt.format('YYYY-MM-DD') }}
+      <div class="arrow" />
+      {{ createdAt.format('YYYY-MM-DD') }}
     </div>
     <img
       class="img"
       :src="videoInfo.pic"
     >
-    <div class="content" :class="{ last: isLast }">
+    <div
+      class="content"
+      :class="{ last: isLast }"
+    >
       <div
         class="title"
       >
         {{ videoInfo.title }}
       </div>
-      <div style="flex: 1">
-        <div class="desc">
-          {{ videoInfo.desc }}
+      <div class="info__wrap">
+        <div class="info__left">
+          <div class="desc">
+            {{ videoInfo.desc }}
+          </div>
         </div>
-      </div>
-      <div class="info">
-        <span>播放量:{{ videoInfo.stat.view }}</span>
-        <span>收藏数:{{ videoInfo.stat.favorite }}</span>
-        <span>点赞数:{{ videoInfo.stat.like }}</span>
-        <span>投币数:{{ videoInfo.stat.coin }}</span>
-        <span>UP主:{{ videoInfo.owner.name }}</span>
+        <div class="info__right">
+          <span>UP主:{{ videoInfo.owner.name }}</span>
+          <div class="info__other">
+            <span><i class="view" />{{ videoInfo.stat.view }}</span>
+            <span><i class="coin" />{{ videoInfo.stat.coin }}</span>
+            <span style="margin-right: 0"><i class="like" />{{ videoInfo.stat.like }}</span>
+            <span><i class="favorite" />{{ videoInfo.stat.favorite }}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -116,102 +124,160 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-  @item-height:140px;
+@item-height: 140px;
 
-  .wrap {
-    position: relative;
-    display: flex;
-    height: @item-height;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 8px;
-    &:hover {
-      background: #eee;
-    }
-    transition: background 0.3s ease-in-out;
-    .time__tag{
+.wrap {
+  position: relative;
+  display: flex;
+  height: @item-height;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+
+  &:hover {
+    background: #eee;
+  }
+
+  transition: background 0.3s ease-in-out;
+
+  .time__tag {
+    position: absolute;
+    left: -100px;
+    top: 24px;
+    background: #58b3e6;
+    color: white;
+    font-size: 13px;
+    padding: 8px;
+
+    &::before {
+      content: ' ';
       position: absolute;
-      left: -100px;
-      top:24px;
-      background: #58b3e6;
-      color: white;
-      font-size: 13px;
-      padding: 8px;
-      &::before{
-        content: ' ';
-        position: absolute;
-        right:-20px;
-        width: 0;
-        height: 0;
-        border: 10px solid;
-        border-color: transparent transparent transparent #58b3e6;
-      }
+      right: -20px;
+      width: 0;
+      height: 0;
+      border: 10px solid;
+      border-color: transparent transparent transparent #58b3e6;
+    }
+  }
+
+  .time {
+    line-height: @item-height;
+    padding: 0 36px;
+    color: #99a2aa;
+    border-left: 1px solid #e5e9ef;
+    position: relative;
+
+    .arrow {
+      position: absolute;
+      left: 0;
+      top: calc(@item-height / 2 - 6px);
+      width: 0;
+      height: 0;
+      border: 6px solid;
+      border-color: transparent transparent transparent #e5e9ef;
+    }
+  }
+
+  .img {
+    width: 160px;
+    background: gray;
+    border-radius: 4px;
+    margin: 16px 0;
+  }
+
+  .content {
+    flex: 1;
+    padding: 16px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &.last {
+      border-bottom: 2px dashed #58b3e6;
     }
 
-    .time{
-      line-height: @item-height;
-      padding: 0 36px;
-      color: #99a2aa;
-      border-left: 1px solid #e5e9ef;
-      position: relative;
-      .arrow{
-        position: absolute;
-        left: 0;
-        top:calc(@item-height/2 - 6px);
-        width: 0;
-        height: 0;
-        border: 6px solid;
-        border-color: transparent transparent transparent #e5e9ef;
-      }
+    .title {
+      font-size: 15px;
+      font-weight: bold;
+      color: black;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      word-break: break-all;
     }
 
-    .img {
-      width: 160px;
-      background: gray;
-      border-radius: 4px;
-      margin: 16px 0;
-    }
-
-    .content {
+    .info__wrap {
       flex: 1;
-      padding: 16px 32px;
-      display: flex;
-      flex-direction: column;
-      &.last{
-        border-bottom: 2px dashed #58b3e6;
+
+      .info__left {
+        margin-right: 190px;
+
+        .desc {
+          margin-top: 10px;
+          height: 40px;
+          font-size: 13px;
+          ext-overflow: -o-ellipsis-lastline;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
       }
-      .title {
-        font-size: 15px;
-        font-weight: bold;
-        color: black;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-all;
-      }
-      .desc{
-        margin-top: 10px;
-        height: 40px;
+
+      .info__right {
         font-size: 13px;
-        ext-overflow: -o-ellipsis-lastline;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-      .info {
-        font-size: 14px;
-        display: flex;
-        flex-direction: row;
-        gap: 24px;
-        .item{
-          margin-left: 100px;
+        width: 190px;
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        &>span:first-child{
+          margin-left: 16px;
         }
 
+        .info__other {
+          display: flex;
+          flex-direction: row;
+          span{
+            margin-right: 8px;
+          }
+          i{
+            width: 24px;
+            height: 24px;
+            vertical-align: -6px;
+            display: inline-block;
+            background-image: url("../../assets/icons.png");
+            background-repeat: no-repeat;
+          }
+          .view{
+            background-position-x: -648px;
+            background-position-y: -1300px;
+            width: 36px;
+            height: 36px;
+            transform: scale(0.75);
+            vertical-align: -17px;
+          }
+          .coin{
+            background-position-x: -724px;
+            background-position-y: -2003px;
+          }
+          .like{
+            background-position-x: -722px;
+            background-position-y: -2194px;
+          }
+          .favorite{
+            width: 36px;
+            height: 36px;
+            transform: scale(0.75);
+            background-position-x: -715px;
+            background-position-y: -403px;
+            vertical-align: -17px;
+          }
+        }
       }
     }
   }
+}
 </style>
