@@ -137,14 +137,14 @@ if (media !== null && uid !== null && bvid !== null) {
   imgBox.addEventListener('mouseover', throttle((e) => {
     if (aid !== null) {
       logger.log(`over${e.screenX}`);
-      changeVideoShot(aid, imgBox, e.screenX, imgUrl);
+      changeVideoShot(aid, imgBox, e.screenX);
     }
   }, POPUP.MOUSE_EVENT_THROTTLE_TIME));
 
   imgBox.addEventListener('mousemove', throttle((e) => {
     if (aid !== null) {
       logger.log(`move${e.screenX}`);
-      changeVideoShot(aid, imgBox, e.screenX, imgUrl);
+      changeVideoShot(aid, imgBox, e.screenX);
     }
   }, POPUP.MOUSE_EVENT_THROTTLE_TIME));
 }

@@ -3,8 +3,9 @@ import { VideoShot } from '@/types/video';
 import { biliClient } from './apis';
 import { addStyle } from './utils';
 
+let videoInfo: VideoShot | null = null;
 export async function changeVideoShot(
-  aid: number, videoPic: HTMLDivElement, x: number, videoInfo: VideoShot | null,
+  aid: number, videoPic: HTMLDivElement, x: number,
 ) {
   const picX = videoPic.getBoundingClientRect().left;
   const picWidth = videoPic.clientWidth;
