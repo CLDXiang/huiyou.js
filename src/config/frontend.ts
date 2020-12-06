@@ -8,12 +8,6 @@ export const TIMEKEEPING = freeze({
   DURATION: DEBUG_MODE ? 70000 : 7000,
 });
 
-/** 与弹窗相关的常量 */
-export const POPUP = freeze({
-  /** 鼠标事件节流时间/毫秒 */
-  MOUSE_EVENT_THROTTLE_TIME: 500,
-});
-
 /** 视频记录模块常量 */
 export const RECORD_VIDEO = freeze({
   /** 视频时长上限/秒 */

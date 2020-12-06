@@ -18,17 +18,17 @@ export async function changeVideoShot(
     vidAid = aid;
   }
   if (videoInfo !== null) {
-    logger.info('video info not null', aid, '  local:', vidAid);
+    logger.log('video info not null', aid, '  local:', vidAid);
     const {
       imgXLen, imgYLen, image, imgXSize, imgYSize,
     } = videoInfo;
-    logger.info(videoInfo);
+    logger.log(videoInfo);
     if (!imgXLen || !imgYLen || !image || !image.length || !imgXSize || !imgYSize) {
       return;
     }
     let idx = 0;
     if (videoInfo.index.length === 0) {
-      logger.info('len 0');
+      logger.log('len 0');
       idx = Math.round(((x - picX) / picWidth) * imgXLen);
     } else {
       idx = Math.round(((x - picX) / picWidth) * videoInfo.index.length);
@@ -41,8 +41,8 @@ export async function changeVideoShot(
       backgroundPositionX: `${0 - 141 * (idx - Math.floor(idx / imgXLen) * imgXLen)}px`,
       backgroundPositionY: `${10 - 79.3125 * Math.floor((idx / imgXLen))}px`,
     });
-    logger.info('add style');
-    logger.info(`y: ${Math.floor((idx / imgXLen))} x: ${(idx - Math.floor(idx / imgXLen) * imgXLen)} $X: ${0 - 168 * (idx - (idx % imgXLen) * imgXLen)}px Y:${10 - 84.5 * (idx % imgXLen)}px`);
-    logger.info(`X: ${videoPic.style.backgroundPositionX} Y: ${videoPic.style.backgroundPositionY}`);
+    logger.log('add style');
+    logger.log(`y: ${Math.floor((idx / imgXLen))} x: ${(idx - Math.floor(idx / imgXLen) * imgXLen)} $X: ${0 - 168 * (idx - (idx % imgXLen) * imgXLen)}px Y:${10 - 84.5 * (idx % imgXLen)}px`);
+    logger.log(`X: ${videoPic.style.backgroundPositionX} Y: ${videoPic.style.backgroundPositionY}`);
   }
 }
