@@ -5,7 +5,7 @@ const { freeze } = Object;
 /** 计时模块常量 */
 export const TIMEKEEPING = freeze({
   /** 计时时长/ms */
-  DURATION: 7000,
+  DURATION: DEBUG_MODE ? 70000 : 7000,
 });
 
 /** 与弹窗相关的常量 */
