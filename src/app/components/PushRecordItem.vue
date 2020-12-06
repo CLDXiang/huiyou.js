@@ -11,7 +11,7 @@
     </div>
     <div class="time">
       <div class="arrow" />
-      {{ createdAt.format('YYYY-MM-DD') }}
+      {{ createdAt.format('YYYY.MM.DD') }}
     </div>
     <img
       class="img"
@@ -210,9 +210,10 @@ export default defineComponent({
       flex: 1;
 
       .info__left {
-        margin-right: 190px;
+        margin-right: 200px;
 
         .desc {
+          color: #99a2aa;
           margin-top: 10px;
           height: 40px;
           font-size: 13px;
@@ -229,10 +230,11 @@ export default defineComponent({
 
       .info__right {
         font-size: 13px;
-        width: 190px;
         position: absolute;
         right: 16px;
         bottom: 16px;
+        color: #99a2aa;
+
         &>span:first-child{
           margin-left: 16px;
         }
@@ -273,7 +275,7 @@ export default defineComponent({
             transform: scale(0.75);
             background-position-x: -715px;
             background-position-y: -403px;
-            vertical-align: -17px;
+            vertical-align: -18px;
           }
         }
       }
