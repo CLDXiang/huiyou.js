@@ -2,8 +2,6 @@
 
 /** 前端脚本向后端脚本通信的类型 */
 export type MessageType =
-  /** 播放视频 */
-  | 'playVideo'
   /** 停止播放视频 */
   | 'pauseVideo'
   /** 给出推荐视频 */
@@ -11,18 +9,8 @@ export type MessageType =
   /** 同步推荐信息的倒计时 */
   | 'synchronize';
 
-/** 视频开始播放时的消息 */
-export interface PlayVideoMessagePayload {
-  /** 用户 id */
-  uid: string;
-  /** 视频 BV 号，以 `BV` 开头 */
-  bvid: string;
-}
-
 /** 视频停止播放时的消息 */
 export interface PauseVideoMessagePayload {
-  /** 用户 id */
-  uid: string;
   /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
   /** 此视频播放的总时长/秒 */
@@ -31,17 +19,10 @@ export interface PauseVideoMessagePayload {
   totalDuration: number;
 }
 
-/** 要求推送视频时的消息 */
-export interface FetchVideoMessagePayload {
-  /** 用户 id */
-  uid: string;
-}
-
 /** 前端脚本向后端脚本通信的类型与内容的映射 */
 export interface MessagePayloadMap {
-  playVideo: PlayVideoMessagePayload;
   pauseVideo: PauseVideoMessagePayload;
-  fetchVideo: FetchVideoMessagePayload;
+  fetchVideo: undefined;
   synchronize: undefined;
 }
 
@@ -62,7 +43,6 @@ export interface SynchronizeResponse extends FetchVideoMessageResponse {
 
 /** 后端脚本给前端脚本的响应的映射 */
 export interface MessageResponseMap {
-  playVideo: undefined;
   pauseVideo: undefined;
   fetchVideo: FetchVideoMessageResponse | null;
   synchronize: SynchronizeResponse | null;

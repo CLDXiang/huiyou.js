@@ -1,5 +1,6 @@
 import { RECORD_VIDEO } from '@/config';
 import { FetchVideoMessageResponse, PauseVideoMessagePayload } from '@/types/message';
+import { getUid } from '@/utils/cookies';
 import getVideo from './fetchVideo';
 
 const {
@@ -24,14 +25,16 @@ function shouldRecommendVideo(): boolean {
 let recommendedVideo: FetchVideoMessageResponse | null = null;
 let lastRecommendedVideo: FetchVideoMessageResponse | null = null;
 
-export function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
+export async function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
   if (shouldRecordVideo(videoInfo)) {
     videoRecord.add(videoInfo.bvid);
     // 预拉取视频
     if (recommendedVideo === null && videoRecord.size >= VIDEO_COUNT_LOWER_LIMIT - 1) {
-      getVideo(videoInfo.uid).then((video) => {
+      const uid = await getUid();
+      if (uid !== null) {
+        const video = await getVideo(uid);
         recommendedVideo = video;
-      });
+      }
     }
   }
 }

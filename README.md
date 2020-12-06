@@ -34,8 +34,24 @@ yarn build
 
 ### 辅助页开发
 
+在 `src/app` 下编写代码，入口位于 `src/app/main.ts`。
+
+编写完代码后
+
 ```sh
-yarn serve
+yarn build
 ```
 
-即可和开发一般 Vue 应用一样进行开发和预览。
+在 `chrome://extensions` 重新加载插件，点击右上角 browser action 图标即可进行预览。
+
+### 选项页开发
+
+在 `src/options` 下编写代码，入口位于 `src/main.ts`。
+
+编写完代码后
+
+```sh
+yarn build
+```
+
+在 `chrome://extensions` 重新加载插件，右键点击右上角 browser action 图标 -> 选项 即可进行预览。
