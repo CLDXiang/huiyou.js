@@ -204,6 +204,7 @@ export default defineComponent({
       text-overflow: ellipsis;
       overflow: hidden;
       word-break: break-all;
+      width: 503px;
     }
 
     .info__wrap {
