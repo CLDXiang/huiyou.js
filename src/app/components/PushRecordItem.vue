@@ -218,7 +218,7 @@ export default defineComponent({
           margin-top: 10px;
           height: 40px;
           font-size: 13px;
-          ext-overflow: -o-ellipsis-lastline;
+          text-overflow: -o-ellipsis-lastline;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
