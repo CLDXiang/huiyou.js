@@ -5,13 +5,7 @@ const { freeze } = Object;
 /** 计时模块常量 */
 export const TIMEKEEPING = freeze({
   /** 计时时长/ms */
-  DURATION: 7000,
-});
-
-/** 与弹窗相关的常量 */
-export const POPUP = freeze({
-  /** 鼠标事件节流时间/毫秒 */
-  MOUSE_EVENT_THROTTLE_TIME: 500,
+  DURATION: DEBUG_MODE ? 70000 : 7000,
 });
 
 /** 视频记录模块常量 */
