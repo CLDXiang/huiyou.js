@@ -11,7 +11,7 @@ import { VideoProgress } from './videoProgress';
 logger.log('DEBUG_MODE enabled!');
 
 /** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
-const bvidArr = window.location.href.match(/BV(.{10})/);
+const bvidArr = document.URL.match(/BV(.{10})/);
 const bvid = bvidArr?.[1] ?? null;
 logger.log(`bvid: ${bvid}`);
 
