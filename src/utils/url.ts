@@ -20,12 +20,5 @@ export function extractAvFromArcurl(arcurl: string): string | null {
  * @param key 参数键名
  */
 export function extractParamFromUrl(url: string, key: string) {
-  const [, ...paramsStringArr] = url.split('?');
-  if (paramsStringArr.length) {
-    const paramsString = paramsStringArr.join('');
-    const params = new URLSearchParams(paramsString);
-    return params.get(key);
-  }
-  // 没有参数部分，直接返回空
-  return null;
+  return new URL(url, 'http://google.com').searchParams.get(key);
 }
