@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="videoInfo.pic&&videoInfo.title"
     class="wrap"
     @click="handleClickItem"
   >
@@ -225,7 +226,6 @@ export default defineComponent({
           -webkit-line-clamp: 2;
           line-clamp: 2;
           -webkit-box-orient: vertical;
-          overflow: hidden;
         }
       }
 

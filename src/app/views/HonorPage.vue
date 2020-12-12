@@ -1,41 +1,27 @@
 <template>
-  <div class="records">
-    <div
-      v-if="records.length>0"
-      class="records__list"
-    >
-      <push-record-item
-        v-for="record in records"
-        :key="record.bvid"
-        :bvid="record.bvid"
-        :created-at="record.createdAt"
-        :is-first="record.isFirst"
-        :is-last="record.isLast"
-      />
-    </div>
-    <div
-      v-else
-      class="empty"
-    >
-      <img
-        src="../../assets/empty.png"
-      >
-    </div>
+  <div class="honor">
+    <honor-item
+      v-for="record in records"
+      :key="record.bvid"
+      :bvid="record.bvid"
+      :created-at="record.createdAt"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PushRecordItem from '@/app/components/PushRecordItem.vue';
+import HonorItem from '@/app/components/HonorItem.vue';
 import { getUid } from '@/utils/cookies';
+import dayjs from 'dayjs';
 import { recordsClient } from '../apis';
 import { RecordItem } from '../types';
 
 export default defineComponent({
-  components: { PushRecordItem },
+  components: { HonorItem },
   data() {
     return {
-      records: [] as RecordItem[],
+      records: [{ bvid: 'BV1za411A7wR', createdAt: dayjs() }, { bvid: 'BV1za411A7wR', createdAt: dayjs() }, { bvid: 'BV1za411A7wR', createdAt: dayjs() }, { bvid: 'BV1za411A7wR', createdAt: dayjs() }] as RecordItem[],
     };
   },
   mounted() {
@@ -65,29 +51,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-.records {
+.honor {
   width: 1000px;
   margin: 30px auto 0;
 }
 
-.records__header {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 10px;
-
-  img {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-.records__list {
-  position: relative;
-  padding: 0 70px;
-}
-
-.empty {
-  text-align: center;
-}
 </style>
