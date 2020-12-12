@@ -14,7 +14,7 @@ export class VideoProgress {
   private bitmap = new Uint8Array();
 
   /** 视频当前分 p 号 */
-  private p: string | null = null;
+  private p = '1';
 
   private init() {
     this.element = document.querySelector('.bilibili-player-video > video');
@@ -24,7 +24,7 @@ export class VideoProgress {
       setTimeout(this.init, 5000);
       return;
     }
-    this.p = extractParamFromUrl(document.URL, 'p');
+    this.p = extractParamFromUrl(document.URL, 'p') || '1';
     this.bitmap = new Uint8Array(Math.floor(this.element.duration));
     this.element.addEventListener('timeupdate', () => this.handleTimeupdate());
     logger.log(`视频进度监测器初始化完成，视频总时长：${this.bitmap.length}s`);
@@ -36,7 +36,7 @@ export class VideoProgress {
       return;
     }
     // 换 p
-    const newP = extractParamFromUrl(document.URL, 'p');
+    const newP = extractParamFromUrl(document.URL, 'p') || '1';
     if (newP !== this.p) {
       logger.log(`监测到换 p: ${this.p} -> ${newP}`);
       this.p = newP;
