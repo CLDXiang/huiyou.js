@@ -1,10 +1,11 @@
 <template>
-  <div class="records">
-    <div class="records__header">
-      <img src="../../assets/history-img.jpg">
-      <h3>历史记录</h3>
-    </div>
-    <div class="records__list">
+  <div
+    v-if="records.length"
+    class="records"
+  >
+    <div
+      class="records__list"
+    >
       <push-record-item
         v-for="record in records"
         :key="record.bvid"
@@ -15,17 +16,18 @@
       />
     </div>
   </div>
+  <Empty v-else />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PushRecordItem from '@/app/components/PushRecordItem.vue';
 import { getUid } from '@/utils/cookies';
+import { PushRecordItem, Empty } from '../components';
 import { recordsClient } from '../apis';
 import { RecordItem } from '../types';
 
 export default defineComponent({
-  components: { PushRecordItem },
+  components: { PushRecordItem, Empty },
   data() {
     return {
       records: [] as RecordItem[],
@@ -35,7 +37,9 @@ export default defineComponent({
     getUid().then((uid) => {
       if (!uid) return;
       recordsClient.getRecords({ uid }).then((data) => {
-        const records = data.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
+        const records = data.sort(
+          (a, b) => b.createdAt.unix() - a.createdAt.unix(),
+        );
         if (records.length > 0) {
           // 按天分隔，设置当前视频是否为第一条或最后一条
           records[0].isFirst = true;
@@ -58,25 +62,25 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
-  .records {
-    width: 1000px;
-    margin: 0 auto;
-  }
+.records {
+  width: 1000px;
+  margin: 30px auto 0;
+}
 
-  .records__header {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: 10px;
+.records__header {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
 
-    img {
-      width: 32px;
-      height: 32px;
-    }
+  img {
+    width: 32px;
+    height: 32px;
   }
+}
 
-  .records__list {
-    position: relative;
-    padding: 0 70px;
-  }
+.records__list {
+  position: relative;
+  padding: 0 70px;
+}
 </style>
