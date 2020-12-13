@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="videoInfo.pic&&videoInfo.title"
+    v-if="videoInfo.pic && videoInfo.title"
     class="wrap"
     @click="handleClickItem"
   >
@@ -22,9 +22,7 @@
       class="content"
       :class="{ last: isLast }"
     >
-      <div
-        class="title"
-      >
+      <div class="title">
         {{ videoInfo.title }}
       </div>
       <div class="info__wrap">
@@ -38,7 +36,9 @@
           <div class="info__other">
             <span><i class="view" />{{ videoInfo.stat.view }}</span>
             <span><i class="coin" />{{ videoInfo.stat.coin }}</span>
-            <span style="margin-right: 0"><i class="like" />{{ videoInfo.stat.like }}</span>
+            <span
+              style="margin-right: 0"
+            ><i class="like" />{{ videoInfo.stat.like }}</span>
             <span><i class="favorite" />{{ videoInfo.stat.favorite }}</span>
           </div>
         </div>
@@ -105,9 +105,11 @@ export default defineComponent({
     });
 
     // 获取视频信息
-    biliClient.getVideoInfo({ bvid: props.bvid, createdAt: props.createdAt }).then((data) => {
-      videoInfo.value = data;
-    });
+    biliClient
+      .getVideoInfo({ bvid: props.bvid, createdAt: props.createdAt })
+      .then((data) => {
+        videoInfo.value = data;
+      });
 
     return {
       /** 视频信息 */
@@ -236,25 +238,25 @@ export default defineComponent({
         bottom: 16px;
         color: #99a2aa;
 
-        &>span:first-child{
+        & > span:first-child {
           margin-left: 16px;
         }
 
         .info__other {
           display: flex;
           flex-direction: row;
-          span{
+          span {
             margin-right: 8px;
           }
-          i{
+          i {
             width: 24px;
             height: 24px;
             vertical-align: -6px;
             display: inline-block;
-            background-image: url("../../assets/icons.png");
+            background-image: url('../../assets/icons.png');
             background-repeat: no-repeat;
           }
-          .view{
+          .view {
             background-position-x: -648px;
             background-position-y: -1300px;
             width: 36px;
@@ -262,15 +264,15 @@ export default defineComponent({
             transform: scale(0.75);
             vertical-align: -17px;
           }
-          .coin{
+          .coin {
             background-position-x: -724px;
             background-position-y: -2003px;
           }
-          .like{
+          .like {
             background-position-x: -722px;
             background-position-y: -2194px;
           }
-          .favorite{
+          .favorite {
             width: 36px;
             height: 36px;
             transform: scale(0.75);

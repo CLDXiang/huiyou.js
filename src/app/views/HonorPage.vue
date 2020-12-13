@@ -21,14 +21,21 @@ export default defineComponent({
   components: { HonorItem },
   data() {
     return {
-      records: [{ bvid: 'BV1za411A7wR', createdAt: dayjs() }, { bvid: 'BV1za411A7wR', createdAt: dayjs() }, { bvid: 'BV1za411A7wR', createdAt: dayjs() }, { bvid: 'BV1za411A7wR', createdAt: dayjs() }] as RecordItem[],
+      records: [
+        { bvid: 'BV1za411A7wR', createdAt: dayjs() },
+        { bvid: 'BV1za411A7wR', createdAt: dayjs() },
+        { bvid: 'BV1za411A7wR', createdAt: dayjs() },
+        { bvid: 'BV1za411A7wR', createdAt: dayjs() },
+      ] as RecordItem[],
     };
   },
   mounted() {
     getUid().then((uid) => {
       if (!uid) return;
       recordsClient.getRecords({ uid }).then((data) => {
-        const records = data.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
+        const records = data.sort(
+          (a, b) => b.createdAt.unix() - a.createdAt.unix(),
+        );
         if (records.length > 0) {
           // 按天分隔，设置当前视频是否为第一条或最后一条
           records[0].isFirst = true;
@@ -55,5 +62,4 @@ export default defineComponent({
   width: 1000px;
   margin: 30px auto 0;
 }
-
 </style>

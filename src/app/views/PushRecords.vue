@@ -1,7 +1,7 @@
 <template>
   <div class="records">
     <div
-      v-if="records.length>0"
+      v-if="records.length > 0"
       class="records__list"
     >
       <push-record-item
@@ -17,9 +17,7 @@
       v-else
       class="empty"
     >
-      <img
-        src="../../assets/empty.png"
-      >
+      <img src="../../assets/empty.png">
     </div>
   </div>
 </template>
@@ -42,7 +40,9 @@ export default defineComponent({
     getUid().then((uid) => {
       if (!uid) return;
       recordsClient.getRecords({ uid }).then((data) => {
-        const records = data.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
+        const records = data.sort(
+          (a, b) => b.createdAt.unix() - a.createdAt.unix(),
+        );
         if (records.length > 0) {
           // 按天分隔，设置当前视频是否为第一条或最后一条
           records[0].isFirst = true;

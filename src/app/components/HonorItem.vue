@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="videoInfo.pic&&videoInfo.title"
+    v-if="videoInfo.pic && videoInfo.title"
     class="wrap"
     @click="handleClickItem"
   >
@@ -90,9 +90,11 @@ export default defineComponent({
     });
 
     // 获取视频信息
-    biliClient.getVideoInfo({ bvid: props.bvid, createdAt: props.createdAt }).then((data) => {
-      videoInfo.value = data;
-    });
+    biliClient
+      .getVideoInfo({ bvid: props.bvid, createdAt: props.createdAt })
+      .then((data) => {
+        videoInfo.value = data;
+      });
 
     return {
       /** 视频信息 */
@@ -112,16 +114,16 @@ export default defineComponent({
 <style scoped lang="less">
 @item-height: 250px;
 
-.wrap:first-child{
+.wrap:first-child {
   margin-left: 50%;
 }
-.wrap:nth-child(2n+1){
+.wrap:nth-child(2n + 1) {
   border-left: 2px solid #00a1d6;
 }
-.wrap:nth-child(2n){
-  top: -@item-height/2;
+.wrap:nth-child(2n) {
+  top: -@item-height / 2;
   text-align: right;
-  .content{
+  .content {
     flex-direction: row-reverse;
   }
 }
@@ -136,11 +138,11 @@ export default defineComponent({
   &:hover {
     background: #eee;
   }
-  .content{
+  .content {
     display: flex;
     flex-direction: row;
   }
-  .time{
+  .time {
     border-bottom: 1px dashed #58b3e6;
     line-height: 32px;
     height: 32px;
@@ -149,7 +151,7 @@ export default defineComponent({
     font-size: 14px;
     margin: 20px 12px;
     text-align: center;
-    img{
+    img {
       width: 18px;
     }
   }
@@ -174,14 +176,14 @@ export default defineComponent({
     line-clamp: 2;
     -webkit-box-orient: vertical;
   }
-  .info{
+  .info {
     font-size: 14px;
     margin-top: 16px;
-    &>span{
+    & > span {
       margin-right: 20px;
-      img{
+      img {
         width: 16px;
-        vertical-align: -.125em;
+        vertical-align: -0.125em;
         margin-left: 6px;
       }
     }

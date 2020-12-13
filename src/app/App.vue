@@ -5,36 +5,36 @@
       class="logo"
     >
     <div
-      :class="{unchecked:page!=='PushRecords'}"
+      :class="{ unchecked: page !== 'PushRecords' }"
       @click="setPage('PushRecords')"
     >
       <img
-        v-if="page==='PushRecords'"
+        v-if="page === 'PushRecords'"
         src="../assets/lishi.png"
       >
       <img
-        v-if="page!=='PushRecords'"
+        v-if="page !== 'PushRecords'"
         src="../assets/lishi2.png"
       >
       历史记录
     </div>
     <div
-      :class="{unchecked:page!=='HonorPage'}"
+      :class="{ unchecked: page !== 'HonorPage' }"
       @click="setPage('HonorPage')"
     >
       <img
-        v-if="page!=='HonorPage'"
+        v-if="page !== 'HonorPage'"
         src="../assets/rongyubiaozhang2.png"
       >
       <img
-        v-if="page==='HonorPage'"
+        v-if="page === 'HonorPage'"
         src="../assets/rongyubiaozhang.png"
       >
       荣誉墙
     </div>
   </div>
-  <PushRecords v-if="page==='PushRecords'" />
-  <HonorPage v-if="page==='HonorPage'" />
+  <PushRecords v-show="page === 'PushRecords'" />
+  <HonorPage v-show="page === 'HonorPage'" />
 </template>
 
 <script lang="ts">
@@ -54,7 +54,7 @@ export default defineComponent({
     };
   },
   methods: {
-    setPage(page:string) {
+    setPage(page: string) {
       this.page = page;
     },
   },
@@ -68,7 +68,7 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-body{
+body {
   margin: 0;
 }
 .header {
@@ -80,19 +80,19 @@ body{
   font-weight: bold;
   line-height: 55px;
   font-size: 18px;
-  .logo{
+  .logo {
     margin: 0 100px 0 20px;
     width: 28px;
   }
-  img{
+  img {
     width: 24px;
     vertical-align: -0.34em;
   }
-  &>div{
+  & > div {
     margin-left: 10px;
     cursor: pointer;
   }
-  .unchecked{
+  .unchecked {
     color: gray;
   }
 }
