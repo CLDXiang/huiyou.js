@@ -1,44 +1,33 @@
 import { TIMEKEEPING } from '@/config';
-import { addStyle } from './utils';
+// eslint-disable-next-line import/no-cycle
+import { offVideo, onVideo } from '@/popup/showVideo';
 
 const { DURATION } = TIMEKEEPING;
 let timerId = 0;
 
-function offVideo(popupBox: HTMLDivElement) {
-  if (popupBox !== null) {
-    addStyle(popupBox, { visibility: 'hidden' });
-  }
-}
-
-function onVideo(popupBox: HTMLDivElement) {
-  if (popupBox !== null) {
-    addStyle(popupBox, { visibility: 'visible' });
-  }
-}
-
-export function shutTimeKeeping(popupBox: HTMLDivElement) {
+export function shutTimeKeeping() {
   if (timerId > 0) {
     clearTimeout(timerId);
   }
-  offVideo(popupBox);
+  offVideo();
 }
 
-export function startTimekeeping(popupBox: HTMLDivElement) {
+export function startTimekeeping() {
   timerId = setTimeout(() => {
-    shutTimeKeeping(popupBox);
+    shutTimeKeeping();
   }, DURATION);
 }
 
-function start2Timekeeping(popupBox: HTMLDivElement, time: number) {
+function start2Timekeeping(time: number) {
   timerId = setTimeout(() => {
-    shutTimeKeeping(popupBox);
+    shutTimeKeeping();
   }, time);
 }
-export function modifyRemainingTime(time: number, popupBox: HTMLDivElement) {
+export function modifyRemainingTime(time: number) {
   if (time !== null) {
-    onVideo(popupBox);
-    start2Timekeeping(popupBox, time); // 重新记时
+    onVideo();
+    start2Timekeeping(time); // 重新记时
   } else {
-    offVideo(popupBox);
+    offVideo();
   }
 }

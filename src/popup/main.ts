@@ -1,9 +1,14 @@
 import { MessagePayloadMap } from '@/types/message';
-import { PlayVideoInfo, VideoShot } from '@/types/video';
+import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import './popup.less';
-import { initialBox, initialVideo, showVideo } from './showVideo';
+import imgStatic from '@/assets/simple-tag.png';
+import imgHover from '@/assets/simple-tag-hover.gif';
+import { startTimekeeping } from '@/background/timekeeping';
+import {
+  initialBox, initialHoverIcon, initialVideo, offHoverIcon, showVideo,
+} from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
 import { changeVideoShot } from './videoShot';
 import { VideoProgress } from './videoProgress';
@@ -25,14 +30,15 @@ let aid: number | null = null;
 let vid: PlayVideoInfo | null = null;
 let bvidGet: string | null = null; // 要推送的视频
 let docUrl = '';
-let imgUrl: VideoShot | null = null;
+// let imgUrl: VideoShot | null = null;
 
 /** 视频进度监测器 */
 const videoProgress = new VideoProgress();
 
 // 初始化弹窗并隐藏
-const box = initialBox();
+initialBox();
 const imgBox = initialVideo();
+const imgIcon = initialHoverIcon();
 
 const getPayloads = (): MessagePayloadMap => ({
   pauseVideo: {
@@ -54,12 +60,12 @@ const pushVideo = () => {
       if (bvidGet !== null) {
         vid = await showVideo(bvidGet);
         if (vid !== null) {
+          startTimekeeping();
           docUrl = vid.pic;
           aid = vid.aid;
         }
         logger.log(`aid:${aid}`);
         logger.log(`dddd: ${docUrl}`);
-        imgUrl = null;
       }
     }
   });
@@ -83,7 +89,7 @@ window.addEventListener('beforeunload', () => {
   if (media !== null && uid !== null && bvid !== '') {
     sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
       logger.log('unload message sent');
-      shutTimeKeeping(box);
+      shutTimeKeeping();
     });
   }
 });
@@ -94,7 +100,7 @@ window.addEventListener('blur', () => {
   if (media !== null && uid !== null && bvid !== '') {
     sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
       logger.log('blur');
-      shutTimeKeeping(box);
+      shutTimeKeeping();
     });
   }
 });
@@ -117,10 +123,9 @@ window.addEventListener('focus', () => {
             }
             logger.log(`aid:${aid}`);
             logger.log(`dddd: ${docUrl}`);
-            imgUrl = null;
           }
         }
-        modifyRemainingTime(response.remainingTime, box);
+        modifyRemainingTime(response.remainingTime);
       }
     });
   }
@@ -152,4 +157,17 @@ imgBox.addEventListener('mousemove', (e) => {
     logger.log(`move${e.screenX}`);
     changeVideoShot(aid, imgBox, e.screenX);
   }
+});
+
+imgIcon.addEventListener('mouseover', () => {
+  imgIcon.src = imgHover;
+});
+
+imgIcon.addEventListener('mouseleave', () => {
+  imgIcon.src = imgStatic;
+});
+
+imgIcon.addEventListener('mousedown', () => {
+  offHoverIcon();
+  pushVideo();
 });
