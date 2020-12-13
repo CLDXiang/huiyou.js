@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <img
-      src="../assets/history-img.jpg"
+      src="@/assets/history-img.jpg"
       class="logo"
     >
     <div
@@ -10,11 +10,11 @@
     >
       <img
         v-if="page === 'PushRecords'"
-        src="../assets/lishi.png"
+        src="@/assets/lishi.png"
       >
       <img
-        v-if="page !== 'PushRecords'"
-        src="../assets/lishi2.png"
+        v-else
+        src="@/assets/lishi2.png"
       >
       历史记录
     </div>
@@ -24,11 +24,11 @@
     >
       <img
         v-if="page !== 'HonorPage'"
-        src="../assets/rongyubiaozhang2.png"
+        src="@/assets/rongyubiaozhang2.png"
       >
       <img
-        v-if="page === 'HonorPage'"
-        src="../assets/rongyubiaozhang.png"
+        v-else
+        src="@/assets/rongyubiaozhang.png"
       >
       荣誉墙
     </div>

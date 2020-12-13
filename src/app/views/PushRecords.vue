@@ -1,7 +1,9 @@
 <template>
-  <div class="records">
+  <div
+    v-if="records.length"
+    class="records"
+  >
     <div
-      v-if="records.length > 0"
       class="records__list"
     >
       <push-record-item
@@ -13,24 +15,19 @@
         :is-last="record.isLast"
       />
     </div>
-    <div
-      v-else
-      class="empty"
-    >
-      <img src="../../assets/empty.png">
-    </div>
   </div>
+  <Empty v-else />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import PushRecordItem from '@/app/components/PushRecordItem.vue';
 import { getUid } from '@/utils/cookies';
+import { PushRecordItem, Empty } from '../components';
 import { recordsClient } from '../apis';
 import { RecordItem } from '../types';
 
 export default defineComponent({
-  components: { PushRecordItem },
+  components: { PushRecordItem, Empty },
   data() {
     return {
       records: [] as RecordItem[],
@@ -85,9 +82,5 @@ export default defineComponent({
 .records__list {
   position: relative;
   padding: 0 70px;
-}
-
-.empty {
-  text-align: center;
 }
 </style>

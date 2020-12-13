@@ -6,7 +6,7 @@
   >
     <div class="content">
       <div class="time">
-        <img src="../../assets/honor-time.png">
+        <img src="@/assets/honor-time.png">
         {{ createdAt.format('YYYY.MM.DD') }}
       </div>
       <div>
@@ -20,11 +20,11 @@
         <div class="info">
           <span>
             {{ createdAt.format('YYYY.MM.DD') }}
-            <img src="../../assets/honor-zuji.png">
+            <img src="@/assets/honor-zuji.png">
           </span>
           <span>
             {{ videoInfo.owner.name }}
-            <img src="../../assets/honor-up.png">
+            <img src="@/assets/honor-up.png">
           </span>
         </div>
       </div>
