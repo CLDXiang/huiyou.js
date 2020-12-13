@@ -29,8 +29,7 @@ export async function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
     videoRecord.add(videoInfo.bvid);
     // 预拉取视频
     if (recommendedVideo === null && videoRecord.size >= VIDEO_COUNT_LOWER_LIMIT - 1) {
-      const video = await getVideo();
-      recommendedVideo = video;
+      recommendedVideo = await getVideo();
     }
   }
 }
@@ -40,6 +39,18 @@ export function getRecommendedVideo(): FetchVideoMessageResponse | null {
     return null;
   }
   lastRecommendedVideo = recommendedVideo;
+  recommendedVideo = null;
+  videoRecord.clear();
+  return lastRecommendedVideo;
+}
+
+export async function getRecommendedVideoForcedly(): Promise<FetchVideoMessageResponse | null> {
+  if (recommendedVideo !== null) {
+    lastRecommendedVideo = recommendedVideo;
+  } else {
+    lastRecommendedVideo = await getVideo();
+  }
+
   recommendedVideo = null;
   videoRecord.clear();
   return lastRecommendedVideo;
