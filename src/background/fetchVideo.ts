@@ -5,6 +5,7 @@ import { FETCH_VIDEO } from '@/config';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
+import { getUid } from '@/utils/cookies';
 import axios from 'axios';
 import { getNextVideoFromBackend } from './api';
 import { getRecommendedHistory } from './storeRecommendedVideos';
@@ -86,7 +87,12 @@ async function getVideoRecursively(
 /**
  * 获取一个视频的信息，成功则返回视频信息，失败返回 `null`
  */
-export default async function getVideo(uid: string): Promise<FetchVideoMessageResponse | null> {
+export default async function getVideo(): Promise<FetchVideoMessageResponse | null> {
+  const uid = await getUid();
+  if (uid === null) {
+    return null;
+  }
+
   if (shouldGetVideoFromBackend()) {
     const video = await getNextVideoFromBackend(uid);
     if (video !== null) return video;

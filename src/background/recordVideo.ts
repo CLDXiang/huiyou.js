@@ -1,6 +1,5 @@
 import { RECORD_VIDEO } from '@/config';
 import { FetchVideoMessageResponse, PauseVideoMessagePayload } from '@/types/message';
-import { getUid } from '@/utils/cookies';
 import getVideo from './fetchVideo';
 
 const {
@@ -30,11 +29,8 @@ export async function recordVideoLocally(videoInfo: PauseVideoMessagePayload) {
     videoRecord.add(videoInfo.bvid);
     // 预拉取视频
     if (recommendedVideo === null && videoRecord.size >= VIDEO_COUNT_LOWER_LIMIT - 1) {
-      const uid = await getUid();
-      if (uid !== null) {
-        const video = await getVideo(uid);
-        recommendedVideo = video;
-      }
+      const video = await getVideo();
+      recommendedVideo = video;
     }
   }
 }
