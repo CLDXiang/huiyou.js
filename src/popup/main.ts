@@ -1,17 +1,16 @@
+import imgHover from '@/assets/simple-tag-hover.gif';
+import imgStatic from '@/assets/simple-tag.png';
 import { MessagePayloadMap } from '@/types/message';
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import './popup.less';
-import imgStatic from '@/assets/simple-tag.png';
-import imgHover from '@/assets/simple-tag-hover.gif';
-import { startTimekeeping } from '@/background/timekeeping';
 import {
   initialBox, initialHoverIcon, initialVideo, offHoverIcon, showVideo,
 } from './showVideo';
-import { modifyRemainingTime, shutTimeKeeping } from './timeKeeper';
-import { changeVideoShot } from './videoShot';
+import { modifyRemainingTime, shutTimeKeeping, startTimekeeping } from './timeKeeper';
 import { VideoProgress } from './videoProgress';
+import { changeVideoShot } from './videoShot';
 
 logger.log('DEBUG_MODE enabled!');
 
@@ -89,6 +88,7 @@ const directPush = () => {
     }
   });
 };
+
 // 视频停止
 if (media !== null && uid !== null && bvid !== null) {
   media.addEventListener('pause', () => {

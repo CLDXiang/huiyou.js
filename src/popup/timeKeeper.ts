@@ -3,7 +3,6 @@ import { offVideo, onVideo } from '@/popup/showVideo';
 import TimeKeeper from '@/utils/timeKeeper';
 
 const { DURATION } = TIMEKEEPING;
-const timerId = 0;
 
 let timeKeeper: TimeKeeper | null = null;
 
@@ -18,18 +17,14 @@ export function shutTimeKeeping() {
   offVideo();
 }
 
-export function startTimekeeping() {
-  timeKeeper = new TimeKeeper(DURATION, resetTimeKeeper);
-}
-
-function start2Timekeeping(time: number) {
-  timeKeeper = new TimeKeeper(time, resetTimeKeeper);
+export function startTimekeeping(time?: number) {
+  timeKeeper = new TimeKeeper(time ?? DURATION, resetTimeKeeper);
 }
 
 export function modifyRemainingTime(time: number) {
   if (time !== null) {
     onVideo();
-    start2Timekeeping(time); // 重新记时
+    startTimekeeping(time); // 重新记时
   } else {
     offVideo();
   }
