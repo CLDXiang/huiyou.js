@@ -48,6 +48,7 @@ const getPayloads = (): MessagePayloadMap => ({
   },
   fetchVideo: undefined,
   synchronize: undefined,
+  fetchVideoForcedly: undefined,
 });
 
 const pushVideo = () => {
@@ -71,6 +72,23 @@ const pushVideo = () => {
   });
 };
 
+const directPush = () => {
+  sendMessage('fetchVideoForcedly', getPayloads().fetchVideoForcedly, async (response) => {
+    logger.log('push message directly');
+    if (response !== null) {
+      logger.log('direct show video');
+      bvidGet = response.bvid;
+      if (bvidGet !== null) {
+        vid = await showVideo(bvidGet);
+        if (vid !== null) {
+          startTimekeeping();
+          docUrl = vid.pic;
+          aid = vid.aid;
+        }
+      }
+    }
+  });
+};
 // 视频停止
 if (media !== null && uid !== null && bvid !== null) {
   media.addEventListener('pause', () => {
@@ -109,7 +127,7 @@ window.addEventListener('blur', () => {
 window.addEventListener('focus', () => {
   logger.log('window focused');
   logger.log(bvidGet);
-  if (media !== null && uid !== null && bvid !== '') {
+  if (uid !== null) {
     sendMessage('synchronize', getPayloads().synchronize, async (response) => {
       logger.log('focus message sent', response);
       if (response !== null) {
@@ -133,6 +151,28 @@ window.addEventListener('focus', () => {
 
 window.addEventListener('load', () => {
   logger.log('window load');
+  logger.log('window focused');
+  logger.log(bvidGet);
+  if (uid !== null) {
+    sendMessage('synchronize', getPayloads().synchronize, async (response) => {
+      logger.log('focus message sent', response);
+      if (response !== null) {
+        if (bvidGet !== response.bvid) {
+          bvidGet = response.bvid;
+          if (bvidGet !== null) {
+            vid = await showVideo(bvidGet);
+            if (vid !== null) {
+              docUrl = vid.pic;
+              aid = vid.aid;
+            }
+            logger.log(`aid:${aid}`);
+            logger.log(`dddd: ${docUrl}`);
+          }
+        }
+        modifyRemainingTime(response.remainingTime);
+      }
+    });
+  }
 });
 
 imgBox.addEventListener('mouseleave', () => {
@@ -169,5 +209,5 @@ imgIcon.addEventListener('mouseleave', () => {
 
 imgIcon.addEventListener('mousedown', () => {
   offHoverIcon();
-  pushVideo();
+  directPush();
 });

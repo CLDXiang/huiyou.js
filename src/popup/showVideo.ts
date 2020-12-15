@@ -84,6 +84,7 @@ export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
       };
       addStyle(popupBox, { visibility: 'visible' });
     }
+    offHoverIcon();
   }
   return video;
 }
