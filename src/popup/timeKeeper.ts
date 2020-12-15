@@ -1,26 +1,29 @@
 import { TIMEKEEPING } from '@/config';
 import { offVideo, onVideo } from '@/popup/showVideo';
+import TimeKeeper from '@/utils/timeKeeper';
 
 const { DURATION } = TIMEKEEPING;
-let timerId = 0;
+const timerId = 0;
+
+let timeKeeper: TimeKeeper | null = null;
+
+function resetTimeKeeper() {
+  timeKeeper = null;
+}
 
 export function shutTimeKeeping() {
-  if (timerId > 0) {
-    clearTimeout(timerId);
+  if (timeKeeper !== null) {
+    timeKeeper.stop();
   }
   offVideo();
 }
 
 export function startTimekeeping() {
-  timerId = setTimeout(() => {
-    shutTimeKeeping();
-  }, DURATION);
+  timeKeeper = new TimeKeeper(DURATION, resetTimeKeeper);
 }
 
 function start2Timekeeping(time: number) {
-  timerId = setTimeout(() => {
-    shutTimeKeeping();
-  }, time);
+  timeKeeper = new TimeKeeper(time, resetTimeKeeper);
 }
 
 export function modifyRemainingTime(time: number) {
