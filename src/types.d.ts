@@ -3,11 +3,12 @@ declare module '*.svg' {
   export default url;
 }
 
-declare module '*.png'{
+declare module '*.png' {
   const url: string;
   export default url;
 }
-declare module '*.gif'{
+
+declare module '*.gif' {
   const url: string;
   export default url;
 }

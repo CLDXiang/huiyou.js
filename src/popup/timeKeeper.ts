@@ -1,5 +1,4 @@
 import { TIMEKEEPING } from '@/config';
-// eslint-disable-next-line import/no-cycle
 import { offVideo, onVideo } from '@/popup/showVideo';
 
 const { DURATION } = TIMEKEEPING;
@@ -23,6 +22,7 @@ function start2Timekeeping(time: number) {
     shutTimeKeeping();
   }, time);
 }
+
 export function modifyRemainingTime(time: number) {
   if (time !== null) {
     onVideo();
