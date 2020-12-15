@@ -1,19 +1,18 @@
 import { TIMEKEEPING } from '@/config';
+import TimeKeeper from '@/utils/timeKeeper';
 
 const { DURATION } = TIMEKEEPING;
 
-let expiration: number | null = null;
+let timeKeeper: TimeKeeper | null = null;
+
+function resetTimeKeeper() {
+  timeKeeper = null;
+}
 
 export function startTimekeeping() {
-  expiration = +new Date() + DURATION;
-  setTimeout(() => {
-    expiration = null;
-  }, DURATION);
+  timeKeeper = new TimeKeeper(DURATION, resetTimeKeeper);
 }
 
 export function getRemainingTime(): number | null {
-  if (expiration !== null) {
-    return expiration - +new Date();
-  }
-  return null;
+  return timeKeeper?.remaining ?? null;
 }
