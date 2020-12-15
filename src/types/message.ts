@@ -6,6 +6,8 @@ export type MessageType =
   | 'pauseVideo'
   /** 给出推荐视频 */
   | 'fetchVideo'
+  /** 强制推送视频 */
+  | 'fetchVideoForcedly'
   /** 同步推荐信息的倒计时 */
   | 'synchronize';
 
@@ -23,6 +25,7 @@ export interface PauseVideoMessagePayload {
 export interface MessagePayloadMap {
   pauseVideo: PauseVideoMessagePayload;
   fetchVideo: undefined;
+  fetchVideoForcedly: undefined;
   synchronize: undefined;
 }
 
@@ -45,5 +48,6 @@ export interface SynchronizeResponse extends FetchVideoMessageResponse {
 export interface MessageResponseMap {
   pauseVideo: undefined;
   fetchVideo: FetchVideoMessageResponse | null;
+  fetchVideoForcedly: FetchVideoMessageResponse | null;
   synchronize: SynchronizeResponse | null;
 }

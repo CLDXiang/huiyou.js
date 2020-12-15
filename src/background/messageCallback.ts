@@ -3,7 +3,12 @@
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
 import { postRecord } from './api';
-import { getLastRecommendedVideo, getRecommendedVideo, recordVideoLocally } from './recordVideo';
+import {
+  getLastRecommendedVideo,
+  getRecommendedVideo,
+  getRecommendedVideoForcedly,
+  recordVideoLocally,
+} from './recordVideo';
 import { addRecommendedHistory } from './storeRecommendedVideos';
 import { getRemainingTime, startTimekeeping } from './timekeeping';
 
@@ -32,6 +37,16 @@ export default function handleMessage(
           addRecommendedHistory(recommendedVideo.bvid);
         }
       }
+      break;
+    case 'fetchVideoForcedly':
+      getRecommendedVideoForcedly().then((recommendedVideo) => {
+        sendResponse<'fetchVideoForcedly'>(recommendedVideo);
+        if (recommendedVideo !== null) {
+          startTimekeeping();
+          postRecord(recommendedVideo.bvid);
+          addRecommendedHistory(recommendedVideo.bvid);
+        }
+      });
       break;
     case 'synchronize':
       {
