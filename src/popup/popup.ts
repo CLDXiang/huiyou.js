@@ -147,13 +147,10 @@ export class Popup {
       return;
     }
     /** 图片序号 */
-    let idx = 0;
-    if (index.length === 0) {
-      // 有时候 index 是空的！
-      idx = Math.floor(((screenX - imgBoxX) / imgBoxWidth) * imgXLen);
-    } else {
-      idx = Math.floor(((screenX - imgBoxX) / imgBoxWidth) * index.length);
-    }
+    const idx = Math.floor(
+      ((screenX - imgBoxX) / imgBoxWidth) * (index.length || imgXLen), // 有时候 index 是空的！
+    );
+
     /** 位于第几张图 */
     const imgIdx = Math.floor(idx / imgXLen / imgYLen);
     const positionX = -imgBoxWidth * (idx - Math.floor(idx / imgXLen) * imgXLen);
