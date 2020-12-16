@@ -4,6 +4,12 @@ export interface CreateRecordRequestBody {
   uid: string;
   /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
+  /** 缩略图 url */
+  pic: string;
+  /** 作者用户名 */
+  author: string;
+  /** 视频标题 */
+  title: string;
 }
 
 /** 从后端获取视频推送记录的请求参数 */
