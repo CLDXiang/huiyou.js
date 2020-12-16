@@ -6,7 +6,7 @@ import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import './popup.less';
 import {
-  initialBox, initialHoverIcon, initialVideo, offHoverIcon, showVideo,
+  initialBox, initialHoverIcon, initialVideo, offHoverIcon, showVideo, offVideo,
 } from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping, startTimekeeping } from './timeKeeper';
 import { VideoProgress } from './videoProgress';
@@ -144,6 +144,8 @@ window.addEventListener('focus', () => {
           }
         }
         modifyRemainingTime(response.remainingTime);
+      } else {
+        offVideo();
       }
     });
   }
@@ -170,6 +172,8 @@ window.addEventListener('load', () => {
           }
         }
         modifyRemainingTime(response.remainingTime);
+      } else {
+        offVideo();
       }
     });
   }

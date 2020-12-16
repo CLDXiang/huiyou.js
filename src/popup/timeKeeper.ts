@@ -22,10 +22,6 @@ export function startTimekeeping(time?: number) {
 }
 
 export function modifyRemainingTime(time: number) {
-  if (time !== null) {
-    onVideo();
-    startTimekeeping(time); // 重新记时
-  } else {
-    offVideo();
-  }
+  onVideo();
+  startTimekeeping(time); // 重新记时
 }
