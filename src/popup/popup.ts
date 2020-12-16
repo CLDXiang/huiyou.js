@@ -87,4 +87,15 @@ export class Popup {
   hidePopup() {
     this.popupBox.classList.add('huiyou-hidden');
   }
+
+  /** 重置弹窗 */
+  resetPopup() {
+    this.hidePopup();
+    this.video = null;
+    this.title.innerText = '';
+    addStyle(this.imgBox, {
+      background: '#fff',
+    });
+    this.popupBox.onclick = () => null;
+  }
 }
