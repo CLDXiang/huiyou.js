@@ -80,7 +80,7 @@ export class Popup {
   private mouseoverCoolDown = false;
 
   /** 导入视频数据 */
-  async showVideo(bvid: string): Promise<PlayVideoInfo | null> {
+  async showVideo(bvid: string) {
     try {
       const video = await biliClient.getVideoInfo(bvid);
       if (video) {
@@ -100,7 +100,6 @@ export class Popup {
     } catch {
       logger.error(`获取视频信息失败：${bvid}`);
     }
-    return null;
   }
 
   /** 显示弹窗 */
@@ -154,7 +153,7 @@ export class Popup {
     /** 位于第几张图 */
     const imgIdx = Math.floor(idx / imgXLen / imgYLen);
     const positionX = -imgBoxWidth * (idx - Math.floor(idx / imgXLen) * imgXLen);
-    const positionY = -imgBoxHeight * Math.floor((idx / imgXLen));
+    const positionY = -imgBoxHeight * Math.floor(idx / imgXLen);
     const backgroundWidth = imgBoxWidth * imgXLen;
     const backgroundHeight = imgBoxHeight * imgYLen;
     addStyle(this.imgBox, {
