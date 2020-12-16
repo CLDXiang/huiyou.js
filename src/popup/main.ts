@@ -1,32 +1,22 @@
 import { MessagePayloadMap } from '@/types/message';
-import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import { Bubble } from './bubble';
 import { Popup } from './popup';
 import './popup.less';
-import { modifyRemainingTime, shutTimeKeeping, startTimekeeping } from './timeKeeper';
+import { shutTimeKeeping, startTimekeeping } from './timeKeeper';
 import { VideoProgress } from './videoProgress';
 import { changeVideoShot } from './videoShot';
 
 logger.log('DEBUG_MODE enabled!');
 
-/** 监听网络请求。play paused 视频播放 窗口聚焦等操作 */
-const bvidArr = document.URL.match(/BV(.{10})/);
-const bvid = bvidArr?.[1] ?? '';
-logger.log(`bvid: ${bvid}`);
+// 监听网络请求。play paused 视频播放 窗口聚焦等操作
+/** 当前页面 bv号 */
+const bvid = document.URL.match(/BV(.{10})/)?.[1] ?? '';
 
-const uidArr = document.cookie.match(/DedeUserID=([\d]+);/);
-const uid = uidArr?.[1] ?? null;
-logger.log(`uid: ${uid}`);
-
-// 视频播放
-const media = document.querySelector('video');
-let aid: number | null = null;
-let vid: PlayVideoInfo | null = null;
-let bvidGet: string | null = null; // 要推送的视频
-let docUrl = '';
-// let imgUrl: VideoShot | null = null;
+/** 当前用户 uid */
+const uid = document.cookie.match(/DedeUserID=([\d]+);/)?.[1] ?? null;
+logger.log({ bvid, uid });
 
 /** 视频进度监测器 */
 const videoProgress = new VideoProgress();
@@ -35,6 +25,7 @@ const videoProgress = new VideoProgress();
 const popup = new Popup();
 const bubble = new Bubble();
 
+/** 获取消息 payload */
 const getPayloads = (): MessagePayloadMap => ({
   pauseVideo: {
     bvid,
@@ -46,40 +37,27 @@ const getPayloads = (): MessagePayloadMap => ({
   fetchVideoForcedly: undefined,
 });
 
-const pushVideo = () => {
-  sendMessage('fetchVideo', getPayloads().fetchVideo, async (response) => {
-    logger.log('push message sent');
-    // logger.log(response);
-    if (response !== null) {
-      logger.log('show video');
-      bvidGet = response.bvid;
-      if (bvidGet !== null) {
-        vid = await popup.showVideo(bvidGet);
-        if (vid !== null) {
-          startTimekeeping();
-          docUrl = vid.pic;
-          aid = vid.aid;
-        }
-        logger.log(`aid:${aid}`);
-        logger.log(`dddd: ${docUrl}`);
+/** 向后台拉取视频 */
+const fetchVideo = () => {
+  sendMessage('fetchVideo', getPayloads().fetchVideo, async (resp) => {
+    if (resp?.bvid) {
+      // 后台有可推送视频
+      await popup.showVideo(resp.bvid);
+      if (popup.video) {
+        startTimekeeping();
       }
     }
   });
 };
 
+/** 主动推送 */
 const directPush = () => {
-  sendMessage('fetchVideoForcedly', getPayloads().fetchVideoForcedly, async (response) => {
-    logger.log('push message directly');
-    if (response !== null) {
-      logger.log('direct show video');
-      bvidGet = response.bvid;
-      if (bvidGet !== null) {
-        vid = await popup.showVideo(bvidGet);
-        if (vid !== null) {
-          startTimekeeping();
-          docUrl = vid.pic;
-          aid = vid.aid;
-        }
+  sendMessage('fetchVideoForcedly', getPayloads().fetchVideoForcedly, async (resp) => {
+    if (resp?.bvid) {
+      // 后台要求推送视频
+      await popup.showVideo(resp.bvid);
+      if (popup.video) {
+        startTimekeeping();
       }
     }
   });
@@ -88,13 +66,11 @@ const directPush = () => {
 bubble.handleClick(directPush);
 
 // 视频停止
-if (media !== null && uid !== null && bvid !== null) {
-  media.addEventListener('pause', () => {
-    logger.log('Video Paused');
-    // const video = fetchVideo(url);
-    pushVideo();
+if (videoProgress.element && uid && bvid) {
+  videoProgress.element.addEventListener('pause', () => {
+    logger.log('video paused');
     sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
-      logger.log('pause message sent');
+      fetchVideo();
     });
   });
 }
@@ -102,9 +78,8 @@ if (media !== null && uid !== null && bvid !== null) {
 // 关闭窗口（视频停止）
 window.addEventListener('beforeunload', () => {
   logger.log('window closed');
-  if (media !== null && uid !== null && bvid !== '') {
+  if (videoProgress.element && uid && bvid) {
     sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
-      logger.log('unload message sent');
       shutTimeKeeping();
     });
   }
@@ -112,10 +87,9 @@ window.addEventListener('beforeunload', () => {
 
 // 失去焦点，需要关闭计时器
 window.addEventListener('blur', () => {
-  logger.log('window closed');
-  if (media !== null && uid !== null && bvid !== '') {
+  logger.log('window blur');
+  if (videoProgress.element && uid && bvid) {
     sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
-      logger.log('blur');
       shutTimeKeeping();
     });
   }
@@ -124,24 +98,14 @@ window.addEventListener('blur', () => {
 // 窗口聚焦 需要重启计时器
 window.addEventListener('focus', () => {
   logger.log('window focused');
-  logger.log(bvidGet);
-  if (uid !== null) {
-    sendMessage('synchronize', getPayloads().synchronize, async (response) => {
-      logger.log('focus message sent', response);
-      if (response !== null) {
-        if (bvidGet !== response.bvid) {
-          bvidGet = response.bvid;
-          if (bvidGet !== null) {
-            vid = await popup.showVideo(bvidGet);
-            if (vid !== null) {
-              docUrl = vid.pic;
-              aid = vid.aid;
-            }
-            logger.log(`aid:${aid}`);
-            logger.log(`dddd: ${docUrl}`);
-          }
+  if (uid) {
+    sendMessage('synchronize', getPayloads().synchronize, async (resp) => {
+      if (resp) {
+        if (resp.bvid && popup.video?.bvid !== resp.bvid) {
+          // 如果当前页面弹窗视频与同步信息不符，覆盖当前页面
+          await popup.showVideo(resp.bvid);
         }
-        modifyRemainingTime(response.remainingTime);
+        // modifyRemainingTime(resp.remainingTime);
       } else {
         popup.hidePopup();
       }
@@ -151,25 +115,14 @@ window.addEventListener('focus', () => {
 
 window.addEventListener('load', () => {
   logger.log('window load');
-  logger.log('window focused');
-  logger.log(bvidGet);
-  if (uid !== null) {
-    sendMessage('synchronize', getPayloads().synchronize, async (response) => {
-      logger.log('focus message sent', response);
-      if (response !== null) {
-        if (bvidGet !== response.bvid) {
-          bvidGet = response.bvid;
-          if (bvidGet !== null) {
-            vid = await popup.showVideo(bvidGet);
-            if (vid !== null) {
-              docUrl = vid.pic;
-              aid = vid.aid;
-            }
-            logger.log(`aid:${aid}`);
-            logger.log(`dddd: ${docUrl}`);
-          }
+  if (uid) {
+    sendMessage('synchronize', getPayloads().synchronize, async (resp) => {
+      if (resp) {
+        if (resp.bvid && popup.video?.bvid !== resp.bvid) {
+          // 如果当前页面弹窗视频与同步信息不符，覆盖当前页面
+          await popup.showVideo(resp.bvid);
         }
-        modifyRemainingTime(response.remainingTime);
+        // modifyRemainingTime(resp.remainingTime);
       } else {
         popup.hidePopup();
       }

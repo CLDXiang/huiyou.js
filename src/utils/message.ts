@@ -1,4 +1,5 @@
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
+import logger from './logger';
 
 /**
  * `chrome.runtime.sendMessage` 的类型强化后的封装
@@ -11,6 +12,10 @@ export function sendMessage<K extends MessageType>(
   payload: MessagePayloadMap[K],
   callback?: (response: MessageResponseMap[K]) => void,
 ) {
+  logger.log('sendMessage', {
+    msgType,
+    payload,
+  });
   chrome.runtime.sendMessage(
     {
       type: msgType,

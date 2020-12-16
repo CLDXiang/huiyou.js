@@ -50,11 +50,15 @@ export class Popup {
   /** 视频标题 */
   private title: HTMLDivElement;
 
+  /** 视频数据 */
+  video: PlayVideoInfo | null = null;
+
   /** 导入视频数据 */
   async showVideo(bvid: string): Promise<PlayVideoInfo | null> {
     try {
       const video = await biliClient.getVideoInfo(bvid);
-      if (video !== null) {
+      if (video) {
+        this.video = video;
         this.title.innerText = video.title || '';
         addStyle(this.imgBox, {
           backgroundImage: `url(${video.pic}`,

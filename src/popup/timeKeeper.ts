@@ -13,14 +13,9 @@ export function shutTimeKeeping() {
   if (timeKeeper !== null) {
     timeKeeper.stop();
   }
-  // offVideo();
 }
 
 export function startTimekeeping(time?: number) {
+  shutTimeKeeping();
   timeKeeper = new TimeKeeper(time ?? DURATION, resetTimeKeeper);
-}
-
-export function modifyRemainingTime(time: number) {
-  // onVideo();
-  startTimekeeping(time); // 重新记时
 }
