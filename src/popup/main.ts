@@ -25,18 +25,6 @@ const bubble = new Bubble();
 /** 计时器 */
 let timeKeeper: TimeKeeper | null = null;
 
-// 处理关闭弹窗
-popup.onClose((e) => {
-  // TODO: 向后台同步信息关闭计时器
-  e.stopPropagation();
-  popup.hidePopup();
-  popup.resetPopup();
-  if (timeKeeper) {
-    timeKeeper.stop();
-    timeKeeper = null;
-  }
-});
-
 /** 获取消息 payload */
 const getPayloads = (): MessagePayloadMap => ({
   pauseVideo: {
@@ -47,6 +35,19 @@ const getPayloads = (): MessagePayloadMap => ({
   fetchVideo: undefined,
   synchronize: undefined,
   fetchVideoForcedly: undefined,
+  close: undefined,
+});
+
+// 处理关闭弹窗
+popup.onClose((e) => {
+  e.stopPropagation();
+  popup.hidePopup();
+  popup.resetPopup();
+  sendMessage('close', getPayloads().close);
+  if (timeKeeper) {
+    timeKeeper.stop();
+    timeKeeper = null;
+  }
 });
 
 /** 获取到后台推送的视频 */
@@ -136,6 +137,11 @@ const handleTabFocused = () => {
       }
     } else {
       popup.hidePopup();
+      popup.resetPopup();
+      if (timeKeeper) {
+        timeKeeper.stop();
+        timeKeeper = null;
+      }
     }
   });
 };

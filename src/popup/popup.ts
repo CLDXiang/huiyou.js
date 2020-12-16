@@ -38,7 +38,6 @@ export class Popup {
     });
 
     this.imgBox.addEventListener('mousemove', (e) => {
-      logger.log('mousemove');
       if (!this.mouseoverCoolDown) {
         this.mouseoverCoolDown = true;
         setTimeout(() => {
