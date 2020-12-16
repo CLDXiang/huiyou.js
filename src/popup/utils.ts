@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-param-reassign */
-import { CSSProperties } from 'vue';
+import { Properties } from 'csstype';
 
 /** 给元素添加样式 */
-export const addStyle = (ele: HTMLElement, style: CSSProperties) => {
+export const addStyle = (ele: HTMLElement, style: Properties<string | number>) => {
   Object.entries(style).forEach(([key, value]) => {
     ele.style[key as any] = value;
   });

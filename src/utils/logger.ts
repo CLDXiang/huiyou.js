@@ -13,11 +13,11 @@ const logger = {
   },
   /** 生产环境控制台会显示的信息 */
   info(...args: any[]) {
-    console.log(...args);
+    console.log('huiyou:', ...args);
   },
   /** 生产环境控制台会显示的报错信息 */
   error(...args: any[]) {
-    console.error(...args);
+    console.error('huiyou:', ...args);
   },
 };
 

@@ -4,9 +4,10 @@ import { MessagePayloadMap } from '@/types/message';
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
+import { Popup } from './popup';
 import './popup.less';
 import {
-  initialBox, initialHoverIcon, initialVideo, offHoverIcon, showVideo, offVideo,
+  initialHoverIcon, offHoverIcon,
 } from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping, startTimekeeping } from './timeKeeper';
 import { VideoProgress } from './videoProgress';
@@ -34,9 +35,10 @@ let docUrl = '';
 /** 视频进度监测器 */
 const videoProgress = new VideoProgress();
 
+// 初始化弹窗
+const popup = new Popup();
+
 // 初始化弹窗并隐藏
-initialBox();
-const imgBox = initialVideo();
 const imgIcon = initialHoverIcon();
 
 const getPayloads = (): MessagePayloadMap => ({
@@ -58,7 +60,7 @@ const pushVideo = () => {
       logger.log('show video');
       bvidGet = response.bvid;
       if (bvidGet !== null) {
-        vid = await showVideo(bvidGet);
+        vid = await popup.showVideo(bvidGet);
         if (vid !== null) {
           startTimekeeping();
           docUrl = vid.pic;
@@ -78,7 +80,7 @@ const directPush = () => {
       logger.log('direct show video');
       bvidGet = response.bvid;
       if (bvidGet !== null) {
-        vid = await showVideo(bvidGet);
+        vid = await popup.showVideo(bvidGet);
         if (vid !== null) {
           startTimekeeping();
           docUrl = vid.pic;
@@ -134,7 +136,7 @@ window.addEventListener('focus', () => {
         if (bvidGet !== response.bvid) {
           bvidGet = response.bvid;
           if (bvidGet !== null) {
-            vid = await showVideo(bvidGet);
+            vid = await popup.showVideo(bvidGet);
             if (vid !== null) {
               docUrl = vid.pic;
               aid = vid.aid;
@@ -145,7 +147,7 @@ window.addEventListener('focus', () => {
         }
         modifyRemainingTime(response.remainingTime);
       } else {
-        offVideo();
+        popup.hidePopup();
       }
     });
   }
@@ -162,7 +164,7 @@ window.addEventListener('load', () => {
         if (bvidGet !== response.bvid) {
           bvidGet = response.bvid;
           if (bvidGet !== null) {
-            vid = await showVideo(bvidGet);
+            vid = await popup.showVideo(bvidGet);
             if (vid !== null) {
               docUrl = vid.pic;
               aid = vid.aid;
@@ -173,35 +175,35 @@ window.addEventListener('load', () => {
         }
         modifyRemainingTime(response.remainingTime);
       } else {
-        offVideo();
+        popup.hidePopup();
       }
     });
   }
 });
 
-imgBox.addEventListener('mouseleave', () => {
-  logger.log(docUrl);
-  imgBox.style.backgroundImage = `url(${docUrl})`;
-  logger.log(`mouse leave${imgBox.style.backgroundImage}`);
-  imgBox.style.backgroundPositionX = '0px';
-  imgBox.style.backgroundPositionY = '10px';
-  imgBox.style.backgroundRepeat = 'no-repeat';
-  imgBox.style.backgroundSize = '100% 100%';
-});
+// imgBox.addEventListener('mouseleave', () => {
+//   logger.log(docUrl);
+//   imgBox.style.backgroundImage = `url(${docUrl})`;
+//   logger.log(`mouse leave${imgBox.style.backgroundImage}`);
+//   imgBox.style.backgroundPositionX = '0px';
+//   imgBox.style.backgroundPositionY = '10px';
+//   imgBox.style.backgroundRepeat = 'no-repeat';
+//   imgBox.style.backgroundSize = '100% 100%';
+// });
 
-imgBox.addEventListener('mouseover', (e) => {
-  if (aid !== null) {
-    logger.log(`over${e.screenX}`);
-    changeVideoShot(aid, imgBox, e.screenX);
-  }
-});
+// imgBox.addEventListener('mouseover', (e) => {
+//   if (aid !== null) {
+//     logger.log(`over${e.screenX}`);
+//     changeVideoShot(aid, imgBox, e.screenX);
+//   }
+// });
 
-imgBox.addEventListener('mousemove', (e) => {
-  if (aid !== null) {
-    logger.log(`move${e.screenX}`);
-    changeVideoShot(aid, imgBox, e.screenX);
-  }
-});
+// imgBox.addEventListener('mousemove', (e) => {
+//   if (aid !== null) {
+//     logger.log(`move${e.screenX}`);
+//     changeVideoShot(aid, imgBox, e.screenX);
+//   }
+// });
 
 imgIcon.addEventListener('mouseover', () => {
   imgIcon.src = imgHover;

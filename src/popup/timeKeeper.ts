@@ -1,5 +1,4 @@
 import { TIMEKEEPING } from '@/config';
-import { offVideo, onVideo } from '@/popup/showVideo';
 import TimeKeeper from '@/utils/timeKeeper';
 
 const { DURATION } = TIMEKEEPING;
@@ -14,7 +13,7 @@ export function shutTimeKeeping() {
   if (timeKeeper !== null) {
     timeKeeper.stop();
   }
-  offVideo();
+  // offVideo();
 }
 
 export function startTimekeeping(time?: number) {
@@ -22,6 +21,6 @@ export function startTimekeeping(time?: number) {
 }
 
 export function modifyRemainingTime(time: number) {
-  onVideo();
+  // onVideo();
   startTimekeeping(time); // 重新记时
 }

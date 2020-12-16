@@ -2,6 +2,26 @@
 @popup-width: 206px;
 @pic-height: 116px;
 
+.huiyou-hidden {
+  visibility: hidden;
+}
+
+.huiyou-popup-box {
+  width: @popup-width;
+  height: @pic-height + @stats-height;
+  background: #e7e7e7;
+  border-radius: 6px;
+  position: fixed;
+  right: 30px;
+  top: 80px;
+  z-index: 2333;
+  cursor: pointer;
+
+  &:hover .huiyou-title {
+    color: #00a1d6;
+  }
+}
+
 .huiyou-bubble {
   position: fixed;
   right: 30px;
@@ -23,23 +43,9 @@
   }
 }
 
-.huiyou-popup-box {
-  width: @popup-width;
-  height: @pic-height + @stats-height;
-  background: #e7e7e7;
-  border-radius: 6px;
-  position: fixed;
-  right: 30px;
-  top: 80px;
-  z-index: 2333;
-  cursor: pointer;
 
-  &:hover .huiyou-title {
-    color: #00a1d6;
-  }
-}
 
-.huiyou-pic-box {
+.huiyou-img-box {
   width: 100%;
   height: @pic-height;
   position: relative;
