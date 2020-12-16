@@ -211,7 +211,7 @@ imgIcon.addEventListener('mouseleave', () => {
   imgIcon.src = imgStatic;
 });
 
-imgIcon.addEventListener('mousedown', () => {
+imgIcon.addEventListener('click', () => {
   offHoverIcon();
   directPush();
 });

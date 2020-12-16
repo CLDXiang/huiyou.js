@@ -1,5 +1,6 @@
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
+import closeIcon from '@/assets/guanbi-1.svg';
 import imgStatic from '@/assets/simple-tag.png';
 import { biliClient } from './apis';
 import { addClass, addStyle } from './utils';
@@ -42,8 +43,8 @@ export function initialVideo() {
   // TODO: 绑定点击事件
   const closeIconEle = document.createElement('img');
   addClass(closeIconEle, 'huiyou-close-icon');
-  closeIconEle.src = imgStatic;
-  closeIconEle.width = 8;
+  closeIconEle.src = closeIcon;
+  closeIconEle.width = 10;
 
   imgBox.append(title, closeIconEle);
   if (popupBox !== null) {
