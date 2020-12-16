@@ -7,7 +7,6 @@ import { Bubble } from './bubble';
 import { Popup } from './popup';
 import './popup.less';
 import { VideoProgress } from './videoProgress';
-import { changeVideoShot } from './videoShot';
 
 logger.log('DEBUG_MODE enabled!');
 
@@ -152,27 +151,3 @@ window.addEventListener('load', () => {
   logger.log('window load');
   handleTabFocused();
 });
-
-// imgBox.addEventListener('mouseleave', () => {
-//   logger.log(docUrl);
-//   imgBox.style.backgroundImage = `url(${docUrl})`;
-//   logger.log(`mouse leave${imgBox.style.backgroundImage}`);
-//   imgBox.style.backgroundPositionX = '0px';
-//   imgBox.style.backgroundPositionY = '10px';
-//   imgBox.style.backgroundRepeat = 'no-repeat';
-//   imgBox.style.backgroundSize = '100% 100%';
-// });
-
-// imgBox.addEventListener('mouseover', (e) => {
-//   if (aid !== null) {
-//     logger.log(`over${e.screenX}`);
-//     changeVideoShot(aid, imgBox, e.screenX);
-//   }
-// });
-
-// imgBox.addEventListener('mousemove', (e) => {
-//   if (aid !== null) {
-//     logger.log(`move${e.screenX}`);
-//     changeVideoShot(aid, imgBox, e.screenX);
-//   }
-// });
