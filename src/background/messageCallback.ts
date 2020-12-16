@@ -10,7 +10,7 @@ import {
   recordVideoLocally,
 } from './recordVideo';
 import { addRecommendedHistory } from './storeRecommendedVideos';
-import { getRemainingTime, startTimekeeping } from './timekeeping';
+import { getRemainingTime, startTimekeeping, stopTimekeeping } from './timekeeping';
 
 export default function handleMessage(
   message: {
@@ -59,6 +59,9 @@ export default function handleMessage(
           sendResponse<'synchronize'>({ remainingTime, ...lastRecommendedVideo });
         }
       }
+      break;
+    case 'close':
+      stopTimekeeping();
       break;
     default:
       break;
