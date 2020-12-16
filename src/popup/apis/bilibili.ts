@@ -2,13 +2,13 @@
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import { biliRequest } from '@/apis';
 
-export async function GetVideoShot(aid: number): Promise<VideoShot | null> {
+export async function getVideoShot(bvid: string): Promise<VideoShot | null> {
   try {
-    const resp = await biliRequest.getVideoShot({ aid });
+    const resp = await biliRequest.getVideoShot({ bvid });
     const rawData = resp.data.data;
     if (rawData) {
       const parsedData: VideoShot = {
-        pvdata: rawData.pvdata,
+        pvData: rawData.pvdata,
         imgXLen: rawData.img_x_len,
         imgYLen: rawData.img_y_len,
         imgXSize: rawData.img_x_size,

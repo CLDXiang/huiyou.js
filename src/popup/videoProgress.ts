@@ -8,7 +8,7 @@ export class VideoProgress {
   }
 
   /** 视频 DOM 元素 */
-  private element: HTMLVideoElement | null = null;
+  element: HTMLVideoElement | null = null;
 
   /** 播放位图（秒） */
   private bitmap = new Uint8Array();

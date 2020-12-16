@@ -10,7 +10,7 @@ import {
   recordVideoLocally,
 } from './recordVideo';
 import { addRecommendedHistory } from './storeRecommendedVideos';
-import { getRemainingTime, startTimekeeping } from './timekeeping';
+import { getRemainingTime, startTimekeeping, stopTimekeeping } from './timekeeping';
 
 export default function handleMessage(
   message: {
@@ -25,6 +25,7 @@ export default function handleMessage(
       {
         const payload = message.payload as MessagePayloadMap['pauseVideo'];
         recordVideoLocally(payload);
+        sendResponse<'pauseVideo'>(null);
       }
       break;
     case 'fetchVideo':
@@ -53,11 +54,14 @@ export default function handleMessage(
         const remainingTime = getRemainingTime();
         const lastRecommendedVideo = getLastRecommendedVideo();
         if (remainingTime === null || lastRecommendedVideo === null) {
-          sendResponse(null);
+          sendResponse<'synchronize'>(null);
         } else {
           sendResponse<'synchronize'>({ remainingTime, ...lastRecommendedVideo });
         }
       }
+      break;
+    case 'close':
+      stopTimekeeping();
       break;
     default:
       break;

@@ -205,7 +205,7 @@ export interface PlayVideoInfo {
 }
 
 export interface VideoShot {
-  pvdata: string;
+  pvData: string;
   imgXLen: number;
   imgYLen: number;
   imgXSize: number;

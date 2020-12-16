@@ -9,7 +9,9 @@ export type MessageType =
   /** 强制推送视频 */
   | 'fetchVideoForcedly'
   /** 同步推荐信息的倒计时 */
-  | 'synchronize';
+  | 'synchronize'
+  /** 关闭推荐框 */
+  | 'close';
 
 /** 视频停止播放时的消息 */
 export interface PauseVideoMessagePayload {
@@ -27,6 +29,7 @@ export interface MessagePayloadMap {
   fetchVideo: undefined;
   fetchVideoForcedly: undefined;
   synchronize: undefined;
+  close: undefined;
 }
 
 /** 前端脚本向后端脚本通信的信息 */
@@ -46,8 +49,9 @@ export interface SynchronizeResponse extends FetchVideoMessageResponse {
 
 /** 后端脚本给前端脚本的响应的映射 */
 export interface MessageResponseMap {
-  pauseVideo: undefined;
+  pauseVideo: null;
   fetchVideo: FetchVideoMessageResponse | null;
   fetchVideoForcedly: FetchVideoMessageResponse | null;
   synchronize: SynchronizeResponse | null;
+  close: undefined;
 }
