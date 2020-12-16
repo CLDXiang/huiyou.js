@@ -3,6 +3,7 @@
 @pic-height: 116px;
 
 .huiyou-hidden {
+  opacity: 0;
   visibility: hidden;
 }
 
@@ -16,6 +17,8 @@
   top: 80px;
   z-index: 2333;
   cursor: pointer;
+
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
 
   &:hover .huiyou-title {
     color: #00a1d6;
