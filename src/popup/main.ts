@@ -26,6 +26,18 @@ const bubble = new Bubble();
 /** 计时器 */
 let timeKeeper: TimeKeeper | null = null;
 
+// 处理关闭弹窗
+popup.onClose((e) => {
+  // TODO: 向后台同步信息关闭计时器
+  e.stopPropagation();
+  popup.hidePopup();
+  popup.resetPopup();
+  if (timeKeeper) {
+    timeKeeper.stop();
+    timeKeeper = null;
+  }
+});
+
 /** 获取消息 payload */
 const getPayloads = (): MessagePayloadMap => ({
   pauseVideo: {
@@ -75,6 +87,7 @@ if (videoProgress.element && bvid) {
   videoProgress.element.addEventListener('pause', () => {
     logger.log('video paused');
     sendMessage('pauseVideo', getPayloads().pauseVideo, () => {
+      logger.log('DEBUG: get resp');
       fetchVideo();
     });
   });

@@ -20,14 +20,12 @@ export class Popup {
     addClass(this.title, 'huiyou-title');
     this.title.innerText = '';
 
-    // TODO: 绑定点击事件
-    /** 关闭按钮 */
-    const closeIconEle = document.createElement('img');
-    addClass(closeIconEle, 'huiyou-close-icon');
-    closeIconEle.src = closeIcon;
-    closeIconEle.width = 10;
+    this.closeIconEle = document.createElement('img');
+    addClass(this.closeIconEle, 'huiyou-close-icon');
+    this.closeIconEle.src = closeIcon;
+    this.closeIconEle.width = 10;
 
-    this.imgBox.append(this.title, closeIconEle);
+    this.imgBox.append(this.title, this.closeIconEle);
     // TODO: 视频预览
 
     /** 底部状态栏 */
@@ -46,6 +44,9 @@ export class Popup {
 
   /** 视频预览容器 */
   private imgBox: HTMLDivElement;
+
+  /** 关闭按钮 */
+  private closeIconEle: HTMLImageElement;
 
   /** 视频标题 */
   private title: HTMLDivElement;
@@ -97,5 +98,10 @@ export class Popup {
       background: '#fff',
     });
     this.popupBox.onclick = () => null;
+  }
+
+  /** 绑定关闭事件 */
+  onClose(callback: (e: MouseEvent) => void) {
+    this.closeIconEle.onclick = callback;
   }
 }

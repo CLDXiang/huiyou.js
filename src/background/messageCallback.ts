@@ -25,6 +25,7 @@ export default function handleMessage(
       {
         const payload = message.payload as MessagePayloadMap['pauseVideo'];
         recordVideoLocally(payload);
+        sendResponse<'pauseVideo'>(null);
       }
       break;
     case 'fetchVideo':
@@ -53,7 +54,7 @@ export default function handleMessage(
         const remainingTime = getRemainingTime();
         const lastRecommendedVideo = getLastRecommendedVideo();
         if (remainingTime === null || lastRecommendedVideo === null) {
-          sendResponse(null);
+          sendResponse<'synchronize'>(null);
         } else {
           sendResponse<'synchronize'>({ remainingTime, ...lastRecommendedVideo });
         }

@@ -46,7 +46,7 @@ export interface SynchronizeResponse extends FetchVideoMessageResponse {
 
 /** 后端脚本给前端脚本的响应的映射 */
 export interface MessageResponseMap {
-  pauseVideo: undefined;
+  pauseVideo: null;
   fetchVideo: FetchVideoMessageResponse | null;
   fetchVideoForcedly: FetchVideoMessageResponse | null;
   synchronize: SynchronizeResponse | null;
