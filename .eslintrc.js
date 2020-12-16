@@ -18,5 +18,6 @@ module.exports = {
     'implicit-arrow-linebreak': 0,
     'import/prefer-default-export': 0,
     'import/named': 0, // https://github.com/benmosher/eslint-plugin-import/issues/1883
+    'import/no-unresolved': [2, { 'ignore': ['csstype'] }]
   },
 };
