@@ -1,14 +1,10 @@
-import imgHover from '@/assets/simple-tag-hover.gif';
-import imgStatic from '@/assets/simple-tag.png';
 import { MessagePayloadMap } from '@/types/message';
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
+import { Bubble } from './bubble';
 import { Popup } from './popup';
 import './popup.less';
-import {
-  initialHoverIcon, offHoverIcon,
-} from './showVideo';
 import { modifyRemainingTime, shutTimeKeeping, startTimekeeping } from './timeKeeper';
 import { VideoProgress } from './videoProgress';
 import { changeVideoShot } from './videoShot';
@@ -35,11 +31,9 @@ let docUrl = '';
 /** 视频进度监测器 */
 const videoProgress = new VideoProgress();
 
-// 初始化弹窗
+// 初始化弹窗和气泡
 const popup = new Popup();
-
-// 初始化弹窗并隐藏
-const imgIcon = initialHoverIcon();
+const bubble = new Bubble();
 
 const getPayloads = (): MessagePayloadMap => ({
   pauseVideo: {
@@ -90,6 +84,8 @@ const directPush = () => {
     }
   });
 };
+// 绑定气泡事件
+bubble.handleClick(directPush);
 
 // 视频停止
 if (media !== null && uid !== null && bvid !== null) {
@@ -204,16 +200,3 @@ window.addEventListener('load', () => {
 //     changeVideoShot(aid, imgBox, e.screenX);
 //   }
 // });
-
-imgIcon.addEventListener('mouseover', () => {
-  imgIcon.src = imgHover;
-});
-
-imgIcon.addEventListener('mouseleave', () => {
-  imgIcon.src = imgStatic;
-});
-
-imgIcon.addEventListener('click', () => {
-  offHoverIcon();
-  directPush();
-});
