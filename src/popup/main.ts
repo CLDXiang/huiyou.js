@@ -61,7 +61,7 @@ const handleVideoFetched = async (bvidToShow?: string) => {
         timeKeeper.stop();
       }
       // 启动计时器
-      timeKeeper = new TimeKeeper(TIMEKEEPING.DURATION, popup.resetPopup);
+      timeKeeper = new TimeKeeper(TIMEKEEPING.DURATION, () => popup.resetPopup());
     }
   }
 };
@@ -69,6 +69,7 @@ const handleVideoFetched = async (bvidToShow?: string) => {
 /** 向后台拉取视频 */
 const fetchVideo = () => {
   sendMessage('fetchVideo', getPayloads().fetchVideo, async (resp) => {
+    logger.log('fetchVideo', { resp });
     handleVideoFetched(resp?.bvid);
   });
 };
@@ -131,7 +132,7 @@ const handleTabFocused = () => {
             timeKeeper.stop();
           }
           // 重启计时器
-          timeKeeper = new TimeKeeper(resp.remainingTime, popup.resetPopup);
+          timeKeeper = new TimeKeeper(resp.remainingTime, () => popup.resetPopup());
         }
       }
     } else {
