@@ -1,44 +1,27 @@
 import { TIMEKEEPING } from '@/config';
-import { addStyle } from './utils';
+import { offVideo, onVideo } from '@/popup/showVideo';
+import TimeKeeper from '@/utils/timeKeeper';
 
 const { DURATION } = TIMEKEEPING;
-let timerId = 0;
 
-function offVideo(popupBox: HTMLDivElement) {
-  if (popupBox !== null) {
-    addStyle(popupBox, { visibility: 'hidden' });
+let timeKeeper: TimeKeeper | null = null;
+
+function resetTimeKeeper() {
+  timeKeeper = null;
+}
+
+export function shutTimeKeeping() {
+  if (timeKeeper !== null) {
+    timeKeeper.stop();
   }
+  offVideo();
 }
 
-function onVideo(popupBox: HTMLDivElement) {
-  if (popupBox !== null) {
-    addStyle(popupBox, { visibility: 'visible' });
-  }
+export function startTimekeeping(time?: number) {
+  timeKeeper = new TimeKeeper(time ?? DURATION, resetTimeKeeper);
 }
 
-export function shutTimeKeeping(popupBox: HTMLDivElement) {
-  if (timerId > 0) {
-    clearTimeout(timerId);
-  }
-  offVideo(popupBox);
-}
-
-export function startTimekeeping(popupBox: HTMLDivElement) {
-  timerId = setTimeout(() => {
-    shutTimeKeeping(popupBox);
-  }, DURATION);
-}
-
-function start2Timekeeping(popupBox: HTMLDivElement, time: number) {
-  timerId = setTimeout(() => {
-    shutTimeKeeping(popupBox);
-  }, time);
-}
-export function modifyRemainingTime(time: number, popupBox: HTMLDivElement) {
-  if (time !== null) {
-    onVideo(popupBox);
-    start2Timekeeping(popupBox, time); // 重新记时
-  } else {
-    offVideo(popupBox);
-  }
+export function modifyRemainingTime(time: number) {
+  onVideo();
+  startTimekeeping(time); // 重新记时
 }

@@ -1,18 +1,40 @@
 import { PlayVideoInfo } from '@/types/video';
 import logger from '@/utils/logger';
-import closeIcon from '@/assets/guanbi-1.svg';
+import imgStatic from '@/assets/simple-tag.png';
 import { biliClient } from './apis';
-import { startTimekeeping } from './timeKeeper';
 import { addClass, addStyle } from './utils';
 
 let popupBox: HTMLDivElement | null = null;
+let hoverBox: HTMLDivElement | null = null;
+let hoverImg: HTMLImageElement | null = null;
 let imgBox: HTMLDivElement | null = null;
 let title: HTMLDivElement | null = null;
+
+export function offHoverIcon() {
+  if (hoverBox !== null) {
+    addStyle(hoverBox, {
+      visibility: 'hidden',
+    });
+  }
+}
+
+export function initialHoverIcon() {
+  const { body } = document;
+  logger.log('hover Icon');
+  hoverBox = document.createElement('div');
+  hoverImg = document.createElement('img');
+  hoverImg.src = imgStatic;
+  hoverBox.appendChild(hoverImg);
+  addClass(hoverBox, 'huiyou-bubble');
+  addClass(hoverImg, 'huiyou-bubble-img');
+  addStyle(hoverBox, { visibility: 'visible' });
+  body.appendChild(hoverBox);
+  return hoverImg;
+}
 
 export function initialVideo() {
   imgBox = document.createElement('div');
   addClass(imgBox, 'huiyou-pic-box');
-
   title = document.createElement('div');
   addClass(title, 'huiyou-title');
   title.innerText = '';
@@ -20,7 +42,7 @@ export function initialVideo() {
   // TODO: 绑定点击事件
   const closeIconEle = document.createElement('img');
   addClass(closeIconEle, 'huiyou-close-icon');
-  closeIconEle.src = closeIcon;
+  closeIconEle.src = imgStatic;
   closeIconEle.width = 8;
 
   imgBox.append(title, closeIconEle);
@@ -61,9 +83,26 @@ export async function showVideo(bvid: string): Promise<PlayVideoInfo | null> {
         window.location.href = `https://www.bilibili.com/video/${video.bvid}`;
       };
       addStyle(popupBox, { visibility: 'visible' });
-      startTimekeeping(popupBox);
     }
+    offHoverIcon();
   }
-
   return video;
+}
+
+export function offVideo() {
+  if (popupBox !== null) {
+    addStyle(popupBox, { visibility: 'hidden' });
+  }
+  if (hoverBox !== null) {
+    addStyle(hoverBox, { visibility: 'visible' });
+  }
+}
+
+export function onVideo() {
+  if (popupBox !== null) {
+    addStyle(popupBox, { visibility: 'visible' });
+  }
+  if (hoverBox !== null) {
+    addStyle(hoverBox, { visibility: 'hidden' });
+  }
 }

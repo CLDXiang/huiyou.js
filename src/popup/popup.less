@@ -2,6 +2,23 @@
 @popup-width: 206px;
 @pic-height: 116px;
 
+.huiyou-bubble {
+  position: fixed;
+  right: 30px;
+  top: 80px;
+  z-index: 4333;
+}
+
+.huiyou-bubble-img {
+  transition: all 1s ease-out;
+  opacity: 0.4;
+  width: 80px;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .huiyou-popup-box {
   width: @popup-width;
   height: @pic-height + @stats-height;
@@ -12,10 +29,10 @@
   top: 80px;
   z-index: 2333;
   cursor: pointer;
-}
 
-.huiyou-popup-box:hover .huiyou-title {
-  color: #00a1d6;
+  &:hover .huiyou-title {
+    color: #00a1d6;
+  }
 }
 
 .huiyou-pic-box {
