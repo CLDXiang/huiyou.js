@@ -8,6 +8,11 @@ const { VIDEO_CACHE_COUNT } = RECORD_VIDEO;
 const { FETCH_VIDEO_TIMEOUT } = FETCH_VIDEO;
 
 export default class VideoCandidate {
+  private timerId: number | undefined = undefined;
+
+  /** 缓存视频信息 */
+  private candidates = new Array<VideoType>();
+
   constructor() {
     this.fetchVideo();
   }
@@ -26,14 +31,12 @@ export default class VideoCandidate {
     return video ?? null;
   }
 
-  private timerId: number | undefined = undefined;
-
-  private candidates = new Array<VideoType>();
-
+  /** 预拉取视频 */
   private fetchVideo = async () => {
     clearTimeout(this.timerId);
     this.timerId = setTimeout(this.fetchVideo, FETCH_VIDEO_TIMEOUT);
 
+    // 缓存达到上限，不采取任何操作
     if (this.candidates.length >= VIDEO_CACHE_COUNT) {
       return;
     }

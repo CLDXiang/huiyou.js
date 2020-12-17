@@ -3,14 +3,10 @@
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
 import { postRecord } from './api';
-import {
-  getLastRecommendedVideo,
-  getRecommendedVideo,
-  getRecommendedVideoForcedly,
-  recordVideoLocally,
-} from './recordVideo';
+import VideoRecorder from './recordVideo';
 import { addRecommendedHistory } from './storeRecommendedVideos';
-import { getRemainingTime, startTimekeeping, stopTimekeeping } from './timekeeping';
+
+const videoRecorder = new VideoRecorder();
 
 export default function handleMessage(
   message: {
@@ -24,44 +20,41 @@ export default function handleMessage(
     case 'pauseVideo':
       {
         const payload = message.payload as MessagePayloadMap['pauseVideo'];
-        recordVideoLocally(payload);
+        videoRecorder.addVideo(payload);
         sendResponse<'pauseVideo'>(null);
       }
       break;
     case 'fetchVideo':
-      {
-        const recommendedVideo = getRecommendedVideo();
-        sendResponse<'fetchVideo'>(recommendedVideo);
-        if (recommendedVideo !== null) {
-          startTimekeeping();
-          postRecord(recommendedVideo.bvid);
-          addRecommendedHistory(recommendedVideo.bvid);
+      videoRecorder.getRecommendedVideo().then((video) => {
+        sendResponse<'fetchVideo'>(video);
+        if (video !== null) {
+          postRecord(video.bvid);
+          addRecommendedHistory(video.bvid);
         }
-      }
+      });
       break;
     case 'fetchVideoForcedly':
-      getRecommendedVideoForcedly().then((recommendedVideo) => {
-        sendResponse<'fetchVideoForcedly'>(recommendedVideo);
-        if (recommendedVideo !== null) {
-          startTimekeeping();
-          postRecord(recommendedVideo.bvid);
-          addRecommendedHistory(recommendedVideo.bvid);
+      videoRecorder.getRecommendedVideo(true).then((video) => {
+        sendResponse<'fetchVideoForcedly'>(video);
+        if (video !== null) {
+          postRecord(video.bvid);
+          addRecommendedHistory(video.bvid);
         }
       });
       break;
     case 'synchronize':
       {
-        const remainingTime = getRemainingTime();
-        const lastRecommendedVideo = getLastRecommendedVideo();
-        if (remainingTime === null || lastRecommendedVideo === null) {
+        const lastVideoAndRemainingTime = videoRecorder.getLastVideoAndRemainingTime();
+        if (lastVideoAndRemainingTime === null) {
           sendResponse<'synchronize'>(null);
         } else {
-          sendResponse<'synchronize'>({ remainingTime, ...lastRecommendedVideo });
+          const { video, remainingTime } = lastVideoAndRemainingTime;
+          sendResponse<'synchronize'>({ remainingTime, ...video });
         }
       }
       break;
     case 'close':
-      stopTimekeeping();
+      videoRecorder.stopTimekeeping();
       break;
     default:
       break;
