@@ -2,6 +2,7 @@
   <div class="header">
     <img
       src="@/assets/history-img.jpg"
+      alt="logo"
       class="logo"
     >
     <div
@@ -10,10 +11,12 @@
     >
       <img
         v-if="page === 'PushRecords'"
+        alt="历史记录-当前页面"
         src="@/assets/lishi.png"
       >
       <img
         v-else
+        alt="历史记录"
         src="@/assets/lishi2.png"
       >
       历史记录
@@ -23,12 +26,14 @@
       @click="setPage('HonorPage')"
     >
       <img
-        v-if="page !== 'HonorPage'"
-        src="@/assets/rongyubiaozhang2.png"
+        v-if="page === 'HonorPage'"
+        alt="徽章墙-当前页面"
+        src="@/assets/rongyubiaozhang.png"
       >
       <img
         v-else
-        src="@/assets/rongyubiaozhang.png"
+        alt="徽章墙"
+        src="@/assets/rongyubiaozhang2.png"
       >
       荣誉墙
     </div>
