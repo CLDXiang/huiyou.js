@@ -6,12 +6,16 @@
   >
     <div class="content">
       <div class="time">
-        <img src="@/assets/honor-time.png">
+        <img
+          src="@/assets/honor-time.png"
+          alt="时间"
+        >
         {{ createdAt.format('YYYY.MM.DD') }}
       </div>
       <div>
         <img
           class="img"
+          alt="视频封面"
           :src="videoInfo.pic"
         >
         <div class="title">
@@ -20,11 +24,17 @@
         <div class="info">
           <span>
             {{ createdAt.format('YYYY.MM.DD') }}
-            <img src="@/assets/honor-zuji.png">
+            <img
+              src="@/assets/honor-zuji.png"
+              alt="足迹"
+            >
           </span>
           <span>
             {{ videoInfo.owner.name }}
-            <img src="@/assets/honor-up.png">
+            <img
+              src="@/assets/honor-up.png"
+              alt="UP"
+            >
           </span>
         </div>
       </div>
@@ -170,7 +180,6 @@ export default defineComponent({
     height: 40px;
     text-overflow: -o-ellipsis-lastline;
     overflow: hidden;
-    text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;

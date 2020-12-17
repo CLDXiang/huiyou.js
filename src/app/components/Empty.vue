@@ -2,7 +2,10 @@
   <div
     class="empty"
   >
-    <img src="@/assets/empty.png">
+    <img
+      src="@/assets/empty.png"
+      alt="空白"
+    >
     <div class="empty__text">
       {{ emptyText }}
     </div>

@@ -16,6 +16,7 @@
     </div>
     <img
       class="img"
+      alt="视频封面"
       :src="videoInfo.pic"
     >
     <div
@@ -223,7 +224,6 @@ export default defineComponent({
           font-size: 13px;
           text-overflow: -o-ellipsis-lastline;
           overflow: hidden;
-          text-overflow: ellipsis;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           line-clamp: 2;
