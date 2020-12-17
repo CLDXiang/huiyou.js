@@ -16,6 +16,8 @@ export const RECORD_VIDEO = freeze({
   PLAYED_TIME_PROPORTION_LOWER_LIMIT: DEBUG_MODE ? 0 : 1 / 3,
   /** 视频记录个数下限 */
   VIDEO_COUNT_LOWER_LIMIT: DEBUG_MODE ? 1 : 5,
+  /** 缓存的预拉取视频数 */
+  VIDEO_CACHE_COUNT: 5,
 });
 
 /** 拉取视频模块常量 */
@@ -30,4 +32,6 @@ export const FETCH_VIDEO = freeze({
   START_PAGE: 400,
   /** 拉取视频的结束页数 */
   END_PAGE: 390,
+  /** 拉取视频的时间间隔/毫秒 */
+  FETCH_VIDEO_TIMEOUT: 60 * 1000,
 });
