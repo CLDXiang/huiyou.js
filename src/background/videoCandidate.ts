@@ -8,6 +8,11 @@ const { VIDEO_CACHE_COUNT } = RECORD_VIDEO;
 const { FETCH_VIDEO_TIMEOUT } = FETCH_VIDEO;
 
 export default class VideoCandidate {
+  private timerId: number | undefined = undefined;
+
+  /** 缓存视频信息 */
+  private candidates = new Array<VideoType>();
+
   constructor() {
     this.fetchVideo();
   }
@@ -25,11 +30,6 @@ export default class VideoCandidate {
 
     return video ?? null;
   }
-
-  private timerId: number | undefined = undefined;
-
-  /** 缓存视频信息 */
-  private candidates = new Array<VideoType>();
 
   /** 预拉取视频 */
   private fetchVideo = async () => {

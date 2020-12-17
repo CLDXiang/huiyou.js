@@ -17,6 +17,18 @@ export interface LastVideoAndRemainingTime {
 }
 
 export default class VideoRecorder {
+  /** 记录已播放的视频 */
+  private videoRecorded = new Set<string>();
+
+  /** 存储接下来要推送的视频 */
+  private videoCandidates = new VideoCandidate();
+
+  /** 存储上一次推送的视频 */
+  private lastVideoRecommended: FetchVideoMessageResponse | null = null;
+
+  /** 计时器 */
+  private timeKeeper: TimeKeeper | null = null;
+
   /** 向记录里添加视频 */
   addVideo(video: PauseVideoMessagePayload) {
     if (VideoRecorder.shouldRecordVideo(video)) {
@@ -66,18 +78,6 @@ export default class VideoRecorder {
       this.clearTimeKeeperAndVideo();
     }
   }
-
-  /** 记录已播放的视频 */
-  private videoRecorded = new Set<string>();
-
-  /** 存储接下来要推送的视频 */
-  private videoCandidates = new VideoCandidate();
-
-  /** 存储上一次推送的视频 */
-  private lastVideoRecommended: FetchVideoMessageResponse | null = null;
-
-  /** 计时器 */
-  private timeKeeper: TimeKeeper | null = null;
 
   /** 开始计时 */
   private startTimeKeeping() {
