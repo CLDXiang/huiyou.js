@@ -7,6 +7,9 @@
       v-for="record in records"
       :key="record.bvid"
       :bvid="record.bvid"
+      :title="record.title"
+      :pic="record.pic"
+      :author="record.author"
       :created-at="record.createdAt"
     />
   </div>

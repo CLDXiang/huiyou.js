@@ -16,6 +16,10 @@ export interface RecordItem {
 export interface HonorItemType {
   /** 视频 BV 号 */
   bvid: string;
+  /** 视频封面 */
+  pic: string;
+  author: string;
+  title: string;
   /** 记录创建时间 */
   createdAt: Dayjs;
 }

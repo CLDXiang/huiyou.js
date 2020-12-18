@@ -8,4 +8,5 @@ export const BACKEND = freeze({
   BASE_URL: API_URL,
   RECORD_URL: 'records',
   VIDEO_URL: 'videos',
+  CHART_URL: 'chart',
 });
