@@ -21,15 +21,12 @@ const getHonors: (req: {
   uid: string;
 }) => Promise<HonorItemType[]> = async ({ uid }) => {
   const resp = await recordRequest.getHonors({ uid });
-  // FIXME: 暂时只加载前十条数据
-  if (resp.data.length > 10) {
-    resp.data.length = 10;
-  }
   const parsedData = resp.data.map((item) => ({
     ...item,
     createdAt: dayjs(item.postime),
   }));
-  return parsedData;
+  // FIXME: 暂时只加载前十条数据
+  return parsedData.slice(0, 10);
 };
 
 const recordClient = {

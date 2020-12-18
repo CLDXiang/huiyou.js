@@ -3,8 +3,8 @@ import {
   CreateRecordRequestBody,
   SearchRecordsRequestParams,
   SearchRecordsResponseBody,
-  NextRecommendedVideoRequestParam,
-  HonorsResponseBody,
+  GetHonorsRequestParam,
+  GetHonorsResponseBody,
 } from '@/types/backendRequest';
 import { backendAxios, AxiosResponsePromise } from './utils';
 
@@ -24,7 +24,7 @@ export function searchRecords(
 
 /** 从后端获取用户榜单 */
 export function getHonors(
-  params: NextRecommendedVideoRequestParam,
-): AxiosResponsePromise<HonorsResponseBody> {
-  return backendAxios.get<HonorsResponseBody>(CHART_URL, { params });
+  params: GetHonorsRequestParam,
+): AxiosResponsePromise<GetHonorsResponseBody> {
+  return backendAxios.get<GetHonorsResponseBody>(CHART_URL, { params });
 }

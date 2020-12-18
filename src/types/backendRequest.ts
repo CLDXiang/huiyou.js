@@ -30,6 +30,25 @@ export type SearchRecordsResponseBody = Array<{
   time: number;
 }>;
 
+/** 荣誉墙请求体 */
+export interface GetHonorsRequestParam {
+  /** 用户 id */
+  uid: string;
+}
+
+/** 荣誉墙后端的响应体 */
+export type GetHonorsResponseBody = Array<{
+  /** 视频 BV 号，以 `BV` 开头 */
+  bvid: string;
+  /** 视频封面 */
+  pic: string;
+  author: string;
+  title: string;
+  postime: number;
+  toptime: number;
+}>
+
+/** 从后端获取推荐视频的请求体 */
 export interface NextRecommendedVideoRequestParam {
   /** 用户 id */
   uid: string;
@@ -53,15 +72,3 @@ export interface ReportEventsBody {
   /** 视频播放量 */
   play: string;
 }
-
-/** 荣誉墙后端的响应体 */
-export type HonorsResponseBody = Array<{
-  /** 视频 BV 号，以 `BV` 开头 */
-  bvid: string;
-  /** 视频封面 */
-  pic: string;
-  author: string;
-  title: string;
-  postime: number;
-  toptime: number;
-}>
