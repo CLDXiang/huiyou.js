@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="videoInfo.pic && videoInfo.title"
+    v-if="pic && title"
     class="wrap"
     @click="handleClickItem"
   >
@@ -16,10 +16,10 @@
         <img
           class="img"
           alt="视频封面"
-          :src="videoInfo.pic"
+          :src="pic"
         >
         <div class="title">
-          {{ videoInfo.title }}
+          {{ title }}
         </div>
         <div class="info">
           <span>
@@ -30,7 +30,7 @@
             >
           </span>
           <span>
-            {{ videoInfo.owner.name }}
+            {{ author }}
             <img
               src="@/assets/honor-up.png"
               alt="UP"
@@ -43,73 +43,19 @@
 </template>
 
 <script lang="ts">
-import dayjs, { Dayjs } from 'dayjs';
-import { defineComponent, PropType, ref } from 'vue';
-import { RecordDetailItem } from '../types';
-import { biliClient } from '../apis';
+import { Dayjs } from 'dayjs';
+import { defineComponent, PropType } from 'vue';
 
 export default defineComponent({
   props: {
     /** 视频 BV 号 */
     bvid: { type: String, required: true },
+    /** 视频封面 */
+    pic: { type: String, required: true },
+    author: { type: String, required: true },
+    title: { type: String, required: true },
     /** 创建时间 */
     createdAt: { type: Object as PropType<Dayjs>, required: true },
-    /** 首条数据 */
-    isFirst: { type: Boolean, required: true },
-    /** 是否展示在左边 */
-    isLeft: { type: Boolean, required: true },
-  },
-  setup(props) {
-    /** 视频信息 */
-    const videoInfo = ref<RecordDetailItem>({
-      bvid: props.bvid,
-      createdAt: props.createdAt,
-      aid: 0,
-      videos: 0,
-      tid: 0,
-      tname: '',
-      copyright: 1,
-      pic: '',
-      title: '',
-      pubdate: dayjs(),
-      ctime: dayjs(),
-      desc: '',
-      state: 0,
-      duration: 0,
-      owner: {
-        mid: 0,
-        name: '',
-        face: '',
-      },
-      stat: {
-        aid: 0,
-        view: 0,
-        danmaku: 0,
-        reply: 0,
-        favorite: 0,
-        coin: 0,
-        share: 0,
-        nowRank: 0,
-        hisRank: 0,
-        like: 0,
-        dislike: 0,
-        evaluation: '',
-      },
-      cid: 0,
-      pages: [],
-    });
-
-    // 获取视频信息
-    biliClient
-      .getVideoInfo({ bvid: props.bvid, createdAt: props.createdAt })
-      .then((data) => {
-        videoInfo.value = data;
-      });
-
-    return {
-      /** 视频信息 */
-      videoInfo,
-    };
   },
   methods: {
     /** 处理点击纪录项 */

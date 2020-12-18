@@ -54,7 +54,8 @@ export default defineComponent({
             }
           }
         }
-        this.records = records;
+        // FIXME: 仅显示七条数据，此后改为懒加载
+        this.records = records.slice(0, 7);
       });
     });
   },

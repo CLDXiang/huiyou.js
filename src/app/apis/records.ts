@@ -19,13 +19,15 @@ const getRecords: (req: {
 const getHonors: (req: {
   /** 用户 uid */
   uid: string;
-}) => Promise<HonorItemType[]> = async ({ uid }) => [
-  // FIXME: mock data
-  { bvid: 'BV1za411A7wR', createdAt: dayjs() },
-  { bvid: 'BV1za411A7wR', createdAt: dayjs() },
-  { bvid: 'BV1za411A7wR', createdAt: dayjs() },
-  { bvid: 'BV1za411A7wR', createdAt: dayjs() },
-];
+}) => Promise<HonorItemType[]> = async ({ uid }) => {
+  const resp = await recordRequest.getHonors({ uid });
+  const parsedData = resp.data.map((item) => ({
+    ...item,
+    createdAt: dayjs(item.postime),
+  }));
+  // FIXME: 暂时只加载前十条数据
+  return parsedData.slice(0, 10);
+};
 
 const recordClient = {
   /** 获取用户历史记录列表  */
