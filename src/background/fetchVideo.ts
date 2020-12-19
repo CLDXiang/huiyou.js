@@ -1,7 +1,7 @@
 /**
  * 从 B 站拉取视频
  */
-import { FETCH_VIDEO } from '@/config';
+import { FETCH_VIDEO, USER_OPTIONS } from '@/config';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
@@ -10,13 +10,8 @@ import axios from 'axios';
 import { getNextVideoFromBackend } from './api';
 import { getRecommendedHistory } from './storeRecommendedVideos';
 
-const {
-  AMOUNT_OF_PLAY_UPPER_LIMIT,
-  END_PAGE,
-  KEYWORD,
-  START_PAGE,
-  VIDEO_DURATION_LOWER_LIMIT,
-} = FETCH_VIDEO;
+const { END_PAGE, KEYWORD, START_PAGE } = FETCH_VIDEO;
+const { AMOUNT_OF_PLAY_UPPER_LIMIT, VIDEO_DURATION_LOWER_LIMIT } = USER_OPTIONS;
 
 function shouldGetVideoFromBackend(): boolean {
   return Math.random() < 0.5;

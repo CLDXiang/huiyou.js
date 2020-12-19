@@ -1,15 +1,14 @@
-import { RECORD_VIDEO, TIMEKEEPING } from '@/config';
+import { USER_OPTIONS } from '@/config';
 import { FetchVideoMessageResponse, PauseVideoMessagePayload } from '@/types/message';
 import TimeKeeper from '@/utils/timeKeeper';
 import VideoCandidate from './videoCandidate';
 
 const {
+  POPUP_DURATION,
   DURATION_UPPER_LIMIT,
   PLAYED_TIME_PROPORTION_LOWER_LIMIT,
   VIDEO_COUNT_LOWER_LIMIT,
-} = RECORD_VIDEO;
-
-const { DURATION } = TIMEKEEPING;
+} = USER_OPTIONS;
 
 export interface LastVideoAndRemainingTime {
   video: FetchVideoMessageResponse;
@@ -81,7 +80,7 @@ export default class VideoRecorder {
 
   /** 开始计时 */
   private startTimeKeeping() {
-    this.timeKeeper = new TimeKeeper(DURATION, this.clearTimeKeeperAndVideo);
+    this.timeKeeper = new TimeKeeper(POPUP_DURATION, this.clearTimeKeeperAndVideo);
   }
 
   /** 清空计时器和上次推送的视频 */
