@@ -59,12 +59,8 @@ class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
 
   /** 存储配置项 */
   private static setLocalStorage(newConfig: GeneralConfig) {
-    const config: GeneralConfig = {};
-    Object.entries(newConfig).forEach(([key, value]) => {
-      config[key] = value;
-    });
-    logger.log('set config: ', config);
-    chrome.storage.local.set(config);
+    logger.log('set config: ', newConfig);
+    chrome.storage.local.set(newConfig);
   }
 
   /** 重置所有配置项 */
