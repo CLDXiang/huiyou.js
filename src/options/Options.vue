@@ -34,10 +34,12 @@
           <up-down-pin
             :show-down="parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT > 0"
             @click-up="
-              options.AMOUNT_OF_PLAY_UPPER_LIMIT = parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT + 1
+              options.AMOUNT_OF_PLAY_UPPER_LIMIT =
+                parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT + 1
             "
             @click-down="
-              options.AMOUNT_OF_PLAY_UPPER_LIMIT = parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT - 1
+              options.AMOUNT_OF_PLAY_UPPER_LIMIT =
+                parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT - 1
             "
           />
         </span>
@@ -53,21 +55,26 @@
           <up-down-pin
             :show-down="parsedOptions.VIDEO_DURATION_LOWER_LIMIT > 0"
             @click-up="
-              options.VIDEO_DURATION_LOWER_LIMIT = parsedOptions.VIDEO_DURATION_LOWER_LIMIT + 1
+              options.VIDEO_DURATION_LOWER_LIMIT =
+                parsedOptions.VIDEO_DURATION_LOWER_LIMIT + 1
             "
             @click-down="
-              options.VIDEO_DURATION_LOWER_LIMIT = parsedOptions.VIDEO_DURATION_LOWER_LIMIT - 1
+              options.VIDEO_DURATION_LOWER_LIMIT =
+                parsedOptions.VIDEO_DURATION_LOWER_LIMIT - 1
             "
           />
         </span>
       </div>
-      <div class="option">
+      <div class="option checkbox">
         <span>是否开启链式推送</span>
         <span>
-          <input
-            v-model="options.USE_RECOMMEND_CHAIN"
-            type="checkbox"
-          >
+          <span :class="{ active: options.USE_RECOMMEND_CHAIN }">{{
+            options.USE_RECOMMEND_CHAIN ? '已开启' : '已关闭'
+          }}</span>
+          <checkbox
+            :active="options.USE_RECOMMEND_CHAIN"
+            @click="options.USE_RECOMMEND_CHAIN = !options.USE_RECOMMEND_CHAIN"
+          />
         </span>
       </div>
     </div>
@@ -119,7 +126,7 @@ import { DEFAULT_USER_OPTIONS } from '@/config';
 import logger from '@/utils/logger';
 import { DEBUG_MODE } from '@/utils/config';
 import { loadStorage, setStorage, parseStringToNumber } from './utils';
-import { UpDownPin } from './components';
+import { UpDownPin, Checkbox } from './components';
 
 // TODO: tips
 // TODO: 值验证
@@ -128,6 +135,7 @@ export default defineComponent({
   name: 'Options',
   components: {
     UpDownPin,
+    Checkbox,
   },
   setup() {
     /**
@@ -180,12 +188,16 @@ export default defineComponent({
     });
 
     if (DEBUG_MODE) {
-      watch(options, () => {
-        logger.log({
-          options: options.value,
-          parsedOptions: parsedOptions.value,
-        });
-      }, { deep: true });
+      watch(
+        options,
+        () => {
+          logger.log({
+            options: options.value,
+            parsedOptions: parsedOptions.value,
+          });
+        },
+        { deep: true },
+      );
     }
 
     // 读取 storage
@@ -293,13 +305,22 @@ body {
     align-items: center;
     justify-content: space-between;
     > span:last-child {
-      float: right;
       display: flex;
       align-items: center;
 
-      input[type='number'] {
+      > input[type='number'] {
         padding-right: 16px;
       }
+    }
+  }
+
+  > .option.checkbox > span:last-child > span {
+    color: #aaa;
+    font-weight: 600;
+    margin-right: 16px;
+
+    &.active {
+      color: @primary-color;
     }
   }
 }
