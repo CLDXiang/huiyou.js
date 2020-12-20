@@ -24,7 +24,7 @@
         </span>
       </div>
       <div class="option">
-        <span>推送视频播放量上限</span>
+        <span>推送视频播放量上限<tooltip>仅推送播放量不大于该值的视频（不含链式推送）</tooltip></span>
         <span>
           <input
             v-model="options.AMOUNT_OF_PLAY_UPPER_LIMIT"
@@ -45,7 +45,7 @@
         </span>
       </div>
       <div class="option">
-        <span>推送视频长度下限（秒）</span>
+        <span>推送视频时长下限（秒）<tooltip>仅推送时长不小于该值的视频</tooltip></span>
         <span>
           <input
             v-model="options.VIDEO_DURATION_LOWER_LIMIT"
@@ -66,7 +66,7 @@
         </span>
       </div>
       <div class="option checkbox">
-        <span>是否开启链式推送</span>
+        <span>是否开启链式推送<tooltip>如果其他用户喜欢他们被推送到的视频，这些视频偶尔也将出现在你的推送中</tooltip></span>
         <span>
           <span :class="{ active: options.USE_RECOMMEND_CHAIN }">{{
             options.USE_RECOMMEND_CHAIN ? '已开启' : '已关闭'
@@ -126,7 +126,7 @@ import { DEFAULT_USER_OPTIONS } from '@/config';
 import logger from '@/utils/logger';
 import { DEBUG_MODE } from '@/utils/config';
 import { loadStorage, setStorage, parseStringToNumber } from './utils';
-import { UpDownPin, Checkbox } from './components';
+import { UpDownPin, Checkbox, Tooltip } from './components';
 
 // TODO: tips
 // TODO: 值验证
@@ -136,6 +136,7 @@ export default defineComponent({
   components: {
     UpDownPin,
     Checkbox,
+    Tooltip,
   },
   setup() {
     /**
@@ -299,18 +300,24 @@ body {
 }
 
 .click-type-options {
+  .tooltip-icon {
+    align-self: flex-end;
+    margin-left: 8px;
+  }
+
   > .option {
     width: 400px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    > span:last-child {
+
+    > span {
       display: flex;
       align-items: center;
+    }
 
-      > input[type='number'] {
-        padding-right: 16px;
-      }
+    > span:last-child > input[type='number'] {
+      padding-right: 16px;
     }
   }
 

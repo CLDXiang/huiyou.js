@@ -43,7 +43,7 @@ export class Popup {
         setTimeout(() => {
           this.mouseoverCoolDown = false;
         }, 233);
-        this.showVideoShot(e.screenX);
+        this.showVideoShot(e.clientX);
       }
     });
 
@@ -130,7 +130,7 @@ export class Popup {
   }
 
   /** 显示快照 */
-  showVideoShot(screenX: number) {
+  showVideoShot(clientX: number) {
     if (!this.videoShot) {
       return;
     }
@@ -147,7 +147,7 @@ export class Popup {
     }
     /** 图片序号 */
     const idx = Math.floor(
-      ((screenX - imgBoxX) / imgBoxWidth) * (index.length || imgXLen), // 有时候 index 是空的！
+      ((clientX - imgBoxX) / imgBoxWidth) * (index.length || imgXLen), // 有时候 index 是空的！
     );
 
     /** 位于第几张图 */
