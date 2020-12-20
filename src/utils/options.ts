@@ -65,7 +65,7 @@ class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
 
 /**
  * 1. 配置项的值必须是原始类型，且不能为 `undefined`
- * 1. 调用者需保证不同配置项的键名不会冲突，否则值会发生覆盖
+ * 2. 调用者需保证不同配置项的键名不会冲突，否则值会发生覆盖
  */
 export function makeOption<T extends GeneralConfig>(config: T) {
   return new Proxy(config, new OptionHandler(config));

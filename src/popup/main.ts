@@ -2,15 +2,13 @@ import { MessagePayloadMap } from '@/types/message';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import TimeKeeper from '@/utils/timeKeeper';
-import { USER_OPTIONS } from '@/config';
+import { userOptions } from '@/config';
 import { Bubble } from './bubble';
 import { Popup } from './popup';
 import './popup.less';
 import { VideoProgress } from './videoProgress';
 
 logger.log('DEBUG_MODE enabled!');
-
-const { POPUP_DURATION } = USER_OPTIONS;
 
 // 页面初始化
 /** 当前页面 bv号 */
@@ -63,7 +61,7 @@ const handleVideoFetched = async (bvidToShow?: string) => {
         timeKeeper.stop();
       }
       // 启动计时器
-      timeKeeper = new TimeKeeper(POPUP_DURATION, () => popup.resetPopup());
+      timeKeeper = new TimeKeeper(userOptions.POPUP_DURATION, () => popup.resetPopup());
     }
   }
 };

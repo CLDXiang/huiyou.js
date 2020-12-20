@@ -21,7 +21,7 @@ export const FETCH_VIDEO = freeze({
   FETCH_VIDEO_TIMEOUT: 60 * 1000,
 });
 
-export const USER_OPTIONS = makeOption(freeze({
+export const DEFAULT_USER_OPTIONS = freeze({
   /** 弹框显示时长/ms */
   POPUP_DURATION: DEBUG_MODE ? 70000 : 7000,
   /** 推荐的视频的播放量上限 */
@@ -34,4 +34,7 @@ export const USER_OPTIONS = makeOption(freeze({
   PLAYED_TIME_PROPORTION_LOWER_LIMIT: DEBUG_MODE ? 0 : 1 / 3,
   /** 记录的视频的时长上限/秒 */
   DURATION_UPPER_LIMIT: 60 * 15,
-}));
+});
+
+/** 用户设置 */
+export const userOptions = makeOption(DEFAULT_USER_OPTIONS);

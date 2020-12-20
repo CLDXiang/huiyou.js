@@ -1,7 +1,7 @@
 /**
  * 从 B 站拉取视频
  */
-import { FETCH_VIDEO, USER_OPTIONS } from '@/config';
+import { FETCH_VIDEO, userOptions } from '@/config';
 import { FetchVideoResponseBody } from '@/types/bilibiliApiRequest';
 import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
@@ -11,7 +11,6 @@ import { getNextVideoFromBackend } from './api';
 import { getRecommendedHistory } from './storeRecommendedVideos';
 
 const { END_PAGE, KEYWORD, START_PAGE } = FETCH_VIDEO;
-const { AMOUNT_OF_PLAY_UPPER_LIMIT, VIDEO_DURATION_LOWER_LIMIT } = USER_OPTIONS;
 
 function shouldGetVideoFromBackend(): boolean {
   return Math.random() < 0.5;
@@ -53,8 +52,8 @@ function randomChoose(videos: VideoInfo[]): VideoInfo | null {
 function chooseAVideo(history: Set<string>, videos: VideoInfo[]): VideoInfo | null {
   const results = videos.filter(
     ({ bvid, play, duration }) =>
-      Number.parseInt(play, 10) <= AMOUNT_OF_PLAY_UPPER_LIMIT
-      && duration >= VIDEO_DURATION_LOWER_LIMIT
+      Number.parseInt(play, 10) <= userOptions.AMOUNT_OF_PLAY_UPPER_LIMIT
+      && duration >= userOptions.VIDEO_DURATION_LOWER_LIMIT
       && !history.has(bvid),
   );
   return randomChoose(results);

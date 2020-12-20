@@ -1,14 +1,7 @@
-import { USER_OPTIONS } from '@/config';
+import { userOptions } from '@/config';
 import { FetchVideoMessageResponse, PauseVideoMessagePayload } from '@/types/message';
 import TimeKeeper from '@/utils/timeKeeper';
 import VideoCandidate from './videoCandidate';
-
-const {
-  POPUP_DURATION,
-  DURATION_UPPER_LIMIT,
-  PLAYED_TIME_PROPORTION_LOWER_LIMIT,
-  VIDEO_COUNT_LOWER_LIMIT,
-} = USER_OPTIONS;
 
 export interface LastVideoAndRemainingTime {
   video: FetchVideoMessageResponse;
@@ -80,7 +73,7 @@ export default class VideoRecorder {
 
   /** 开始计时 */
   private startTimeKeeping() {
-    this.timeKeeper = new TimeKeeper(POPUP_DURATION, this.clearTimeKeeperAndVideo);
+    this.timeKeeper = new TimeKeeper(userOptions.POPUP_DURATION, this.clearTimeKeeperAndVideo);
   }
 
   /** 清空计时器和上次推送的视频 */
@@ -93,13 +86,13 @@ export default class VideoRecorder {
   private static shouldRecordVideo(video: PauseVideoMessagePayload): boolean {
     const { playedTime, totalDuration } = video;
     return (
-      totalDuration <= DURATION_UPPER_LIMIT
-      && playedTime >= totalDuration * PLAYED_TIME_PROPORTION_LOWER_LIMIT
+      totalDuration <= userOptions.DURATION_UPPER_LIMIT
+      && playedTime >= totalDuration * userOptions.PLAYED_TIME_PROPORTION_LOWER_LIMIT
     );
   }
 
   /** 判断当前是否满足推送视频的条件 */
   private shouldRecommendVideo(): boolean {
-    return this.videoRecorded.size >= VIDEO_COUNT_LOWER_LIMIT;
+    return this.videoRecorded.size >= userOptions.VIDEO_COUNT_LOWER_LIMIT;
   }
 }
