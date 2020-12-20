@@ -260,7 +260,7 @@ body {
   padding: 20px 80px;
   border-radius: 4px;
 
-  width: 100%;
+  width: 95%;
   max-width: 1000px;
 
   display: flex;
@@ -326,5 +326,34 @@ body {
 }
 
 .input-type-options {
+  input[type='number'] {
+    text-align: center;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    width: 70px;
+    height: 32px;
+    outline: none;
+    background-color: @primary-color;
+    font-size: 13px;
+    line-height: 33px;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 20px;
+
+    transition: all 0.3s ease-in;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 </style>
