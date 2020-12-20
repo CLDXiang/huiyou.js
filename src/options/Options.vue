@@ -10,6 +10,7 @@
           <input
             v-model="options.POPUP_DURATION"
             type="number"
+            min="0"
           >
         </span>
       </div>
@@ -19,6 +20,7 @@
           <input
             v-model="options.AMOUNT_OF_PLAY_UPPER_LIMIT"
             type="number"
+            min="0"
           >
         </span>
       </div>
@@ -28,6 +30,7 @@
           <input
             v-model="options.VIDEO_DURATION_LOWER_LIMIT"
             type="number"
+            min="0"
           >
         </span>
       </div>
@@ -44,18 +47,22 @@
         观看约 <input
           v-model="options.VIDEO_COUNT_LOWER_LIMIT"
           type="number"
+          min="1"
         > 个视频后展示气泡
       </div>
       <div>
         视频长度超过 <input
           v-model="options.DURATION_UPPER_LIMIT"
           type="number"
+          min="1"
         >s 不计入观看视频数量
       </div>
       <div>
         视频播放比例超过 <input
           v-model="options.PLAYED_TIME_PROPORTION_LOWER_LIMIT"
           type="number"
+          min="0"
+          max="99"
         >% 计入观看视频数量
       </div>
     </div>
@@ -71,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, ref } from 'vue';
 import { DEFAULT_USER_OPTIONS } from '@/config';
 import logger from '@/utils/logger';
 import { loadStorage, setStorage } from './utils/storage';
@@ -99,13 +106,6 @@ export default defineComponent({
       logger.log('设为默认值：', DEFAULT_USER_OPTIONS);
       options.value = { ...DEFAULT_USER_OPTIONS };
     };
-
-    watch(options, (newValue) => {
-      logger.log(DEFAULT_USER_OPTIONS);
-      logger.log(newValue);
-    }, {
-      deep: true,
-    });
 
     return {
       options,
