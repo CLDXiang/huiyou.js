@@ -39,6 +39,10 @@ class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
 
   /** 从本地存储中获取配置项，**必须在给 `this.cache` 赋值后调用** */
   private loadStorage() {
+    if (this.cache === undefined) {
+      throw new Error('`this.cache` must be assigned before loading storage');
+    }
+
     chrome.storage.local.get(Object.keys(this.cache), (items) => {
       logger.log('load options from storage: ', items);
       Object.entries(items).forEach(([key, value]) => {
@@ -48,7 +52,7 @@ class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
     });
   }
 
-  /** 存储配置项，键值不带前缀 */
+  /** 存储配置项 */
   private static setLocalStorage(newConfig: GeneralConfig) {
     const config: GeneralConfig = {};
     Object.entries(newConfig).forEach(([key, value]) => {
