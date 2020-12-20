@@ -2,7 +2,7 @@ import { MessagePayloadMap } from '@/types/message';
 import logger from '@/utils/logger';
 import { sendMessage } from '@/utils/message';
 import TimeKeeper from '@/utils/timeKeeper';
-import { TIMEKEEPING } from '@/config';
+import { userOptions } from '@/config';
 import { Bubble } from './bubble';
 import { Popup } from './popup';
 import './popup.less';
@@ -61,7 +61,7 @@ const handleVideoFetched = async (bvidToShow?: string) => {
         timeKeeper.stop();
       }
       // 启动计时器
-      timeKeeper = new TimeKeeper(TIMEKEEPING.DURATION, () => popup.resetPopup());
+      timeKeeper = new TimeKeeper(userOptions.POPUP_DURATION, () => popup.resetPopup());
     }
   }
 };
