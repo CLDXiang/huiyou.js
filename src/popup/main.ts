@@ -61,7 +61,7 @@ const handleVideoFetched = async (bvidToShow?: string) => {
         timeKeeper.stop();
       }
       // 启动计时器
-      timeKeeper = new TimeKeeper(userOptions.POPUP_DURATION, () => popup.resetPopup());
+      timeKeeper = new TimeKeeper(userOptions.POPUP_DURATION * 1000, () => popup.resetPopup());
     }
   }
 };
