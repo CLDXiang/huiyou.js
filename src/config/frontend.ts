@@ -37,4 +37,4 @@ export const DEFAULT_USER_OPTIONS = freeze({
 });
 
 /** 用户设置 */
-export const userOptions = makeOption(DEFAULT_USER_OPTIONS);
+export const userOptions = makeOption({ ...DEFAULT_USER_OPTIONS });
