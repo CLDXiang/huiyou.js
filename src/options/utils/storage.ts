@@ -9,9 +9,3 @@ export const loadStorage: (keys: string[]) => Promise<{
     resolve(items);
   });
 });
-
-/** 存储配置项 */
-export function setStorage(newConfig: Record<string, unknown>) {
-  logger.log('set config: ', newConfig);
-  chrome.storage.local.set(newConfig);
-}

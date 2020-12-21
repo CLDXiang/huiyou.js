@@ -125,7 +125,8 @@ import {
 import { DEFAULT_USER_OPTIONS } from '@/config';
 import logger from '@/utils/logger';
 import { DEBUG_MODE } from '@/utils/config';
-import { loadStorage, setStorage, parseStringToNumber } from './utils';
+import { setLocalStorage } from '@/utils/options';
+import { loadStorage, parseStringToNumber } from './utils';
 import { UpDownPin, Checkbox, Tooltip } from './components';
 
 // TODO: tips
@@ -210,7 +211,7 @@ export default defineComponent({
     /** 保存设置 */
     const saveOptions = () => {
       logger.log('保存设置：', parsedOptions.value);
-      setStorage(parsedOptions.value);
+      setLocalStorage(parsedOptions.value);
     };
 
     /** 设为默认值 */

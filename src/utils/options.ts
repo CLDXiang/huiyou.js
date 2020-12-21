@@ -2,6 +2,12 @@ import logger from './logger';
 
 export type GeneralOption = Record<string, unknown>;
 
+/** 存储配置项 */
+export function setLocalStorage(newOptions: GeneralOption) {
+  logger.log('set options: ', newOptions);
+  chrome.storage.local.set(newOptions);
+}
+
 export const RESET_OPTION = Symbol('Reset options');
 
 /** 代理配置项，使用本地存储，值必须是**原始类型**，且**不能为 `undefined`** */
@@ -38,7 +44,7 @@ class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
 
   set(_: T, p: keyof T, value: T[typeof p]) {
     this.cache[p] = value;
-    OptionHandler.setLocalStorage({ [p]: value });
+    setLocalStorage({ [p]: value });
     return true;
   }
 
@@ -57,16 +63,10 @@ class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
     });
   }
 
-  /** 存储配置项 */
-  private static setLocalStorage(newOptions: GeneralOption) {
-    logger.log('set options: ', newOptions);
-    chrome.storage.local.set(newOptions);
-  }
-
   /** 重置所有配置项 */
   private reset(defaultOptions: T) {
     this.cache = { ...defaultOptions };
-    OptionHandler.setLocalStorage(defaultOptions);
+    setLocalStorage(defaultOptions);
   }
 }
 
