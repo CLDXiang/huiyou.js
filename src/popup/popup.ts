@@ -1,6 +1,7 @@
 import closeIcon from '@/assets/close.svg';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import logger from '@/utils/logger';
+import { parsePlayedCount } from '@/utils/videoInfo';
 import { biliClient } from './apis';
 import { addClass, addStyle } from './utils';
 
@@ -50,7 +51,30 @@ export class Popup {
     /** 底部状态栏 */
     const statsBar = document.createElement('div');
     addClass(statsBar, 'huiyou-stats-bar');
-    // TODO: 加播放量
+
+    const playedCountBox = document.createElement('span');
+    addClass(playedCountBox, 'huiyou-played-count-box');
+
+    const playedCountIcon = document.createElement('i');
+    addClass(playedCountIcon, ['bilifont', 'bili-icon_shipin_bofangshu']);
+
+    this.playedCount = document.createElement('span');
+    addClass(this.playedCount, 'huiyou-played-count');
+
+    playedCountBox.append(playedCountIcon, this.playedCount);
+
+    const authorBox = document.createElement('span');
+    addClass(authorBox, 'huiyou-author-box');
+
+    const authorIcon = document.createElement('i');
+    addClass(authorIcon, ['bilifont', 'bili-icon_xinxi_UPzhu']);
+
+    this.author = document.createElement('span');
+    addClass(this.author, 'huiyou-author');
+
+    authorBox.append(authorIcon, this.author);
+
+    statsBar.append(playedCountBox, authorBox);
 
     this.popupBox.append(this.imgBox, statsBar);
 
@@ -70,6 +94,12 @@ export class Popup {
   /** 视频标题 */
   private title: HTMLDivElement;
 
+  /** 播放量 */
+  private playedCount: HTMLSpanElement;
+
+  /** Up 主 */
+  private author: HTMLSpanElement;
+
   /** 视频数据 */
   video: PlayVideoInfo | null = null;
 
@@ -85,13 +115,16 @@ export class Popup {
       const video = await biliClient.getVideoInfo(bvid);
       if (video) {
         this.video = video;
-        this.title.innerText = video.title || '';
+        this.title.innerText = video.title || '-';
         addStyle(this.imgBox, {
           background: `url(${video.pic}) 0 0 / 100% 100% no-repeat`,
         });
         this.popupBox.onclick = () => {
           window.location.href = `https://www.bilibili.com/video/${video.bvid}`;
         };
+        // TODO: hover up 主名字变蓝，点击进 up 主页
+        this.playedCount.innerText = parsePlayedCount(video.stat.view);
+        this.author.innerText = video.owner.name || '-';
         this.showPopup();
         this.videoShot = await biliClient.getVideoShot(bvid);
       } else {
@@ -117,7 +150,9 @@ export class Popup {
     this.hidePopup();
     this.video = null;
     this.videoShot = null;
-    this.title.innerText = '';
+    this.title.innerText = '-';
+    this.playedCount.innerText = '-';
+    this.author.innerText = '-';
     addStyle(this.imgBox, {
       background: '#fff',
     });
