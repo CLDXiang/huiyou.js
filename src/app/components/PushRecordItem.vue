@@ -92,6 +92,8 @@ import { defineComponent, PropType, ref } from 'vue';
 import { RecordDetailItem } from '../types';
 import { biliClient } from '../apis';
 
+// TODO: 播放量格式化：@/src/videoInfo
+
 export default defineComponent({
   props: {
     /** 视频 BV 号 */
@@ -258,7 +260,7 @@ export default defineComponent({
         .desc {
           color: #99a2aa;
           margin-top: 10px;
-          height: 40px;
+          // height: 40px;
           font-size: 13px;
           text-overflow: -o-ellipsis-lastline;
           overflow: hidden;
