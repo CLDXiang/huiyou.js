@@ -73,7 +73,9 @@ export default class VideoRecorder {
 
   /** 开始计时 */
   private startTimeKeeping() {
-    this.timeKeeper = new TimeKeeper(userOptions.POPUP_DURATION, this.clearTimeKeeperAndVideo);
+    this.timeKeeper = new TimeKeeper(
+      userOptions.POPUP_DURATION * 1000, this.clearTimeKeeperAndVideo,
+    );
   }
 
   /** 清空计时器和上次推送的视频 */
@@ -87,7 +89,7 @@ export default class VideoRecorder {
     const { playedTime, totalDuration } = video;
     return (
       totalDuration <= userOptions.DURATION_UPPER_LIMIT
-      && playedTime >= totalDuration * userOptions.PLAYED_TIME_PROPORTION_LOWER_LIMIT
+      && playedTime >= totalDuration * (userOptions.PLAYED_TIME_PROPORTION_LOWER_LIMIT / 100)
     );
   }
 

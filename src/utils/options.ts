@@ -1,14 +1,22 @@
 import logger from './logger';
 
-type GeneralConfig = Record<string, unknown>;
+export type GeneralOption = Record<string, unknown>;
+
+/** 存储配置项 */
+export function setLocalStorage(newOptions: GeneralOption) {
+  logger.log('set options: ', newOptions);
+  chrome.storage.local.set(newOptions);
+}
+
+export const RESET_OPTION = Symbol('Reset options');
 
 /** 代理配置项，使用本地存储，值必须是**原始类型**，且**不能为 `undefined`** */
-class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
+class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
   /** 配置项的缓存 */
   private cache: T;
 
-  constructor(config: T) {
-    this.cache = { ...config };
+  constructor(options: T) {
+    this.cache = { ...options };
 
     this.loadStorage();
 
@@ -27,13 +35,16 @@ class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
     });
   }
 
-  get(_: T, p: keyof T) {
+  get(target: T, p: keyof T | typeof RESET_OPTION) {
+    if (p === RESET_OPTION) {
+      return () => this.reset(target);
+    }
     return this.cache[p];
   }
 
   set(_: T, p: keyof T, value: T[typeof p]) {
     this.cache[p] = value;
-    OptionHandler.setLocalStorage({ [p]: value });
+    setLocalStorage({ [p]: value });
     return true;
   }
 
@@ -48,25 +59,26 @@ class OptionHandler<T extends GeneralConfig> implements ProxyHandler<T> {
       Object.entries(items).forEach(([key, value]) => {
         this.cache[key as keyof T] = value;
       });
-      logger.log('after loading config: ', this.cache);
+      logger.log('after loading options: ', this.cache);
     });
   }
 
-  /** 存储配置项 */
-  private static setLocalStorage(newConfig: GeneralConfig) {
-    const config: GeneralConfig = {};
-    Object.entries(newConfig).forEach(([key, value]) => {
-      config[key] = value;
-    });
-    logger.log('set config: ', config);
-    chrome.storage.local.set(config);
+  /** 重置所有配置项 */
+  private reset(defaultOptions: T) {
+    this.cache = { ...defaultOptions };
+    setLocalStorage(defaultOptions);
   }
+}
+
+type UserOptions<T> = T & {
+  [RESET_OPTION]: () => void;
 }
 
 /**
  * 1. 配置项的值必须是原始类型，且不能为 `undefined`
  * 2. 调用者需保证不同配置项的键名不会冲突，否则值会发生覆盖
  */
-export function makeOption<T extends GeneralConfig>(config: T) {
-  return new Proxy(config, new OptionHandler(config));
+export function makeOption<T extends GeneralOption>(options: T): UserOptions<T> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return new Proxy(options, new OptionHandler(options)) as any;
 }

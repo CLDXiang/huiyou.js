@@ -21,20 +21,22 @@ export const FETCH_VIDEO = freeze({
   FETCH_VIDEO_TIMEOUT: 60 * 1000,
 });
 
-export const DEFAULT_USER_OPTIONS = freeze({
-  /** 弹框显示时长/ms */
-  POPUP_DURATION: DEBUG_MODE ? 70000 : 7000,
+export const DEFAULT_USER_OPTIONS = {
   /** 推荐的视频的播放量上限 */
   AMOUNT_OF_PLAY_UPPER_LIMIT: 0,
+  /** 记录的视频的时长上限/秒 */
+  DURATION_UPPER_LIMIT: 60 * 15,
+  /** 记录的视频的播放比例下限（百分比） */
+  PLAYED_TIME_PROPORTION_LOWER_LIMIT: DEBUG_MODE ? 0 : 33,
+  /** 弹框显示时长/秒 */
+  POPUP_DURATION: DEBUG_MODE ? 70 : 7,
+  /** 是否使用 “推荐链” */
+  USE_RECOMMEND_CHAIN: true,
   /** 推荐的视频的长度下限/秒 */
   VIDEO_DURATION_LOWER_LIMIT: 60,
   /** 至少记录几个视频后可以推送视频 */
   VIDEO_COUNT_LOWER_LIMIT: DEBUG_MODE ? 1 : 5,
-  /** 记录的视频的播放比例下限 */
-  PLAYED_TIME_PROPORTION_LOWER_LIMIT: DEBUG_MODE ? 0 : 1 / 3,
-  /** 记录的视频的时长上限/秒 */
-  DURATION_UPPER_LIMIT: 60 * 15,
-});
+};
 
 /** 用户设置 */
-export const userOptions = makeOption(DEFAULT_USER_OPTIONS);
+export const userOptions = makeOption({ ...DEFAULT_USER_OPTIONS });
