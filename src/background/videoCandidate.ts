@@ -31,6 +31,10 @@ export default class VideoCandidate {
     return video ?? null;
   }
 
+  private get cachedVideos(): string[] {
+    return this.candidates.map(({ bvid }) => bvid);
+  }
+
   /** 预拉取视频 */
   private fetchVideo = async () => {
     clearTimeout(this.timerId);
@@ -41,7 +45,7 @@ export default class VideoCandidate {
       return;
     }
 
-    const video = await getVideo();
+    const video = await getVideo(this.cachedVideos);
     if (video !== null) {
       this.candidates.push(video);
     }

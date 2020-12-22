@@ -81,7 +81,9 @@ async function getVideoRecursively(
 /**
  * 获取一个视频的信息，成功则返回视频信息，失败返回 `null`
  */
-export default async function getVideo(): Promise<FetchVideoMessageResponse | null> {
+export default async function getVideo(
+  cachedVideo: string[],
+): Promise<FetchVideoMessageResponse | null> {
   const uid = await getUid();
   if (uid === null) {
     return null;
@@ -93,6 +95,7 @@ export default async function getVideo(): Promise<FetchVideoMessageResponse | nu
   }
 
   const history = await getRecommendedHistory();
+  cachedVideo.forEach((video) => history.add(video));
   const video = await getVideoRecursively(history, START_PAGE);
   if (video === null) {
     return null;
