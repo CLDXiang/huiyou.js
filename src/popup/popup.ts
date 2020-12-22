@@ -121,6 +121,8 @@ export class Popup {
         });
         this.popupBox.onclick = () => {
           window.location.href = `https://www.bilibili.com/video/${video.bvid}`;
+          // 关闭
+          this.closeIconEle.click();
         };
         // TODO: hover up 主名字变蓝，点击进 up 主页
         this.playedCount.innerText = parsePlayedCount(video.stat.view);
