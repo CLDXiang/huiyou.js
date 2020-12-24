@@ -1,7 +1,8 @@
 import logger from '@/utils/logger';
-import imgStatic from '@/assets/simple-tag.png';
-import imgHover from '@/assets/simple-tag-hover.gif';
 import { addClass } from './utils';
+
+const imgStatic = chrome.runtime.getURL('img/simple-tag.png');
+const imgHover = chrome.runtime.getURL('img/simple-tag-hover.gif');
 
 /** 页面推送气泡 */
 export class Bubble {
