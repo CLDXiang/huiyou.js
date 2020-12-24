@@ -27,6 +27,9 @@
       "css": ["css/popup.css"]
     }
   ],
+  "web_accessible_resources": [
+    "img/*"
+  ],
   "options_page": "options.html",
   "manifest_version": 2
 }
