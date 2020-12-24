@@ -3,7 +3,7 @@
     class="empty"
   >
     <img
-      src="@/assets/empty.png"
+      src="img/empty.png"
       alt="空白"
     >
     <div class="empty__text">

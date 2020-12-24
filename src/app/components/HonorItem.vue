@@ -7,7 +7,7 @@
     <div class="content">
       <div class="time">
         <img
-          src="@/assets/honor-time.png"
+          src="img/honor-time.png"
           alt="时间"
         >
         {{ createdAt.format('YYYY.MM.DD') }}
@@ -25,14 +25,14 @@
           <span>
             {{ createdAt.format('YYYY.MM.DD') }}
             <img
-              src="@/assets/honor-zuji.png"
+              src="img/honor-zuji.png"
               alt="足迹"
             >
           </span>
           <span>
             {{ author }}
             <img
-              src="@/assets/honor-up.png"
+              src="img/honor-up.png"
               alt="UP"
             >
           </span>
