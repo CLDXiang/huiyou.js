@@ -1,9 +1,10 @@
-import closeIcon from '@/assets/close.svg';
 import { PlayVideoInfo, VideoShot } from '@/types/video';
 import logger from '@/utils/logger';
 import { parsePlayedCount } from '@/utils/videoInfo';
 import { biliClient } from './apis';
 import { addClass, addStyle } from './utils';
+
+const closeIcon = chrome.runtime.getURL('img/close.svg');
 
 /** 页面弹窗 */
 export class Popup {

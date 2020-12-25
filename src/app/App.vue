@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <img
-      src="@/assets/history-img.jpg"
+      src="img/history-img.jpg"
       alt="logo"
       class="logo"
     >
