@@ -12,6 +12,14 @@ export interface RecordItem {
   isLast?: boolean;
 }
 
+/** 用于存储的基本历史记录项 */
+export interface RawRecordItem {
+  /** 视频 BV 号，以 `BV` 开头 */
+  bvid: string;
+  /** 推送视频的时间 */
+  createdAt: number;
+}
+
 /** 包含视频信息的历史记录项 */
 export interface RecordDetailItem extends RecordItem {
   /** 视频 AV 号 */

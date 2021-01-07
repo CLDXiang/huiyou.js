@@ -1,7 +1,5 @@
-import { biliRequest, recordRequest } from '@/apis';
+import { biliRequest } from '@/apis';
 import { PlayVideoInfo } from '@/types/video';
-import { getUid } from '@/utils/cookies';
-import logger from '@/utils/logger';
 
 interface BvidAndPlay {
   bvid: string;
@@ -33,30 +31,5 @@ async function getVideoInfo(bvid: string): Promise<PlayVideoInfo | null> {
     return response.data.data;
   } catch (error) {
     return null;
-  }
-}
-
-/** 向后端报告推送的视频 */
-export async function postRecord(bvid: string) {
-  const uid = await getUid();
-  if (uid === null) {
-    return;
-  }
-
-  const video = await getVideoInfo(bvid);
-  if (video === null) {
-    return;
-  }
-
-  try {
-    await recordRequest.postRecord({
-      uid,
-      bvid,
-      pic: video.pic,
-      author: video.owner.name,
-      title: video.title,
-    });
-  } catch (error) {
-    logger.error(`Error: Can't post records to backend - ${error}`);
   }
 }

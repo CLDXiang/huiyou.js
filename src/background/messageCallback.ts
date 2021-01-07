@@ -2,7 +2,6 @@
  * 处理 Content 发来的信息
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
-import { postRecord } from './api';
 import VideoRecorder from './recordVideo';
 import { addRecommendedHistory } from './storeRecommendedVideos';
 
@@ -28,7 +27,6 @@ export default function handleMessage(
       videoRecorder.getRecommendedVideo().then((video) => {
         sendResponse<'fetchVideo'>(video);
         if (video !== null) {
-          postRecord(video.bvid);
           addRecommendedHistory(video.bvid);
         }
       });
@@ -37,7 +35,6 @@ export default function handleMessage(
       videoRecorder.getRecommendedVideo(true).then((video) => {
         sendResponse<'fetchVideoForcedly'>(video);
         if (video !== null) {
-          postRecord(video.bvid);
           addRecommendedHistory(video.bvid);
         }
       });
