@@ -30,24 +30,6 @@ export type SearchRecordsResponseBody = Array<{
   time: number;
 }>;
 
-/** 荣誉墙请求体 */
-export interface GetHonorsRequestParam {
-  /** 用户 id */
-  uid: string;
-}
-
-/** 荣誉墙后端的响应体 */
-export type GetHonorsResponseBody = Array<{
-  /** 视频 BV 号，以 `BV` 开头 */
-  bvid: string;
-  /** 视频封面 */
-  pic: string;
-  author: string;
-  title: string;
-  postime: number;
-  toptime: number;
-}>
-
 /** 交互类型定义 */
 export type VideoEvent = 'longEnough' | 'like' | 'coin' | 'favorite' | 'share';
 

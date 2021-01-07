@@ -1,6 +1,6 @@
 import { recordRequest } from '@/apis';
 import dayjs from 'dayjs';
-import { RecordItem, HonorItemType } from '../types';
+import { RecordItem } from '../types';
 
 /** 获取用户历史记录列表  */
 const getRecords: (req: {
@@ -15,25 +15,9 @@ const getRecords: (req: {
   return parsedData;
 };
 
-/** 获取用户荣誉墙列表 */
-const getHonors: (req: {
-  /** 用户 uid */
-  uid: string;
-}) => Promise<HonorItemType[]> = async ({ uid }) => {
-  const resp = await recordRequest.getHonors({ uid });
-  const parsedData = resp.data.map((item) => ({
-    ...item,
-    createdAt: dayjs(item.postime),
-  }));
-  // FIXME: 暂时只加载前十条数据
-  return parsedData.slice(0, 10);
-};
-
 const recordClient = {
   /** 获取用户历史记录列表  */
   getRecords,
-  /** 获取用户荣誉墙列表 */
-  getHonors,
 };
 
 export default recordClient;
