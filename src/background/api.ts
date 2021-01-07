@@ -1,6 +1,4 @@
-import { biliRequest, recordRequest, videoRequest } from '@/apis';
-import { ReportEventsBody } from '@/types/backendRequest';
-import { FetchVideoMessageResponse } from '@/types/message';
+import { biliRequest, recordRequest } from '@/apis';
 import { PlayVideoInfo } from '@/types/video';
 import { getUid } from '@/utils/cookies';
 import logger from '@/utils/logger';
@@ -24,26 +22,6 @@ export async function getBvidAndPlay(aid: string): Promise<BvidAndPlay | null> {
     return null;
   } catch (error) {
     // TODO: 错误日志
-    return null;
-  }
-}
-
-/** 从后端获取推荐的视频 */
-export async function getNextVideoFromBackend(
-  uid: string,
-): Promise<FetchVideoMessageResponse | null> {
-  try {
-    const response = await videoRequest.getNextRecommendedVideo({ uid });
-    if (response.status === 200) {
-      const bvid = response.data?.bvid;
-      if (bvid !== undefined) {
-        return { bvid };
-      }
-    }
-
-    return null;
-  } catch (error) {
-    logger.error(`Error: Can't get video from backend - ${error}`);
     return null;
   }
 }
@@ -80,13 +58,5 @@ export async function postRecord(bvid: string) {
     });
   } catch (error) {
     logger.error(`Error: Can't post records to backend - ${error}`);
-  }
-}
-
-export async function reportEvents(body: ReportEventsBody) {
-  try {
-    await videoRequest.reportEvents(body);
-  } catch (error) {
-    logger.error(`Error: Can't report events to backend - ${error}`);
   }
 }

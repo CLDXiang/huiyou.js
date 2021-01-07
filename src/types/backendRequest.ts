@@ -48,18 +48,6 @@ export type GetHonorsResponseBody = Array<{
   toptime: number;
 }>
 
-/** 从后端获取推荐视频的请求体 */
-export interface NextRecommendedVideoRequestParam {
-  /** 用户 id */
-  uid: string;
-}
-
-/** 从后端获取推荐视频的响应体 */
-export type NextRecommendedVideoResponseBody = null | {
-  /** 视频 BV 号，以 `BV` 开头 */
-  bvid: string;
-};
-
 /** 交互类型定义 */
 export type VideoEvent = 'longEnough' | 'like' | 'coin' | 'favorite' | 'share';
 

@@ -4,13 +4,13 @@
 export type MessageType =
   /** 停止播放视频 */
   | 'pauseVideo'
-  /** 给出推荐视频 */
+  /** 给出推送视频 */
   | 'fetchVideo'
   /** 强制推送视频 */
   | 'fetchVideoForcedly'
-  /** 同步推荐信息的倒计时 */
+  /** 同步推送信息的倒计时 */
   | 'synchronize'
-  /** 关闭推荐框 */
+  /** 关闭推送框 */
   | 'close';
 
 /** 视频停止播放时的消息 */
