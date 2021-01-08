@@ -7,14 +7,9 @@ import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
 import { getUid } from '@/utils/cookies';
 import axios from 'axios';
-import { getNextVideoFromBackend } from './api';
 import { getRecommendedHistory } from './storeRecommendedVideos';
 
 const { END_PAGE, KEYWORD, START_PAGE } = FETCH_VIDEO;
-
-function shouldGetVideoFromBackend(): boolean {
-  return Math.random() < 0.5;
-}
 
 /**
  * 从 VLOG 区爬取视频数据
@@ -87,11 +82,6 @@ export default async function getVideo(
   const uid = await getUid();
   if (uid === null) {
     return null;
-  }
-
-  if (shouldGetVideoFromBackend()) {
-    const video = await getNextVideoFromBackend(uid);
-    if (video !== null) return video;
   }
 
   const history = await getRecommendedHistory();

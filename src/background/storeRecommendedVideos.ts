@@ -1,4 +1,4 @@
-/** 获取已推荐过的视频的历史记录 */
+/** 获取已推送过的视频的历史记录 */
 export function getRecommendedHistory(): Promise<Set<string>> {
   return new Promise((resolve) => {
     chrome.storage.local.get('history', ({ history = [] }) => {

@@ -24,7 +24,7 @@
         </span>
       </div>
       <div class="option">
-        <span>推送视频播放量上限<tooltip>仅推送播放量不大于该值的视频（不含链式推送）</tooltip></span>
+        <span>推送视频播放量上限<tooltip>仅推送播放量不大于该值的视频</tooltip></span>
         <span>
           <input
             v-model="options.AMOUNT_OF_PLAY_UPPER_LIMIT"
@@ -62,18 +62,6 @@
               options.VIDEO_DURATION_LOWER_LIMIT =
                 parsedOptions.VIDEO_DURATION_LOWER_LIMIT - 1
             "
-          />
-        </span>
-      </div>
-      <div class="option checkbox">
-        <span>是否开启链式推送<tooltip>如果其他用户喜欢他们被推送到的视频，这些视频偶尔也将出现在你的推送中</tooltip></span>
-        <span>
-          <span :class="{ active: options.USE_RECOMMEND_CHAIN }">{{
-            options.USE_RECOMMEND_CHAIN ? '已开启' : '已关闭'
-          }}</span>
-          <checkbox
-            :active="options.USE_RECOMMEND_CHAIN"
-            @click="options.USE_RECOMMEND_CHAIN = !options.USE_RECOMMEND_CHAIN"
           />
         </span>
       </div>
@@ -127,7 +115,7 @@ import logger from '@/utils/logger';
 import { DEBUG_MODE } from '@/utils/config';
 import { setLocalStorage } from '@/utils/options';
 import { loadStorage, parseStringToNumber } from './utils';
-import { UpDownPin, Checkbox, Tooltip } from './components';
+import { UpDownPin, Tooltip } from './components';
 
 // TODO: tips
 // TODO: 值验证
@@ -136,7 +124,6 @@ export default defineComponent({
   name: 'Options',
   components: {
     UpDownPin,
-    Checkbox,
     Tooltip,
   },
   setup() {
@@ -156,7 +143,6 @@ export default defineComponent({
         DURATION_UPPER_LIMIT,
         PLAYED_TIME_PROPORTION_LOWER_LIMIT,
         POPUP_DURATION,
-        USE_RECOMMEND_CHAIN,
         VIDEO_DURATION_LOWER_LIMIT,
         VIDEO_COUNT_LOWER_LIMIT,
       } = options.value;
@@ -177,7 +163,6 @@ export default defineComponent({
           POPUP_DURATION,
           cachedOptions.value.POPUP_DURATION,
         ),
-        USE_RECOMMEND_CHAIN,
         VIDEO_DURATION_LOWER_LIMIT: parseStringToNumber(
           VIDEO_DURATION_LOWER_LIMIT,
           cachedOptions.value.VIDEO_DURATION_LOWER_LIMIT,

@@ -1,9 +1,5 @@
-import { biliRequest, recordRequest, videoRequest } from '@/apis';
-import { ReportEventsBody } from '@/types/backendRequest';
-import { FetchVideoMessageResponse } from '@/types/message';
+import { biliRequest } from '@/apis';
 import { PlayVideoInfo } from '@/types/video';
-import { getUid } from '@/utils/cookies';
-import logger from '@/utils/logger';
 
 interface BvidAndPlay {
   bvid: string;
@@ -28,26 +24,6 @@ export async function getBvidAndPlay(aid: string): Promise<BvidAndPlay | null> {
   }
 }
 
-/** 从后端获取推荐的视频 */
-export async function getNextVideoFromBackend(
-  uid: string,
-): Promise<FetchVideoMessageResponse | null> {
-  try {
-    const response = await videoRequest.getNextRecommendedVideo({ uid });
-    if (response.status === 200) {
-      const bvid = response.data?.bvid;
-      if (bvid !== undefined) {
-        return { bvid };
-      }
-    }
-
-    return null;
-  } catch (error) {
-    logger.error(`Error: Can't get video from backend - ${error}`);
-    return null;
-  }
-}
-
 /** 获取视频完整信息 */
 async function getVideoInfo(bvid: string): Promise<PlayVideoInfo | null> {
   try {
@@ -55,38 +31,5 @@ async function getVideoInfo(bvid: string): Promise<PlayVideoInfo | null> {
     return response.data.data;
   } catch (error) {
     return null;
-  }
-}
-
-/** 向后端报告推送的视频 */
-export async function postRecord(bvid: string) {
-  const uid = await getUid();
-  if (uid === null) {
-    return;
-  }
-
-  const video = await getVideoInfo(bvid);
-  if (video === null) {
-    return;
-  }
-
-  try {
-    await recordRequest.postRecord({
-      uid,
-      bvid,
-      pic: video.pic,
-      author: video.owner.name,
-      title: video.title,
-    });
-  } catch (error) {
-    logger.error(`Error: Can't post records to backend - ${error}`);
-  }
-}
-
-export async function reportEvents(body: ReportEventsBody) {
-  try {
-    await videoRequest.reportEvents(body);
-  } catch (error) {
-    logger.error(`Error: Can't report events to backend - ${error}`);
   }
 }

@@ -1,39 +1,23 @@
-import { recordRequest } from '@/apis';
 import dayjs from 'dayjs';
-import { RecordItem, HonorItemType } from '../types';
+import { RecordItem, RawRecordItem } from '../types';
 
 /** 获取用户历史记录列表  */
 const getRecords: (req: {
   /** 用户 uid */
   uid: string;
 }) => Promise<RecordItem[]> = async ({ uid }) => {
-  const resp = await recordRequest.searchRecords({ uid });
-  const parsedData = resp.data.map((item) => ({
+  // FIXME: 从同步 storage 获取
+  const resp: RawRecordItem[] = [];
+  const parsedData = resp.map((item: RawRecordItem) => ({
     bvid: item.bvid,
-    createdAt: dayjs(item.time),
+    createdAt: dayjs(item.createdAt),
   }));
   return parsedData;
-};
-
-/** 获取用户荣誉墙列表 */
-const getHonors: (req: {
-  /** 用户 uid */
-  uid: string;
-}) => Promise<HonorItemType[]> = async ({ uid }) => {
-  const resp = await recordRequest.getHonors({ uid });
-  const parsedData = resp.data.map((item) => ({
-    ...item,
-    createdAt: dayjs(item.postime),
-  }));
-  // FIXME: 暂时只加载前十条数据
-  return parsedData.slice(0, 10);
 };
 
 const recordClient = {
   /** 获取用户历史记录列表  */
   getRecords,
-  /** 获取用户荣誉墙列表 */
-  getHonors,
 };
 
 export default recordClient;

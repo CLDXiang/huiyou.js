@@ -12,16 +12,12 @@ export interface RecordItem {
   isLast?: boolean;
 }
 
-/** 荣誉墙项 */
-export interface HonorItemType {
-  /** 视频 BV 号 */
+/** 用于存储的基本历史记录项 */
+export interface RawRecordItem {
+  /** 视频 BV 号，以 `BV` 开头 */
   bvid: string;
-  /** 视频封面 */
-  pic: string;
-  author: string;
-  title: string;
-  /** 记录创建时间 */
-  createdAt: Dayjs;
+  /** 推送视频的时间 */
+  createdAt: number;
 }
 
 /** 包含视频信息的历史记录项 */
