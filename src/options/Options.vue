@@ -113,7 +113,7 @@ import {
 import { DEFAULT_USER_OPTIONS } from '@/config';
 import logger from '@/utils/logger';
 import { DEBUG_MODE } from '@/utils/config';
-import { setLocalStorage } from '@/utils/options';
+import { setSyncStorage } from '@/utils/options';
 import { loadStorage, parseStringToNumber } from './utils';
 import { UpDownPin, Tooltip } from './components';
 
@@ -196,7 +196,7 @@ export default defineComponent({
     /** 保存设置 */
     const saveOptions = () => {
       logger.log('保存设置：', parsedOptions.value);
-      setLocalStorage(parsedOptions.value);
+      setSyncStorage(parsedOptions.value);
     };
 
     /** 设为默认值 */
