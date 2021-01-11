@@ -261,6 +261,7 @@ export default defineComponent({
 
   .content {
     flex: 1;
+    width: 233px;
     padding: 16px 32px;
 
     &.last {

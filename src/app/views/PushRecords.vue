@@ -60,7 +60,7 @@ export default defineComponent({
 
 <style scoped lang="less">
 .records {
-  width: 1000px;
+  max-width: 1024px;
   margin: 30px auto 0;
   position: relative;
 }
