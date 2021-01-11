@@ -10,7 +10,7 @@ interface PushRecord {
 }
 
 /** storage 中 pushRecords 项的结构 */
-type PushRecords = { [uid: string]: PushRecord[] };
+type PushRecords = Record<string, PushRecord[]>;
 
 /** 获取推送记录 */
 export function getPushRecords(): Promise<PushRecords> {
