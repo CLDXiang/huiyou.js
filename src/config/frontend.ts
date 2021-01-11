@@ -27,9 +27,9 @@ export const DEFAULT_USER_OPTIONS = {
   /** 记录的视频的时长上限/秒 */
   DURATION_UPPER_LIMIT: 60 * 15,
   /** 记录的视频的播放比例下限（百分比） */
-  PLAYED_TIME_PROPORTION_LOWER_LIMIT: DEBUG_MODE ? 0 : 33,
+  PLAYED_TIME_PROPORTION_LOWER_LIMIT: 33,
   /** 弹框显示时长/秒 */
-  POPUP_DURATION: DEBUG_MODE ? 70 : 7,
+  POPUP_DURATION: 7,
   /** 推送视频的长度下限/秒 */
   VIDEO_DURATION_LOWER_LIMIT: 60,
   /** 至少记录几个视频后可以推送视频 */
