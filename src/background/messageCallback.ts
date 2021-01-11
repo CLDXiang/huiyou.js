@@ -3,7 +3,8 @@
  */
 import { MessagePayloadMap, MessageResponseMap, MessageType } from '@/types/message';
 import VideoRecorder from './recordVideo';
-import { addRecommendedHistory } from './storeRecommendedVideos';
+import { addHistory } from './storeHistory';
+import { postPushRecord } from './api';
 
 const videoRecorder = new VideoRecorder();
 
@@ -27,7 +28,8 @@ export default function handleMessage(
       videoRecorder.getRecommendedVideo().then((video) => {
         sendResponse<'fetchVideo'>(video);
         if (video !== null) {
-          addRecommendedHistory(video.bvid);
+          postPushRecord(video.bvid);
+          addHistory(video.bvid);
         }
       });
       break;
@@ -35,7 +37,8 @@ export default function handleMessage(
       videoRecorder.getRecommendedVideo(true).then((video) => {
         sendResponse<'fetchVideoForcedly'>(video);
         if (video !== null) {
-          addRecommendedHistory(video.bvid);
+          postPushRecord(video.bvid);
+          addHistory(video.bvid);
         }
       });
       break;

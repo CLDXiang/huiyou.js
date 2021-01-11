@@ -12,7 +12,7 @@
     </div>
     <div class="time">
       <div class="arrow" />
-      {{ createdAt.format('YYYY.MM.DD') }}
+      {{ createdAt.format('HH:mm:ss') }}
     </div>
     <img
       class="img"

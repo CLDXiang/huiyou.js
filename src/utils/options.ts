@@ -3,9 +3,9 @@ import logger from './logger';
 export type GeneralOption = Record<string, unknown>;
 
 /** 存储配置项 */
-export function setLocalStorage(newOptions: GeneralOption) {
+export function setSyncStorage(newOptions: GeneralOption) {
   logger.log('set options: ', newOptions);
-  chrome.storage.local.set(newOptions);
+  chrome.storage.sync.set(newOptions);
 }
 
 export const RESET_OPTION = Symbol('Reset options');
@@ -20,10 +20,7 @@ class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
 
     this.loadStorage();
 
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-      // 只处理本地存储
-      if (areaName !== 'local') return;
-
+    chrome.storage.onChanged.addListener((changes) => {
       Object.entries(changes).forEach(([key, { newValue }]) => {
         // 没有新的值
         if (newValue === undefined) return;
@@ -44,7 +41,7 @@ class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
 
   set(_: T, p: keyof T, value: T[typeof p]) {
     this.cache[p] = value;
-    setLocalStorage({ [p]: value });
+    setSyncStorage({ [p]: value });
     return true;
   }
 
@@ -54,7 +51,7 @@ class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
       throw new Error('`this.cache` must be assigned before loading storage');
     }
 
-    chrome.storage.local.get(Object.keys(this.cache), (items) => {
+    chrome.storage.sync.get(Object.keys(this.cache), (items) => {
       logger.log('load options from storage: ', items);
       Object.entries(items).forEach(([key, value]) => {
         this.cache[key as keyof T] = value;
@@ -66,7 +63,7 @@ class OptionHandler<T extends GeneralOption> implements ProxyHandler<T> {
   /** 重置所有配置项 */
   private reset(defaultOptions: T) {
     this.cache = { ...defaultOptions };
-    setLocalStorage(defaultOptions);
+    setSyncStorage(defaultOptions);
   }
 }
 

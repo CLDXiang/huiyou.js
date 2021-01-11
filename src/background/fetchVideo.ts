@@ -7,7 +7,7 @@ import { FetchVideoMessageResponse } from '@/types/message';
 import { VideoInfo } from '@/types/video';
 import { getUid } from '@/utils/cookies';
 import axios from 'axios';
-import { getRecommendedHistory } from './storeRecommendedVideos';
+import { getHistory } from './storeHistory';
 
 const { END_PAGE, KEYWORD, START_PAGE } = FETCH_VIDEO;
 
@@ -84,7 +84,7 @@ export default async function getVideo(
     return null;
   }
 
-  const history = await getRecommendedHistory();
+  const history = await getHistory();
   cachedVideo.forEach((video) => history.add(video));
   const video = await getVideoRecursively(history, START_PAGE);
   if (video === null) {
