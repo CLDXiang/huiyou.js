@@ -1,6 +1,5 @@
 import { biliRequest } from '@/apis';
 import { getUid } from '@/utils/cookies';
-// import { PlayVideoInfo } from '@/types/video';
 import { addPushRecords } from '@/utils/pushRecords';
 
 interface BvidAndPlay {
@@ -25,16 +24,6 @@ export async function getBvidAndPlay(aid: string): Promise<BvidAndPlay | null> {
     return null;
   }
 }
-
-// /** 获取视频完整信息 */
-// async function getVideoInfo(bvid: string): Promise<PlayVideoInfo | null> {
-//   try {
-//     const response = await biliRequest.getVideoInfo({ bvid });
-//     return response.data.data;
-//   } catch (error) {
-//     return null;
-//   }
-// }
 
 /** 记录推送的视频 */
 export async function postPushRecord(bvid: string) {
