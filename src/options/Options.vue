@@ -14,12 +14,8 @@
           >
           <up-down-pin
             :show-down="parsedOptions.POPUP_DURATION > 0"
-            @click-up="
-              options.POPUP_DURATION = parsedOptions.POPUP_DURATION + 1
-            "
-            @click-down="
-              options.POPUP_DURATION = parsedOptions.POPUP_DURATION - 1
-            "
+            @click-up="options.POPUP_DURATION = parsedOptions.POPUP_DURATION + 1"
+            @click-down="options.POPUP_DURATION = parsedOptions.POPUP_DURATION - 1"
           />
         </span>
       </div>
@@ -34,12 +30,10 @@
           <up-down-pin
             :show-down="parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT > 0"
             @click-up="
-              options.AMOUNT_OF_PLAY_UPPER_LIMIT =
-                parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT + 1
+              options.AMOUNT_OF_PLAY_UPPER_LIMIT = parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT + 1
             "
             @click-down="
-              options.AMOUNT_OF_PLAY_UPPER_LIMIT =
-                parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT - 1
+              options.AMOUNT_OF_PLAY_UPPER_LIMIT = parsedOptions.AMOUNT_OF_PLAY_UPPER_LIMIT - 1
             "
           />
         </span>
@@ -55,12 +49,10 @@
           <up-down-pin
             :show-down="parsedOptions.VIDEO_DURATION_LOWER_LIMIT > 0"
             @click-up="
-              options.VIDEO_DURATION_LOWER_LIMIT =
-                parsedOptions.VIDEO_DURATION_LOWER_LIMIT + 1
+              options.VIDEO_DURATION_LOWER_LIMIT = parsedOptions.VIDEO_DURATION_LOWER_LIMIT + 1
             "
             @click-down="
-              options.VIDEO_DURATION_LOWER_LIMIT =
-                parsedOptions.VIDEO_DURATION_LOWER_LIMIT - 1
+              options.VIDEO_DURATION_LOWER_LIMIT = parsedOptions.VIDEO_DURATION_LOWER_LIMIT - 1
             "
           />
         </span>
@@ -82,8 +74,7 @@
           v-model="options.DURATION_UPPER_LIMIT"
           type="number"
           min="1"
-        >s
-        不计入观看视频数量
+        >s 不计入观看视频数量
       </div>
       <div>
         视频播放比例超过
@@ -102,6 +93,12 @@
       <button @click="() => saveOptions()">
         保存
       </button>
+    </div>
+    <div
+      v-show="hideSaveSuccessModelCoolDown > 0"
+      class="save-success-model"
+    >
+      ✔ 保存设置成功！
     </div>
   </div>
 </template>
@@ -159,10 +156,7 @@ export default defineComponent({
           PLAYED_TIME_PROPORTION_LOWER_LIMIT,
           cachedOptions.value.PLAYED_TIME_PROPORTION_LOWER_LIMIT,
         ),
-        POPUP_DURATION: parseStringToNumber(
-          POPUP_DURATION,
-          cachedOptions.value.POPUP_DURATION,
-        ),
+        POPUP_DURATION: parseStringToNumber(POPUP_DURATION, cachedOptions.value.POPUP_DURATION),
         VIDEO_DURATION_LOWER_LIMIT: parseStringToNumber(
           VIDEO_DURATION_LOWER_LIMIT,
           cachedOptions.value.VIDEO_DURATION_LOWER_LIMIT,
@@ -193,10 +187,27 @@ export default defineComponent({
       cachedOptions.value = { ...cachedOptions.value, ...items };
     });
 
+    /** 成功提示冷却时间 */
+    const hideSaveSuccessModelCoolDown = ref<number>(0);
+    const hideSaveSuccessModelCoolDownTimeout = ref<number>(-1);
+
+    /** 显示成功提示 */
+    const showSaveSuccessModel = () => {
+      hideSaveSuccessModelCoolDown.value = 2;
+      clearInterval(hideSaveSuccessModelCoolDownTimeout.value);
+      hideSaveSuccessModelCoolDownTimeout.value = setInterval(() => {
+        hideSaveSuccessModelCoolDown.value -= 1;
+        if (hideSaveSuccessModelCoolDown.value === 0) {
+          clearInterval(hideSaveSuccessModelCoolDownTimeout.value);
+        }
+      }, 1000);
+    };
+
     /** 保存设置 */
     const saveOptions = () => {
       logger.log('保存设置：', parsedOptions.value);
       setSyncStorage(parsedOptions.value);
+      showSaveSuccessModel();
     };
 
     /** 设为默认值 */
@@ -211,6 +222,7 @@ export default defineComponent({
       parsedOptions,
       saveOptions,
       setDefaultOptions,
+      hideSaveSuccessModelCoolDown,
     };
   },
 });
@@ -224,8 +236,8 @@ body {
 }
 
 #app {
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
-    Arial, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
@@ -347,5 +359,17 @@ body {
       opacity: 0.8;
     }
   }
+}
+
+.save-success-model {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  font-size: 14px;
+  padding: 8px;
+  border-radius: 6px;
+  box-shadow: 1px 3px 6px rgba(0,0,0,.3);
 }
 </style>
