@@ -29,7 +29,7 @@ module.exports = {
       entry: 'src/app/main',
       template: 'public/index.html',
       filename: 'app.html',
-      title: '洄游',
+      title: '洄游：推送记录',
       chunks: ['app'],
     },
     popup: {

@@ -3,18 +3,14 @@
     v-if="records.length"
     class="records"
   >
-    <div
-      class="records__list"
-    >
-      <push-record-item
-        v-for="record in records"
-        :key="record.bvid"
-        :bvid="record.bvid"
-        :created-at="record.createdAt"
-        :is-first="record.isFirst"
-        :is-last="record.isLast"
-      />
-    </div>
+    <push-record-item
+      v-for="record in records"
+      :key="record.bvid"
+      :bvid="record.bvid"
+      :created-at="record.createdAt"
+      :is-first="record.isFirst"
+      :is-last="record.isLast"
+    />
   </div>
   <Empty v-else />
 </template>
@@ -64,24 +60,8 @@ export default defineComponent({
 
 <style scoped lang="less">
 .records {
-  width: 1000px;
+  max-width: 1024px;
   margin: 30px auto 0;
-}
-
-.records__header {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 10px;
-
-  img {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-.records__list {
   position: relative;
-  padding: 0 70px;
 }
 </style>
