@@ -33,7 +33,7 @@ export const DEFAULT_USER_OPTIONS = {
   /** 推送视频的长度下限/秒 */
   VIDEO_DURATION_LOWER_LIMIT: 60,
   /** 至少记录几个视频后可以推送视频 */
-  VIDEO_COUNT_LOWER_LIMIT: DEBUG_MODE ? 1 : 5,
+  VIDEO_COUNT_LOWER_LIMIT: 5,
 };
 
 /** 用户设置 */
