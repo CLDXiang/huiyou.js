@@ -1,4 +1,3 @@
-import { DEBUG_MODE } from '@/utils/config';
 import { makeOption } from '@/utils/options';
 
 const { freeze } = Object;
